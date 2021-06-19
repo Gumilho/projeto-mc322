@@ -1,4 +1,4 @@
-package com.unicamp.mc322.duocomopeda.Stats;
+package com.unicamp.mc322.duocomopeda.stat;
 
 import java.util.*;
 
@@ -16,19 +16,17 @@ public class Mana {
     /**
      * 
      */
-    private Int max;
+    private int max;
 
     /**
      * 
      */
-    private Int currentMana;
+    private int currentMana;
 
     /**
      * 
      */
     private Int spellMana;
-
-
 
     /**
      * @param quantity

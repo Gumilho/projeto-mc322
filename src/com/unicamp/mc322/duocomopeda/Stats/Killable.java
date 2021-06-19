@@ -1,4 +1,4 @@
-package com.unicamp.mc322.duocomopeda.Stats;
+package com.unicamp.mc322.duocomopeda.stat;
 
 import java.util.*;
 
@@ -6,7 +6,6 @@ import java.util.*;
  * 
  */
 public interface Killable {
-
 
     /**
      * 

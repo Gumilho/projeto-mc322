@@ -28,11 +28,6 @@ public abstract class Card {
      */
     private Set<Effect> effects;
 
-
-
-
-
-
     /**
      * 
      */
