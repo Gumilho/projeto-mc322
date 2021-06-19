@@ -9,6 +9,7 @@ public class Minion extends Card implements Killable {
     private Health health;
     private int power;
     private ArrayList<Trait> traits;
+    private boolean isDead = false;
 
     public Minion(String name, int cost, int health, int power) {
         super(name, cost);
@@ -17,11 +18,24 @@ public class Minion extends Card implements Killable {
     }
 
     public void die() {
-        // TODO implement here
+        isDead = true;
     }
 
-    public void attack() {
-        // TODO implement here
+    public void attack(Minion enemy) {
+        enemy.takeDamage(this.power);
+        if (!enemy.isDead) {
+            enemy.defend(this);
+        }
+
+    }
+
+    private void defend(Minion attacker) {
+        // TODO: checar evento ON_DEFEND
+        attacker.takeDamage(this.power);
+    }
+
+    private void takeDamage(int amount) {
+        health.takeDamage(amount);
     }
 
 }
