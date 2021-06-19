@@ -2,37 +2,60 @@ package com.unicamp.mc322.duocomopeda.stats;
 
 public class Mana {
 
-    private int max;
+    private final int MAX = 10;
+    private final int MAX_SPELL = 3;
+
+    private int currentMax;
 
     private int currentMana;
 
     private int spellMana;
 
     public Mana() {
+        currentMana = 1;
+        spellMana = 0;
+        currentMax = 0;
     }
 
-    public void getCurrentMana() {
-        // TODO implement here
+    public int getCurrentMana() {
+        return currentMana;
     }
 
-    public void getCurrentMana(Boolean spell) {
-        // TODO implement here
+    public int getCurrentMana(Boolean spell) {
+        if (spell) {
+            return currentMana + spellMana;
+        } else
+            return currentMana;
     }
 
     public void spend(int quantity) {
-        // TODO implement here
+        if (currentMana - quantity >= 0) {
+            // TODO: tratamento de erro
+        }
+        currentMana -= quantity;
     }
 
     public void update() {
-        // TODO implement here
+        if (currentMana > 0) {
+            bankSpellMana();
+        }
+        getNewMaxMana();
+        recover();
     }
 
     private void recover() {
-        // TODO implement here
+        currentMana = currentMax;
     }
 
     private void bankSpellMana() {
-        // TODO implement here
+        spellMana += currentMana;
+        if (spellMana > MAX_SPELL) {
+            spellMana = MAX_SPELL;
+        }
+    }
+
+    private void getNewMaxMana() {
+
     }
 
 }
