@@ -6,15 +6,15 @@ import com.unicamp.mc322.duocomopeda.stats.Health;
 import com.unicamp.mc322.duocomopeda.stats.Killable;
 
 public class Minion extends Card implements Killable {
-
-    public Minion() {
-    }
-
     private Health health;
-
     private int power;
-
     private ArrayList<Trait> traits;
+
+    public Minion(String name, int cost, int health, int power) {
+        super(name, cost);
+        this.power = power;
+        this.health = new Health(health, this);
+    }
 
     public void die() {
         // TODO implement here

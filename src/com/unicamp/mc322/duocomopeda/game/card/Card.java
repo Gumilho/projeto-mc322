@@ -10,7 +10,9 @@ public abstract class Card {
 
     private ArrayList<Effect> effects;
 
-    public Card() {
+    public Card(String name, int cost) {
+        this.name = name;
+        this.cost = cost;
     }
 
     public void getCost() {
@@ -22,10 +24,6 @@ public abstract class Card {
     }
 
     public void toggleSelect() {
-        // TODO implement here
-    }
-
-    public void Operation1() {
         // TODO implement here
     }
 

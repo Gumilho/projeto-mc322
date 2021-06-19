@@ -5,7 +5,9 @@ public class Champion extends Minion {
 
     private Mission misson;
 
-    public Champion() {
+    public Champion(String name, int cost, int health, int power) {
+        super(name, cost, health, power);
+        // TODO Auto-generated constructor stub
     }
 
     private void upgrade() {

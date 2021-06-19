@@ -8,13 +8,25 @@ public class Health {
 
     private int currentHealth;
 
-    public Health() {
+    public Health(int maxHealth, Killable owner) {
+        this.maxHealth = maxHealth;
+        this.currentHealth = maxHealth;
+        this.owner = owner;
     }
 
-    public void takeDamage() {
+    public void takeDamage(int ammount) {
+        currentHealth -= ammount;
+        if (currentHealth <= 0) {
+            currentHealth = 0;
+            owner.die();
+        }
     }
 
-    public void heal() {
+    public void heal(int ammount) {
+        currentHealth += ammount;
+        if (currentHealth >= maxHealth) {
+            currentHealth = maxHealth;
+        }
     }
 
 }
