@@ -18,10 +18,12 @@ public class Minion extends Card implements Killable {
     }
 
     public void die() {
+        // TODO: disparar evento ON_DEATH
         isDead = true;
     }
 
     public void attack(Minion enemy) {
+        // TODO: disparar evento ON_ATTACK
         enemy.takeDamage(this.power);
         if (!enemy.isDead) {
             enemy.defend(this);
@@ -30,11 +32,12 @@ public class Minion extends Card implements Killable {
     }
 
     private void defend(Minion attacker) {
-        // TODO: checar evento ON_DEFEND
+        // TODO: disparar evento ON_DEFEND
         attacker.takeDamage(this.power);
     }
 
     private void takeDamage(int amount) {
+        // TODO: disparar evento ON_DAMAGE_TAKEN
         health.takeDamage(amount);
     }
 
