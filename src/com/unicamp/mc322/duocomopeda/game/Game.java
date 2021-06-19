@@ -1,77 +1,30 @@
 package com.unicamp.mc322.duocomopeda.game;
 
-import java.util.*;
+import com.unicamp.mc322.duocomopeda.game.player.Player;
 
-/**
- * 
- */
 public class Game {
 
-    /**
-     * Default constructor
-     */
-    public Game() {
-    }
-
-    /**
-     * 
-     */
-    public static void game;
-
-    /**
-     * 
-     */
+    public int turn;
+    public static Game game;
+    private int roundCounter;
+    private int attacker;
     private Player[] players;
 
-    /**
-     * 
-     */
-    private int roundCounter;
+    private Game() {
+    }
 
-    /**
-     * 
-     */
-    private int attacker;
-
-    /**
-     * 
-     */
-    public int turn;
-
-
-
-
-    /**
-     * 
-     */
     public static void getInstance() {
         // TODO implement here
     }
 
-    /**
-     * 
-     */
-    private void Game() {
-        // TODO implement here
-    }
-
-    /**
-     * 
-     */
     private void setupBoard() {
         // TODO implement here
     }
 
-    /**
-     * 
-     */
     private void setupPlayers() {
         // TODO implement here
     }
 
-    /**
-     * 
-     */
     private void advanceRound() {
         // TODO implement here
     }

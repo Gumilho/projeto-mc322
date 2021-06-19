@@ -1,15 +1,7 @@
-package com.unicamp.mc322.duocomopeda.stat;
+package com.unicamp.mc322.duocomopeda.stats;
 
-import java.util.*;
-
-/**
- * 
- */
 public interface Killable {
 
-    /**
-     * 
-     */
-    public void Die();
+    public void die();
 
 }
