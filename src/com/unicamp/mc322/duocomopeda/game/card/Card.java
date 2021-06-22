@@ -15,8 +15,8 @@ public abstract class Card {
         this.cost = cost;
     }
 
-    public void getCost() {
-        // TODO implement here
+    public int getCost() {
+        return cost;
     }
 
     public void play() {
