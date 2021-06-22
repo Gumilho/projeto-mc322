@@ -1,13 +1,18 @@
 package com.unicamp.mc322.duocomopeda.game.player;
 
+import java.util.ArrayList;
+
 import com.unicamp.mc322.duocomopeda.game.card.Card;
-import com.unicamp.mc322.duocomopeda.stats.Health;
-import com.unicamp.mc322.duocomopeda.stats.Killable;
-import com.unicamp.mc322.duocomopeda.stats.Mana;
+import com.unicamp.mc322.duocomopeda.game.stats.Health;
+import com.unicamp.mc322.duocomopeda.game.stats.Killable;
+import com.unicamp.mc322.duocomopeda.game.stats.Mana;
 
 public abstract class Player implements Killable {
 
-    private Card hand;
+    public static int INITIAL_HAND_COUNT = 4;
+    public static int INITIAL_HEALTH = 20;
+
+    private ArrayList<Card> hand;
 
     private Mana mana;
 
@@ -16,20 +21,75 @@ public abstract class Player implements Killable {
     private String nickname;
 
     private Health health;
+    
+    private boolean passed;
 
-    public Player() {
+
+    public Player(String nickname) {
+        this.nickname = nickname;
+        this.health = new Health(INITIAL_HEALTH, this);
+        this.deck = new Deck();
+        this.hand = new ArrayList<Card>();
+        this.hand.addAll(deck.draw(INITIAL_HAND_COUNT));
+        this.mana = new Mana();
     }
 
+    protected abstract Command getCommand();
+
     public void act() {
-        // TODO implement here
+        
+        Command command = getCommand();
+        switch (command) {
+            case SELECT:
+                
+                break;
+            case PLAY:
+                
+                break;
+            case BATTLE:
+                
+                break;
+            case PASS:
+                
+                break;
+        
+            default:
+                break;
+        }
     }
 
     public void die() {
-        // TODO implement here
     }
 
-    private void playFromHand() {
-        // TODO implement here
+    private void playFromHand(Card card) {
+        this.mana.spend(card.getCost());
+        card.play();
     }
 
+
+    public void draw(int quantity) {
+        ArrayList<Card> cards = this.deck.draw(quantity);
+        while (cards.size() + hand.size() > 10) {
+            cards.remove(cards.size() - 1);
+        }
+        if (cards.size() + hand.size() > 10) {
+            
+        }
+    }
+
+    public void draw() {
+        this.deck.draw(1);
+    }
+
+    public boolean getPassed() {
+        return passed;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void startRound() {
+        this.draw();
+    }
 }

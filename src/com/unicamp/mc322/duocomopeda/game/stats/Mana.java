@@ -1,4 +1,4 @@
-package com.unicamp.mc322.duocomopeda.stats;
+package com.unicamp.mc322.duocomopeda.game.stats;
 
 public class Mana {
 

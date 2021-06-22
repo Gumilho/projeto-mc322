@@ -2,8 +2,8 @@ package com.unicamp.mc322.duocomopeda.game.card;
 
 import java.util.*;
 
-import com.unicamp.mc322.duocomopeda.stats.Health;
-import com.unicamp.mc322.duocomopeda.stats.Killable;
+import com.unicamp.mc322.duocomopeda.game.stats.Health;
+import com.unicamp.mc322.duocomopeda.game.stats.Killable;
 
 public class Minion extends Card implements Killable {
     private Health health;
