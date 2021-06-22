@@ -92,10 +92,4 @@ public abstract class Player implements Killable {
     public void startRound() {
         this.draw();
     }
-
-    public 
-    players[0].draw(1);
-    players[1].draw(1);
-    players[0].increaseMana();
-    players[1].increaseMana();
 }
