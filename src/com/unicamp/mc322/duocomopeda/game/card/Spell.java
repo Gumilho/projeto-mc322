@@ -6,10 +6,4 @@ public class Spell extends Card {
         super(name, cost);
         // TODO Auto-generated constructor stub
     }
-
-    @Override
-    public void getCost() {
-        // TODO implement here
-    }
-
 }
