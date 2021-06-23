@@ -28,7 +28,6 @@ public class Minion extends Card implements Killable {
         if (!enemy.isDead) {
             enemy.defend(this);
         }
-
     }
 
     private void defend(Minion attacker) {
