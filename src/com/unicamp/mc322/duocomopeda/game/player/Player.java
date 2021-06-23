@@ -37,7 +37,7 @@ public abstract class Player implements Killable {
     protected abstract Command getCommand();
 
     public void act() {
-        
+        // bom dia
         Command command = getCommand();
         switch (command) {
             case SELECT:
