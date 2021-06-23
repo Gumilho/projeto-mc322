@@ -10,6 +10,9 @@ public abstract class Card {
 
     private ArrayList<Effect> effects;
 
+    // se inscrever em eventos
+    // e tb publicar eventos
+
     public Card(String name, int cost) {
         this.name = name;
         this.cost = cost;
