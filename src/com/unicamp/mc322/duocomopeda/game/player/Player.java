@@ -1,7 +1,7 @@
 package com.unicamp.mc322.duocomopeda.game.player;
 
 import java.util.ArrayList;
-
+//hi
 import com.unicamp.mc322.duocomopeda.game.card.Card;
 import com.unicamp.mc322.duocomopeda.game.stats.Health;
 import com.unicamp.mc322.duocomopeda.game.stats.Killable;
@@ -21,9 +21,8 @@ public abstract class Player implements Killable {
     private String nickname;
 
     private Health health;
-    
-    private boolean passed;
 
+    private boolean passed;
 
     public Player(String nickname) {
         this.nickname = nickname;
@@ -37,22 +36,22 @@ public abstract class Player implements Killable {
     protected abstract Command getCommand();
 
     public void act() {
-        
+
         Command command = getCommand();
         switch (command) {
             case SELECT:
-                
+
                 break;
             case PLAY:
-                
+
                 break;
             case BATTLE:
-                
+
                 break;
             case PASS:
-                
+
                 break;
-        
+
             default:
                 break;
         }
@@ -66,14 +65,13 @@ public abstract class Player implements Killable {
         card.play();
     }
 
-
     public void draw(int quantity) {
         ArrayList<Card> cards = this.deck.draw(quantity);
         while (cards.size() + hand.size() > 10) {
             cards.remove(cards.size() - 1);
         }
         if (cards.size() + hand.size() > 10) {
-            
+
         }
     }
 
