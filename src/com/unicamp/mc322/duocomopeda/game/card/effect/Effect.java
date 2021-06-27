@@ -2,14 +2,15 @@ package com.unicamp.mc322.duocomopeda.game.card.effect;
 
 public abstract class Effect {
 
-    private EffectTriggerTypes trigger;
+    private EffectTrigger trigger;
     private boolean repeatable;
 
-    public Effect(boolean repeatable) {
+    public Effect(boolean repeatable, EffectTrigger trigger) {
         this.repeatable = repeatable;
+        this.trigger = trigger;
     }
 
-    public EffectTriggerTypes getTrigger() {
+    public EffectTrigger getTrigger() {
         return trigger;
     }
 

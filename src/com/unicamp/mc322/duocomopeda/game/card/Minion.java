@@ -1,10 +1,10 @@
 package com.unicamp.mc322.duocomopeda.game.card;
 
-import java.util.*;
+import java.util.ArrayList;
 
 import com.unicamp.mc322.duocomopeda.game.card.effect.Effect;
 import com.unicamp.mc322.duocomopeda.game.card.effect.EffectEventFirer;
-import com.unicamp.mc322.duocomopeda.game.card.effect.EffectTriggerTypes;
+import com.unicamp.mc322.duocomopeda.game.card.effect.EffectTrigger;
 import com.unicamp.mc322.duocomopeda.game.card.traits.Trait;
 import com.unicamp.mc322.duocomopeda.game.stats.Health;
 import com.unicamp.mc322.duocomopeda.game.stats.Killable;
@@ -23,32 +23,37 @@ public class Minion extends Card implements Killable, EffectEventFirer {
     }
 
     public void die() {
-        onEffectEvent(EffectTriggerTypes.ON_DEATH);
+        onEffectEvent(EffectTrigger.ON_DEATH);
         isDead = true;
     }
 
     public void attack(Minion enemy) {
-        onEffectEvent(EffectTriggerTypes.ON_HIT);
+        // TODO: account for elusive
+        onEffectEvent(EffectTrigger.ON_HIT);
         enemy.takeDamage(this.power);
         if (!enemy.isDead) {
             enemy.defend(this);
         } else {
-            onEffectEvent(EffectTriggerTypes.ON_KILL);
+            onEffectEvent(EffectTrigger.ON_KILL);
+            // TODO: account for fury
+
         }
+        // TODO: account for double attack
     }
 
     private void defend(Minion attacker) {
-        onEffectEvent(EffectTriggerTypes.ON_DEFENSE);
+        // TODO: account for elusive
+        onEffectEvent(EffectTrigger.ON_DEFENSE);
         attacker.takeDamage(this.power);
     }
 
     private void takeDamage(int amount) {
-        onEffectEvent(EffectTriggerTypes.ON_DAMAGE_TAKEN);
+        onEffectEvent(EffectTrigger.ON_DAMAGE_TAKEN);
         health.takeDamage(amount);
     }
 
     @Override
-    public void onEffectEvent(EffectTriggerTypes trigger) {
+    public void onEffectEvent(EffectTrigger trigger) {
         for (Effect e : effects) {
             if (e.getTrigger() == trigger) {
                 e.activate();
