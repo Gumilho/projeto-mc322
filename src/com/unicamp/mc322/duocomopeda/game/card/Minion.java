@@ -2,13 +2,18 @@ package com.unicamp.mc322.duocomopeda.game.card;
 
 import java.util.*;
 
+import com.unicamp.mc322.duocomopeda.game.card.effect.Effect;
+import com.unicamp.mc322.duocomopeda.game.card.effect.EffectEventFirer;
+import com.unicamp.mc322.duocomopeda.game.card.effect.EffectTriggerTypes;
+import com.unicamp.mc322.duocomopeda.game.card.traits.Trait;
 import com.unicamp.mc322.duocomopeda.game.stats.Health;
 import com.unicamp.mc322.duocomopeda.game.stats.Killable;
 
-public class Minion extends Card implements Killable {
+public class Minion extends Card implements Killable, EffectEventFirer {
     private Health health;
     private int power;
-    private ArrayList<Trait> traits;
+    private ArrayList<Trait> traits = new ArrayList<Trait>();
+    private ArrayList<Effect> effects = new ArrayList<Effect>();
     private boolean isDead = false;
 
     public Minion(String name, int cost, int health, int power) {
@@ -18,26 +23,38 @@ public class Minion extends Card implements Killable {
     }
 
     public void die() {
-        // TODO: disparar evento ON_DEATH
+        onEffectEvent(EffectTriggerTypes.ON_DEATH);
         isDead = true;
     }
 
     public void attack(Minion enemy) {
-        // TODO: disparar evento ON_ATTACK
+        onEffectEvent(EffectTriggerTypes.ON_HIT);
         enemy.takeDamage(this.power);
         if (!enemy.isDead) {
             enemy.defend(this);
+        } else {
+            onEffectEvent(EffectTriggerTypes.ON_KILL);
         }
     }
 
     private void defend(Minion attacker) {
-        // TODO: disparar evento ON_DEFEND
+        onEffectEvent(EffectTriggerTypes.ON_DEFENSE);
         attacker.takeDamage(this.power);
     }
 
     private void takeDamage(int amount) {
-        // TODO: disparar evento ON_DAMAGE_TAKEN
+        onEffectEvent(EffectTriggerTypes.ON_DAMAGE_TAKEN);
         health.takeDamage(amount);
+    }
+
+    @Override
+    public void onEffectEvent(EffectTriggerTypes trigger) {
+        for (Effect e : effects) {
+            if (e.getTrigger() == trigger) {
+                e.activate();
+            }
+        }
+
     }
 
 }

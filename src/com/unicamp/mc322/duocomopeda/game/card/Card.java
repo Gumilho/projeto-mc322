@@ -2,6 +2,8 @@ package com.unicamp.mc322.duocomopeda.game.card;
 
 import java.util.ArrayList;
 
+import com.unicamp.mc322.duocomopeda.game.card.effect.Effect;
+
 public abstract class Card {
 
     private String name;
