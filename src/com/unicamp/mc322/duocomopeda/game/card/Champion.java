@@ -1,17 +1,16 @@
 package com.unicamp.mc322.duocomopeda.game.card;
 
 public class Champion extends Minion {
-    private boolean isUpgraded;
+    private Mission mission;
 
-    private Mission misson;
-
-    public Champion(String name, int cost, int health, int power) {
+    public Champion(String name, int cost, int health, int power, Mission mission) {
         super(name, cost, health, power);
-        // TODO Auto-generated constructor stub
+        this.mission = mission;
     }
 
-    private void upgrade() {
-        // TODO implement here
+    // package private
+    protected void upgrade() {
+
     }
 
     public void update() {
