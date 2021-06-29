@@ -18,14 +18,13 @@ public class Deck {
     }
 
     public ArrayList<Card> draw() {
-        ArrayList<Card> output = new ArrayList<Card>();
-        output.add(cards.remove(0));
-        return output;
+        return this.draw(1);
     }
+
     public ArrayList<Card> draw(int quantity) {
         ArrayList<Card> output = new ArrayList<Card>();
         for (int i=0; i < quantity; i++){
-            output.add(cards.remove(0));
+            //output.add(cards.remove(0));
         }
         
         return output;
