@@ -39,6 +39,7 @@ public class Minion extends Card implements Killable, EffectEventFirer {
 
         }
         // TODO: account for double attack
+        // fazer um overload no attack pra receber um int que multiplica
     }
 
     private void defend(Minion attacker) {
