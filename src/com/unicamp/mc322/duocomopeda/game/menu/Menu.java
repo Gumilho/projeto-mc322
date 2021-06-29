@@ -1,7 +1,6 @@
 package com.unicamp.mc322.duocomopeda.game.menu;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import com.unicamp.mc322.duocomopeda.game.Game;
 import com.unicamp.mc322.duocomopeda.game.menu.command.Command;
@@ -9,35 +8,41 @@ import com.unicamp.mc322.duocomopeda.game.menu.command.Command;
 public abstract class Menu {
     protected String name;
     protected Game game;
-    private ArrayList<Command> commandList;
-    private Scanner keyboard;
+    protected ArrayList<Command> commandList;
 
     public Menu(Game game) {
         this.game = game;
         this.name = "abstract-menu";
-        this.keyboard = new Scanner(System.in);
+
+        this.commandList = new ArrayList<Command>();
     }
 
-    public Command read() {
+    public int getCommandListSize() {
+        return commandList.size();
+    }
+    public void printMenu() {
         printHeader();
         printOptions();
-        System.out.print("Choose one of the options (type the associated number and press enter):");
-        int commandInt = keyboard.nextInt();
+        System.out.print("Choose one of the options (type the associated number and press enter): ");
+    }
+
+    public Command getCommand(int commandInt) {
         return commandList.get(commandInt);
     }
 
     private void printHeader() {
         int nameSize = name.length();
-        for (int i = 0; i < nameSize + 2; i++) {
+        System.out.println();
+        for (int i = 0; i < nameSize + 4; i++) {
             System.out.print("#");
         }
         System.out.println();
 
-        System.out.print("#");
+        System.out.print("# ");
         System.out.print(name);
-        System.out.println("#");
+        System.out.println(" #");
 
-        for (int i = 0; i < nameSize + 2; i++) {
+        for (int i = 0; i < nameSize + 4; i++) {
             System.out.print("#");
         }
         System.out.println();
