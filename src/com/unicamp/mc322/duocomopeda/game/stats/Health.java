@@ -13,6 +13,7 @@ public class Health {
         this.owner = owner;
     }
 
+    // avisar no projeto que existe um owner só pq minion morre diferente de player
     public void takeDamage(int amount) {
         currentHealth -= amount;
         if (currentHealth <= 0) {
