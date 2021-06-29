@@ -1,6 +1,7 @@
 package com.unicamp.mc322.duocomopeda.game.player;
 
 import java.util.Random;
+import java.util.Scanner;
 
 public class PlayerAI extends Player {
 
@@ -9,18 +10,10 @@ public class PlayerAI extends Player {
     }
 
     @Override
-    protected Command getCommand() {
+    public int getCommandInt(Scanner keyboard, int commandQty) {
         Random r = new Random();
-        int commandInt = r.nextInt(3);
-        switch (commandInt) {
-            case 0:
-                return Command.SELECT;
-            case 1:
-                return Command.BATTLE;
-            case 2:
-                return Command.PASS;        
-            default:
-                return null;
-        }
+        int commandInt = r.nextInt(commandQty);
+        System.out.println(commandInt);
+        return commandInt;
     }
 }

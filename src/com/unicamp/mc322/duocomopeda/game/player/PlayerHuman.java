@@ -5,26 +5,18 @@ import java.util.Scanner;
 public class PlayerHuman extends Player {
 
     public PlayerHuman(String nickname) {
+
         super(nickname);
     }
 
     @Override
-    protected Command getCommand() {
-        Scanner input = new Scanner(System.in);
-        String commandString = input.nextLine();
-        input.close();
-        switch (commandString) {
-            case "select":
-                return Command.SELECT;
-            case "play":
-                return Command.PLAY;
-            case "battle":
-                return Command.BATTLE;
-            case "pass":
-                return Command.PASS;        
-            default:
-                return null;
+    public int getCommandInt(Scanner keyboard, int commandQty) {
+        int commandInt = keyboard.nextInt();
+        while (commandInt < 0 && commandInt >= commandQty) {
+            System.out.println("Invalid Command! Please enter again: ");
+            commandInt = keyboard.nextInt();
         }
+        return commandInt;
     }
 
 }
