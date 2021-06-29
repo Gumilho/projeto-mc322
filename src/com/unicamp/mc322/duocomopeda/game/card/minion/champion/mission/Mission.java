@@ -1,6 +1,7 @@
-package com.unicamp.mc322.duocomopeda.game.card;
+package com.unicamp.mc322.duocomopeda.game.card.minion.champion.mission;
 
 import com.unicamp.mc322.duocomopeda.game.card.effect.EffectTrigger;
+import com.unicamp.mc322.duocomopeda.game.card.minion.champion.Champion;
 
 public class Mission {
     private int iterator = 0;

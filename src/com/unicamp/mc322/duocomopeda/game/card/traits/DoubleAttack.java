@@ -1,6 +1,5 @@
 package com.unicamp.mc322.duocomopeda.game.card.traits;
 
-import com.unicamp.mc322.duocomopeda.game.card.Minion;
 import com.unicamp.mc322.duocomopeda.game.card.effect.EffectTrigger;
 
 public class DoubleAttack extends Trait {

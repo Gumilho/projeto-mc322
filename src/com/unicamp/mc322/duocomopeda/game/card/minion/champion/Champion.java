@@ -1,4 +1,7 @@
-package com.unicamp.mc322.duocomopeda.game.card;
+package com.unicamp.mc322.duocomopeda.game.card.minion.champion;
+
+import com.unicamp.mc322.duocomopeda.game.card.minion.Minion;
+import com.unicamp.mc322.duocomopeda.game.card.minion.champion.mission.Mission;
 
 public class Champion extends Minion {
     private Mission mission;
@@ -8,8 +11,7 @@ public class Champion extends Minion {
         this.mission = mission;
     }
 
-    // package private
-    protected void upgrade() {
+    public void upgrade() {
 
     }
 
