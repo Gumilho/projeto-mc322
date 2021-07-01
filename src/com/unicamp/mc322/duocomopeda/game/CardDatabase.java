@@ -5,12 +5,20 @@ import java.util.ArrayList;
 import com.unicamp.mc322.duocomopeda.game.card.Card;
 import com.unicamp.mc322.duocomopeda.game.card.effect.Effect;
 import com.unicamp.mc322.duocomopeda.game.card.effect.EffectTrigger;
+import com.unicamp.mc322.duocomopeda.game.card.effect.targeted.instant.Duel;
+import com.unicamp.mc322.duocomopeda.game.card.effect.targeted.instant.HealCompletely;
+import com.unicamp.mc322.duocomopeda.game.card.effect.targeted.instant.HitAllDefenders;
+import com.unicamp.mc322.duocomopeda.game.card.effect.targeted.permanent.DoubleStats;
+import com.unicamp.mc322.duocomopeda.game.card.effect.targeted.temporary.BuffSingle;
+import com.unicamp.mc322.duocomopeda.game.card.effect.untargeted.BuffAllAllies;
+import com.unicamp.mc322.duocomopeda.game.card.effect.untargeted.draw.DrawRandomCard;
 import com.unicamp.mc322.duocomopeda.game.card.minion.champion.Champion;
 import com.unicamp.mc322.duocomopeda.game.card.traits.Fury;
+import com.unicamp.mc322.duocomopeda.game.card.effect.*;
 
 public class CardDatabase {
 
-    public static CardDatabase cardDatabase;
+    private static CardDatabase cardDatabase;
 
     private ArrayList<Card> cards;
 
@@ -27,18 +35,18 @@ public class CardDatabase {
 
     public void load() {
         cards.add(new Champion("DE001", "Garen", 5, 5, 5, 
-            [new Effect(EffectTrigger.ON_ROUND_END, EffectType.HEAL_FULL)]
+            [new HealCompletely(true, EffectTrigger.ON_ROUND_END)]
         ));
         cards.add(new Minion("DE002", "Tiana", 8, 7, 7,
-            [new Effect(EffectTrigger.ON_PLAY, EffectType.ATTACK_NEXUS)],
+            [new AttackNexus(false, EffectTrigger.ON_PLAY)],
             []
         ));
         cards.add(new Minion("DE003", "Vanguard", 5, 5, 5,
-            [new Effect(EffectTrigger.ON_PLAY, EffectType.BUFF_ALL)],
+            [new BuffAllAllies(false, EffectTrigger.ON_PLAY)],
             []
         ));
         cards.add(new Minion("DE004", "Duelist", 3, 3, 2, 
-            [new Effect(EffectTrigger.ON_MINION_KILL, EffectType.ADD_CARD)],
+            [new DrawSpecificCard(true, EffectTrigger.ON_OPPONENT_DEATH)],
             []
         ));
         cards.add(new Minion("DE005", "Defender", 2, 2, 2
@@ -50,21 +58,21 @@ public class CardDatabase {
             []
         ));
         cards.add(new Minion("DE007", "Poro Defender", 1, 1, 2, 
-            [new Effect(EffectTrigger.ON_DEATH, EffectType.DRAW_CARD)],
+            [new DrawRandomCard(false, EffectTrigger.ON_DEATH)],
             []
         ));
         cards.add(new Spell("DE008", "Judgement", 8, 
-            [new Effect(EffectType.ATTACK_ALL)]
+            [new HitAllDefenders(false, EffectTrigger.ON_PLAY)]
         ));
         cards.add(new Spell("DE009", "Redoubled Valor", 6,
-            [new Effect(EffectType.HEAL_FULL),
-            new Effect(EffectType.DOUBLE_ATTACK_DEFENSE)]
+            [new HealCompletely(false, EffectTrigger.ON_PLAY),
+            new DoubleStats(false, EffectTrigger.ON_PLAY)]
         ));
         cards.add(new Spell("DE010", "Radiant Strike", 1,
-            [new Effect(EffectType.BUFF)]
+            [new BuffSingle(false, EffectTrigger.ON_PLAY)]
         ));
         cards.add(new Spell("DE011", "Single Combat", 2,
-            [new Effect(EffectType.DUEL)]
+            [new Duel(false, EffectTrigger.ON_PLAY)]
         ));
         
     }
