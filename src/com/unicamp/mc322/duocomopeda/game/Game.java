@@ -9,7 +9,7 @@ import com.unicamp.mc322.duocomopeda.game.menu.command.Command;
 
 public class Game {
 
-    public static Game game;
+    private static Game game;
 
     private CardDatabase db;
     private Player[] players;
@@ -39,6 +39,7 @@ public class Game {
 
     private Game() {
         this.db = CardDatabase.getInstance();
+        //this.db.load();
         this.roundCounter = 1;
         this.setupPlayers();
         this.setupBoard();
@@ -49,6 +50,7 @@ public class Game {
     // Test environment function
     private Game(String nickname1, String nickname2) {
         this.db = CardDatabase.getInstance();
+        //this.db.load();
         this.roundCounter = 1;
         this.setupPlayers(nickname1, nickname2);
         this.setupBoard();

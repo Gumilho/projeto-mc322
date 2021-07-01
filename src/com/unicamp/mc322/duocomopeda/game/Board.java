@@ -26,4 +26,8 @@ public class Board {
         return board;
     }
 
+    public void print() {
+    }
+
+
 }
