@@ -4,19 +4,21 @@ import java.util.Scanner;
 
 public class PlayerHuman extends Player {
 
-    public PlayerHuman(String nickname) {
+    private Scanner keyboard;
 
+    public PlayerHuman(String nickname, Scanner keyboard) {
         super(nickname);
+        this.keyboard = keyboard;
     }
 
     @Override
-    public int getCommandInt(Scanner keyboard, int commandQty) {
-        int commandInt = keyboard.nextInt();
-        while (commandInt < 0 && commandInt >= commandQty) {
-            System.out.println("Invalid Command! Please enter again: ");
-            commandInt = keyboard.nextInt();
+    public int getInputInt(int maxInt) {
+        int inputInt = keyboard.nextInt();
+        
+        while (inputInt < 0 && inputInt >= maxInt) {
+            System.out.print("\nInvalid Command! Please enter again: ");
+            inputInt = keyboard.nextInt();
         }
-        return commandInt;
+        return inputInt;
     }
-
 }

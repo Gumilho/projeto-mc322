@@ -1,7 +1,6 @@
 package com.unicamp.mc322.duocomopeda.game.player;
 
 import java.util.Random;
-import java.util.Scanner;
 
 public class PlayerAI extends Player {
 
@@ -10,10 +9,10 @@ public class PlayerAI extends Player {
     }
 
     @Override
-    public int getCommandInt(Scanner keyboard, int commandQty) {
+    public int getInputInt(int maxInt) {
         Random r = new Random();
-        int commandInt = r.nextInt(commandQty);
-        System.out.println(commandInt);
-        return commandInt;
+        int inputInt = r.nextInt(maxInt);
+        System.out.println(inputInt);
+        return inputInt;
     }
 }

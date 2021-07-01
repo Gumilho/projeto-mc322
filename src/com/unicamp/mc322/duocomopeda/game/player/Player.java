@@ -31,7 +31,7 @@ public abstract class Player implements Killable {
         this.mana = new Mana();
     }
 
-    public abstract int getCommandInt(Scanner keyboard, int commandQty);
+    public abstract int getInputInt(int maxInt);
 
     public void die() {
     }
@@ -70,4 +70,8 @@ public abstract class Player implements Killable {
     public void startRound() {
         this.draw();
     }
+
+    public void printHand() {
+    }
+
 }
