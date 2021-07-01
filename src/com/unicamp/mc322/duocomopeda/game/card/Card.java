@@ -6,10 +6,10 @@ import com.unicamp.mc322.duocomopeda.game.card.effect.Effect;
 
 public abstract class Card {
 
+
+    private String id;
     private String name;
-
     private int cost;
-
     private ArrayList<Effect> effects;
 
     // se inscrever em eventos
@@ -30,6 +30,10 @@ public abstract class Card {
 
     public void toggleSelect() {
         // TODO implement here
+    }
+
+    public boolean hasID(String cardID) {
+        return id == cardID;
     }
 
 }
