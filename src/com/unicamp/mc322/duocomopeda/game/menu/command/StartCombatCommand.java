@@ -2,16 +2,15 @@ package com.unicamp.mc322.duocomopeda.game.menu.command;
 
 import com.unicamp.mc322.duocomopeda.game.player.Player;
 
-public class PassCommand extends Command {
+public class StartCombatCommand extends Command {
 
-    public PassCommand() {
-        super("Pass");
+    public StartCombatCommand() {
+        super("Start Combat");
     }
 
     @Override
     public void execute(Player player){
         System.out.println("Player " + player.getNickname() + " passed turn");
-        player.pass();
     }
 
 }
