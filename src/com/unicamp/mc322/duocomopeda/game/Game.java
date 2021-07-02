@@ -4,6 +4,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 import com.unicamp.mc322.duocomopeda.game.player.*;
+import com.unicamp.mc322.duocomopeda.game.card.minion.Poro;
 import com.unicamp.mc322.duocomopeda.game.menu.*;
 import com.unicamp.mc322.duocomopeda.game.menu.command.Command;
 
@@ -11,7 +12,6 @@ public class Game {
 
     private static Game game;
 
-    private CardDatabase db;
     private Player[] players;
     private Board board;
     private Menu menu;
@@ -22,14 +22,6 @@ public class Game {
     private int attacker;
     private int turn;
     
-
-    public static Game getInstance(String nickname1, String nickname2) {
-        if (game == null) {
-            game = new Game();
-        }
-        return game;
-    }
-
     public static Game getInstance() {
         if (game == null) {
             game = new Game();
@@ -40,8 +32,6 @@ public class Game {
     private Game() {
         this.roundCounter = 1;
         this.board = Board.getInstance();
-        this.db = CardDatabase.getInstance();
-        this.db.load();
         this.keyboard = new Scanner(System.in);
         this.menu = new MainMenu(this);
         this.players = new Player[2];
@@ -60,8 +50,32 @@ public class Game {
         this.chooseAttacker();
         this.setupDecks();
     }
+
+    public void runMulligan() {
+        System.out.println("Player 1 Mulligan");
+        players[0].printHand();
+        System.out.println("Which card do you want to swap? (enter 5 for none)");
+        boolean[] swapList = new boolean[4];
+        int input = players[0].getInputInt(5);
+        while (input != 5) {
+            swapList[input] = !swapList[input];
+            System.out.println("Do you want to change another one? Press 5 if you're done");
+            input = players[0].getInputInt(5);
+        }
+        for (int i = 0; i < 4; i++) {
+            if (swapList[input]) {
+                players[0].swap(input);
+            }
+        }
+    }
+
+    private void clearScreen() {
+        System.out.print("\033[H\033[2J");  
+        System.out.flush();  
+    }
     
     public void startGame() {
+
         while(true) { // change this later
             startRound();
             int pass = 0;
@@ -97,11 +111,11 @@ public class Game {
         Deck newDeck = new Deck();
         switch (deckName) {
             case "demacia":
-                newDeck.addCard(db.getCardByName("Poro"));
-                newDeck.addCard(db.getCardByName("Poro"));
-                newDeck.addCard(db.getCardByName("Poro"));
-                newDeck.addCard(db.getCardByName("Poro"));
-                newDeck.addCard(db.getCardByName("Poro"));
+                newDeck.addCard(new Poro());
+                newDeck.addCard(new Poro());
+                newDeck.addCard(new Poro());
+                newDeck.addCard(new Poro());
+                newDeck.addCard(new Poro());
                 break;
 
             default:

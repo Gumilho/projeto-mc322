@@ -33,10 +33,21 @@ public abstract class Player implements Killable {
 
     public abstract int getInputInt(int maxInt);
 
+    public void setDeck(Deck deck) {
+        this.deck = deck;
+    }
+
+    public void swap(int index) {
+        Card card = hand.remove(index);
+        deck.addCard(card);
+        draw(1);
+    }
+
     public void die() {
     }
 
-    private void playFromHand(Card card) {
+    public void playFromHand(int cardIndex) {
+        Card card = hand.get(cardIndex);
         this.mana.spend(card.getCost());
         card.play();
     }
@@ -46,9 +57,7 @@ public abstract class Player implements Killable {
         while (cards.size() + hand.size() > 10) {
             cards.remove(cards.size() - 1);
         }
-        if (cards.size() + hand.size() > 10) {
-
-        }
+        hand.addAll(cards);
     }
 
     public void draw() {
