@@ -12,8 +12,9 @@ import com.unicamp.mc322.duocomopeda.game.card.effect.targeted.permanent.DoubleS
 import com.unicamp.mc322.duocomopeda.game.card.effect.targeted.temporary.BuffSingle;
 import com.unicamp.mc322.duocomopeda.game.card.effect.untargeted.BuffAllAllies;
 import com.unicamp.mc322.duocomopeda.game.card.effect.untargeted.draw.DrawRandomCard;
+import com.unicamp.mc322.duocomopeda.game.card.minion.Minion;
 import com.unicamp.mc322.duocomopeda.game.card.minion.champion.Champion;
-import com.unicamp.mc322.duocomopeda.game.card.traits.Fury;
+import com.unicamp.mc322.duocomopeda.game.card.traits.*;
 import com.unicamp.mc322.duocomopeda.game.card.effect.*;
 
 public class CardDatabase {
@@ -34,6 +35,7 @@ public class CardDatabase {
     }
 
     public void load() {
+        /*
         cards.add(new Champion("DE001", "Garen", 5, 5, 5, 
             [new HealCompletely(true, EffectTrigger.ON_ROUND_END)]
         ));
@@ -53,10 +55,12 @@ public class CardDatabase {
             [],
             [new Fury()]
         ));
+        */
         cards.add(new Minion("DE006", "Poro", 1, 2, 1, 
-            [],
-            []
+            new Trait[]{},
+            new Effect[]{}
         ));
+        /*
         cards.add(new Minion("DE007", "Poro Defender", 1, 1, 2, 
             [new DrawRandomCard(false, EffectTrigger.ON_DEATH)],
             []
@@ -74,13 +78,35 @@ public class CardDatabase {
         cards.add(new Spell("DE011", "Single Combat", 2,
             [new Duel(false, EffectTrigger.ON_PLAY)]
         ));
-        
+        */
     }
 
-    public Card getCard(String cardID) {
+    public Card getCardByName(String cardName) {
+        for (Card card : cards) {
+            if (card.hasID(cardName)) {
+                // Cloning the card
+                try {
+                    return (Card) card.clone();
+                } catch (CloneNotSupportedException e) {
+                    System.out.println("Unexpected error occured");
+                    System.out.println(e);
+                }
+            }
+        }
+        System.out.println("Card not found.");
+        return null;
+    }
+
+    public Card getCardByID(String cardID) {
         for (Card card : cards) {
             if (card.hasID(cardID)) {
-                return card;
+                // Cloning the card
+                try {
+                    return (Card) card.clone();
+                } catch (CloneNotSupportedException e) {
+                    System.out.println("Unexpected error occured");
+                    System.out.println(e);
+                }
             }
         }
         System.out.println("Card not found.");

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.unicamp.mc322.duocomopeda.game.card.effect.Effect;
 
-public abstract class Card {
+public abstract class Card implements Cloneable{
 
 
     private String id;
@@ -15,13 +15,22 @@ public abstract class Card {
     // se inscrever em eventos
     // e tb publicar eventos
 
-    public Card(String name, int cost) {
+    public void setCost(int n) {
+        cost = n;
+    }
+
+    public Card(String id, String name, int cost) {
+        this.id = id;
         this.name = name;
         this.cost = cost;
     }
 
     public int getCost() {
         return cost;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void play() {
@@ -33,7 +42,12 @@ public abstract class Card {
     }
 
     public boolean hasID(String cardID) {
-        return id == cardID;
+        return id.equals(cardID);
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 
 }

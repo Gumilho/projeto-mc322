@@ -3,6 +3,8 @@ package com.unicamp.mc322.duocomopeda.game.player;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import com.unicamp.mc322.duocomopeda.game.CardDatabase;
+import com.unicamp.mc322.duocomopeda.game.Game;
 import com.unicamp.mc322.duocomopeda.game.card.Card;
 
 public class Deck {
@@ -13,8 +15,10 @@ public class Deck {
 
     public Deck() {
         this.cards = new ArrayList<Card>();
-        // Making Deck here
-        // cards.add()
+    }
+
+    public void addCard(Card card) {
+        cards.add(card);
     }
 
     public ArrayList<Card> draw() {

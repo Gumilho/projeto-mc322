@@ -11,14 +11,15 @@ import com.unicamp.mc322.duocomopeda.game.stats.Health;
 import com.unicamp.mc322.duocomopeda.game.stats.Killable;
 
 public class Minion extends Card implements Killable, EffectEventFirer {
+
     private Health health;
     private int power;
     private ArrayList<Trait> traits = new ArrayList<Trait>();
     private ArrayList<Effect> effects = new ArrayList<Effect>();
     private boolean isDead = false;
 
-    public Minion(String name, int cost, int health, int power) {
-        super(name, cost);
+    public Minion(String id, String name, int cost, int health, int power, Trait[] traits, Effect[] effects) {
+        super(id, name, cost);
         this.power = power;
         this.health = new Health(health, this);
     }
