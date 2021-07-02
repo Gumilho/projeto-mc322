@@ -1,6 +1,7 @@
 package com.unicamp.mc322.duocomopeda.game.card;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import com.unicamp.mc322.duocomopeda.game.card.effect.Effect;
 
@@ -10,7 +11,7 @@ public abstract class Card implements Cloneable{
     private String id;
     private String name;
     private int cost;
-    private ArrayList<Effect> effects;
+    protected ArrayList<Effect> effects;
 
     // se inscrever em eventos
     // e tb publicar eventos
@@ -19,10 +20,11 @@ public abstract class Card implements Cloneable{
         cost = n;
     }
 
-    public Card(String id, String name, int cost) {
+    public Card(String id, String name, int cost, Effect[] effects) {
         this.id = id;
         this.name = name;
         this.cost = cost;
+        this.effects.addAll(Arrays.asList(effects));
     }
 
     public int getCost() {

@@ -1,6 +1,7 @@
 package com.unicamp.mc322.duocomopeda.game.card.minion;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import com.unicamp.mc322.duocomopeda.game.card.Card;
 import com.unicamp.mc322.duocomopeda.game.card.effect.Effect;
@@ -18,10 +19,11 @@ public class Minion extends Card implements Killable, EffectEventFirer {
     private ArrayList<Effect> effects = new ArrayList<Effect>();
     private boolean isDead = false;
 
-    public Minion(String id, String name, int cost, int health, int power, Trait[] traits, Effect[] effects) {
-        super(id, name, cost);
+    public Minion(String id, String name, int cost, int power, int health, Trait[] traits, Effect[] effects) {
+        super(id, name, cost, effects);
         this.power = power;
         this.health = new Health(health, this);
+        this.traits.addAll(Arrays.asList(traits));
     }
 
     public void die() {
