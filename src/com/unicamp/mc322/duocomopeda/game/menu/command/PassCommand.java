@@ -8,10 +8,17 @@ public class PassCommand extends Command {
         super("Pass");
     }
 
+
     @Override
-    public void execute(Player player){
+    public void getInput(Player player){
         System.out.println("Player " + player.getNickname() + " passed turn");
         player.pass();
+    }
+
+    @Override
+    public void execute(Player player) {
+        // TODO Auto-generated method stub
+        
     }
 
 }

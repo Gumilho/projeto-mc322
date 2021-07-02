@@ -14,11 +14,11 @@ public class Board {
 
     private static Board board;    
     private Card[] bench;
-    private Card[] battleField;
+    private Card[] battlefield;
     
     private Board() {
         this.bench = new Card[12];
-        this.battleField = new Card[12];
+        this.battlefield = new Card[12];
         // test
         bench[4] = new Minion("DE006", "Poro", 1, 2, 1, 
             new Trait[]{},
@@ -28,6 +28,18 @@ public class Board {
 
     private void resolveBattle() {
         // TODO implement here
+    }
+
+    public void moveUnitToBattlefield(int benchIndex) {
+        Card card = bench[benchIndex];
+        if (card == null) {
+            System.out.println("No card in index " + benchIndex);
+            return;
+        }
+        bench[benchIndex] = null;
+        int i = 0;
+        while (battlefield[i] != null) i++;
+        battlefield[i] = card;
     }
 
     public static Board getInstance() {
@@ -80,14 +92,14 @@ public class Board {
         System.out.println("o");
 
         // Third Line: Battlefield
-        printCards(Arrays.copyOfRange(battleField, 0, 6), 6);
+        printCards(Arrays.copyOfRange(battlefield, 0, 6), 6);
 
     }
 
     private void printPlayer1Board() {
 
         // First Line: Bench
-        printCards(Arrays.copyOfRange(battleField, 6, 12), 12);
+        printCards(Arrays.copyOfRange(battlefield, 6, 12), 12);
         
         // Second Line
         System.out.print("o");
