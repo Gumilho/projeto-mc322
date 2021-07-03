@@ -1,6 +1,7 @@
 package com.unicamp.mc322.duocomopeda.game.card.effect.untargeted;
 
 import com.unicamp.mc322.duocomopeda.game.card.effect.Effect;
+import com.unicamp.mc322.duocomopeda.game.card.effect.EffectTrigger;
 
 public abstract class UntargetedEffect extends Effect {
 
