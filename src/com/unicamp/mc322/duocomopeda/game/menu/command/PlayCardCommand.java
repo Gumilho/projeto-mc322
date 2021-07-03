@@ -16,7 +16,7 @@ public class PlayCardCommand extends Command {
         arg = player.getInputInt(10);
     }
     @Override
-    public void execute(Player player) {
+    public void execute() {
         Game game = Game.getInstance();
         game.playFromHand(arg);
     }

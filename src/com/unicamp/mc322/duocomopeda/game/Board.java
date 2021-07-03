@@ -3,8 +3,6 @@ package com.unicamp.mc322.duocomopeda.game;
 import java.util.Arrays;
 
 import com.unicamp.mc322.duocomopeda.game.card.minion.Minion;
-import com.unicamp.mc322.duocomopeda.game.card.traits.Trait;
-import com.unicamp.mc322.duocomopeda.game.card.effect.Effect;
 
 public class Board {
 

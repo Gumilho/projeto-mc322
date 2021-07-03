@@ -16,7 +16,7 @@ public class PlaceUnitCommand extends Command {
     }
 
     @Override
-    public void execute(Player player) {
+    public void execute() {
         Board board = Board.getInstance();
         board.moveUnitToBattlefield(arg);
     }

@@ -17,6 +17,6 @@ public abstract class Command {
 
     public abstract void getInput(Player player);
 
-    public abstract void execute(Player player);
+    public abstract void execute();
 
 }

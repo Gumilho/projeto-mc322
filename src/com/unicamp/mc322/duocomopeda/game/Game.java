@@ -45,6 +45,8 @@ public class Game {
         this.setupDecks();
         players[0].pullInitialHand();
         players[1].pullInitialHand();
+        runMulligan(0);
+        runMulligan(1);
     }
 
     public void setup(String nickname1, String nickname2) {
@@ -55,6 +57,8 @@ public class Game {
         this.setupDecks();
         players[0].pullInitialHand();
         players[1].pullInitialHand();
+        runMulligan(0);
+        runMulligan(1);
     }
 
     private void chooseAttacker() {
@@ -95,7 +99,7 @@ public class Game {
         players[1].setDeck(createDeck("demacia"));
     }
 
-    public void runMulligan(int playerIndex) {
+    private void runMulligan(int playerIndex) {
         System.out.println("Player " + (playerIndex + 1) + " Mulligan");
         players[playerIndex].printHand();
         System.out.print("Which card do you want to swap? (enter 4 for none): ");

@@ -42,7 +42,7 @@ public abstract class Player implements Killable {
         int commandInt = getInputInt(menu.getCommandListSize());
         Command command = menu.getCommand(commandInt);
         command.getInput(this);
-        command.execute(this);
+        command.execute();
     }
 
     public void startCombat() {
