@@ -3,15 +3,16 @@ package com.unicamp.mc322.duocomopeda.game.card.minion;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.unicamp.mc322.duocomopeda.game.Game;
 import com.unicamp.mc322.duocomopeda.game.card.Card;
 import com.unicamp.mc322.duocomopeda.game.card.effect.Effect;
-import com.unicamp.mc322.duocomopeda.game.card.effect.EffectEventFirer;
 import com.unicamp.mc322.duocomopeda.game.card.effect.EffectTrigger;
+import com.unicamp.mc322.duocomopeda.game.card.effect.OnKillTrigger;
 import com.unicamp.mc322.duocomopeda.game.card.traits.Trait;
 import com.unicamp.mc322.duocomopeda.game.stats.Health;
 import com.unicamp.mc322.duocomopeda.game.stats.Killable;
 
-public class Minion extends Card implements Killable, EffectEventFirer {
+public class Minion extends Card implements Killable {
 
     private Health health;
     private int power;
@@ -33,12 +34,13 @@ public class Minion extends Card implements Killable, EffectEventFirer {
 
     public void attack(Minion enemy) {
         // TODO: account for elusive
-        onEffectEvent(EffectTrigger.ON_HIT);
         enemy.takeDamage(this.power);
+        onEffectEvent(EffectTrigger.ON_HIT);
         if (!enemy.isDead) {
             enemy.defend(this);
         } else {
             onEffectEvent(EffectTrigger.ON_KILL);
+            onEffectEvent(new OnKillTrigger(this.getOwner(), this, enemy));
             // TODO: account for fury
 
         }
@@ -65,6 +67,14 @@ public class Minion extends Card implements Killable, EffectEventFirer {
             }
         }
 
+    }
+
+    public void onEffectEvent(OnKillTrigger trigger) {
+        for (Effect e : effects) {
+            if (e.getTrigger() == trigger.getTrigger()) {
+                e.activate(trigger);
+            }
+        }
     }
 
 }

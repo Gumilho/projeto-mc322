@@ -4,13 +4,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import com.unicamp.mc322.duocomopeda.game.card.effect.Effect;
+import com.unicamp.mc322.duocomopeda.game.card.effect.EffectEventFirer;
+import com.unicamp.mc322.duocomopeda.game.card.effect.EffectTrigger;
+import com.unicamp.mc322.duocomopeda.game.player.Player;
 
-public abstract class Card implements Cloneable{
-
+public abstract class Card implements Cloneable, EffectEventFirer {
 
     private String id;
     private String name;
     private int cost;
+    private Player owner;
     protected ArrayList<Effect> effects;
 
     // se inscrever em eventos
@@ -36,8 +39,12 @@ public abstract class Card implements Cloneable{
         return name;
     }
 
+    public Player getOwner() {
+        return owner;
+    }
+
     public void play() {
-        // TODO implement here
+        onEffectEvent(EffectTrigger.ON_PLAY);
     }
 
     public void toggleSelect() {
