@@ -24,6 +24,7 @@ public abstract class Card implements Cloneable{
         this.id = id;
         this.name = name;
         this.cost = cost;
+        this.effects = new ArrayList<Effect>();
         this.effects.addAll(Arrays.asList(effects));
     }
 

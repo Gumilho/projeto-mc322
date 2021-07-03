@@ -1,5 +1,6 @@
 package com.unicamp.mc322.duocomopeda.game.menu.command;
 
+import com.unicamp.mc322.duocomopeda.game.Game;
 import com.unicamp.mc322.duocomopeda.game.player.Player;
 
 public class StartCombatCommand extends Command {
@@ -15,7 +16,9 @@ public class StartCombatCommand extends Command {
     }
 
     @Override
-    public void execute(Player player){
+    public void execute(Player player) {
+        Game game = Game.getInstance();
+        game.startCombat();
     }
 
 }

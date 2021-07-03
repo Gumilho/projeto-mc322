@@ -2,16 +2,14 @@ package com.unicamp.mc322.duocomopeda.game.menu;
 
 import java.util.ArrayList;
 
-import com.unicamp.mc322.duocomopeda.game.Game;
 import com.unicamp.mc322.duocomopeda.game.menu.command.Command;
 
 public abstract class Menu {
     protected String name;
-    protected Game game;
     protected ArrayList<Command> commandList;
 
-    public Menu(Game game) {
-        this.game = game;
+    public Menu() {
+        
         this.name = "abstract-menu";
 
         this.commandList = new ArrayList<Command>();
@@ -20,7 +18,7 @@ public abstract class Menu {
     public int getCommandListSize() {
         return commandList.size();
     }
-    public void printMenu() {
+    public void print() {
         printHeader();
         printOptions();
         System.out.print("Choose one of the options (type the associated number and press enter): ");

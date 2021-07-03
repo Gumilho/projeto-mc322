@@ -3,8 +3,6 @@ package com.unicamp.mc322.duocomopeda.game.player;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import com.unicamp.mc322.duocomopeda.game.CardDatabase;
-import com.unicamp.mc322.duocomopeda.game.Game;
 import com.unicamp.mc322.duocomopeda.game.card.Card;
 
 public class Deck {
@@ -28,7 +26,7 @@ public class Deck {
     public ArrayList<Card> draw(int quantity) {
         ArrayList<Card> output = new ArrayList<Card>();
         for (int i=0; i < quantity; i++){
-            //output.add(cards.remove(0));
+            output.add(cards.remove(0));
         }
         
         return output;

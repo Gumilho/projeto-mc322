@@ -2,7 +2,6 @@ package com.unicamp.mc322.duocomopeda.game;
 
 import java.util.Arrays;
 
-import com.unicamp.mc322.duocomopeda.game.card.Card;
 import com.unicamp.mc322.duocomopeda.game.card.minion.Minion;
 import com.unicamp.mc322.duocomopeda.game.card.traits.Trait;
 import com.unicamp.mc322.duocomopeda.game.card.effect.Effect;
@@ -13,33 +12,34 @@ public class Board {
     public static int BOARD_WIDTH = (8 + NAME_MAX_SIZE) * 6 + 1;
 
     private static Board board;    
-    private Card[] bench;
-    private Card[] battlefield;
+    private Minion[] bench;
+    private Minion[] battlefield;
     
     private Board() {
-        this.bench = new Card[12];
-        this.battlefield = new Card[12];
-        // test
-        bench[4] = new Minion("DE006", "Poro", 1, 2, 1, 
-            new Trait[]{},
-            new Effect[]{}
-        );
+        this.bench = new Minion[12];
+        this.battlefield = new Minion[12];
     }
 
-    private void resolveBattle() {
-        // TODO implement here
+    public void resolveBattle() {
+        Game game = Game.getInstance();
+        int attacker = game.getAttacker();
+        for (int i = 0; i < 6; i++) {
+            int attackerIndex = i + 6 * (1 - attacker);
+            int defenderIndex = i + 6 * (attacker);
+            battlefield[attackerIndex].attack(battlefield[defenderIndex]);
+        }
     }
 
     public void moveUnitToBattlefield(int benchIndex) {
-        Card card = bench[benchIndex];
-        if (card == null) {
+        Minion minion = bench[benchIndex];
+        if (minion == null) {
             System.out.println("No card in index " + benchIndex);
             return;
         }
         bench[benchIndex] = null;
         int i = 0;
         while (battlefield[i] != null) i++;
-        battlefield[i] = card;
+        battlefield[i] = minion;
     }
 
     public static Board getInstance() {
@@ -58,23 +58,23 @@ public class Board {
 
     }
 
-    private void printCards(Card[] cards, int addToIndex) {
+    private void printMinions(Minion[] minions, int addToIndex) {
 
         for (int i = 0; i < 6; i++) {
-            Card card = cards[i];
-            String cardName = "        ";
-            if (card != null) {
-                cardName = card.getName();
-                if (cardName.length() > NAME_MAX_SIZE) {
-                    cardName = cardName.substring(0, 5) + "...";
+            Minion minion = minions[i];
+            String minionName = "        ";
+            if (minion != null) {
+                minionName = minion.getName();
+                if (minionName.length() > NAME_MAX_SIZE) {
+                    minionName = minionName.substring(0, 5) + "...";
                 } else {
-                    int numberOfWhiteSpaces = NAME_MAX_SIZE - cardName.length();
+                    int numberOfWhiteSpaces = NAME_MAX_SIZE - minionName.length();
                     for (int j = 0; j < numberOfWhiteSpaces; j++) {
-                        cardName += " ";
+                        minionName += " ";
                     }
                 }
             }
-            System.out.print("| (" + zfill(i + addToIndex) + ") " + cardName + " ");
+            System.out.print("| (" + zfill(i + addToIndex) + ") " + minionName + " ");
         }
         System.out.println("|");
     }
@@ -82,7 +82,7 @@ public class Board {
     private void printPlayer2Board() {
 
         // First Line: Bench
-        printCards(Arrays.copyOfRange(bench, 0, 6), 0);
+        printMinions(Arrays.copyOfRange(bench, 0, 6), 0);
 
         // Second Line
         System.out.print("o");
@@ -92,14 +92,14 @@ public class Board {
         System.out.println("o");
 
         // Third Line: Battlefield
-        printCards(Arrays.copyOfRange(battlefield, 0, 6), 6);
+        printMinions(Arrays.copyOfRange(battlefield, 0, 6), 6);
 
     }
 
     private void printPlayer1Board() {
 
         // First Line: Bench
-        printCards(Arrays.copyOfRange(battlefield, 6, 12), 12);
+        printMinions(Arrays.copyOfRange(battlefield, 6, 12), 12);
         
         // Second Line
         System.out.print("o");
@@ -109,7 +109,7 @@ public class Board {
         System.out.println("o");
         
         // Third Line: Player 2 Battlefield
-        printCards(Arrays.copyOfRange(bench, 6, 12), 18);
+        printMinions(Arrays.copyOfRange(bench, 6, 12), 18);
 
     }
 

@@ -4,9 +4,8 @@ import java.util.Random;
 import java.util.Scanner;
 
 import com.unicamp.mc322.duocomopeda.game.player.*;
+import com.unicamp.mc322.duocomopeda.utils.Utils;
 import com.unicamp.mc322.duocomopeda.game.card.minion.Poro;
-import com.unicamp.mc322.duocomopeda.game.menu.*;
-import com.unicamp.mc322.duocomopeda.game.menu.command.Command;
 
 public class Game {
 
@@ -14,13 +13,14 @@ public class Game {
 
     private Player[] players;
     private Board board;
-    private Menu menu;
     private Scanner keyboard;
     private Player currentPlayer;
-
+    private GamePhase gamePhase;
+    
+    private int passedPlayers;
     private int roundCounter;
     private int attacker;
-    private int turn;
+    private boolean gameEnd;
     
     public static Game getInstance() {
         if (game == null) {
@@ -30,17 +30,21 @@ public class Game {
     }
 
     private Game() {
+        this.gameEnd = false;
+        this.passedPlayers = 0;
         this.roundCounter = 1;
         this.board = Board.getInstance();
         this.keyboard = new Scanner(System.in);
-        this.menu = new MainMenu(this);
         this.players = new Player[2];
+        this.gamePhase = GamePhase.MAIN;
     }
 
     public void setup() {
         this.setupPlayers();
         this.chooseAttacker();
         this.setupDecks();
+        players[0].pullInitialHand();
+        players[1].pullInitialHand();
     }
 
     public void setup(String nickname1, String nickname2) {
@@ -49,80 +53,23 @@ public class Game {
         players[1] = new PlayerHuman(nickname2, keyboard);
         this.chooseAttacker();
         this.setupDecks();
+        players[0].pullInitialHand();
+        players[1].pullInitialHand();
     }
 
-    public void runMulligan() {
-        System.out.println("Player 1 Mulligan");
-        players[0].printHand();
-        System.out.println("Which card do you want to swap? (enter 5 for none)");
-        boolean[] swapList = new boolean[4];
-        int input = players[0].getInputInt(5);
-        while (input != 5) {
-            swapList[input] = !swapList[input];
-            System.out.println("Do you want to change another one? Press 5 if you're done");
-            input = players[0].getInputInt(5);
-        }
-        for (int i = 0; i < 4; i++) {
-            if (swapList[input]) {
-                players[0].swap(input);
-            }
-        }
+    private void chooseAttacker() {
+
+        Random r = new Random();
+        this.attacker = r.nextInt(2);
+        System.out.println("Player " + players[attacker].getNickname() + " starts attacking.");
+        
     }
 
-    private void clearScreen() {
-        System.out.print("\033[H\033[2J");  
-        System.out.flush();  
-    }
-    
-    public void startGame() {
+    private void setupPlayers() {
 
-        while(true) { // change this later
-            startRound();
-            int pass = 0;
-            int turnToken = attacker;
-            while(pass < 2) {
-                
-                currentPlayer = players[turnToken];
-                printBoard();
-                readInput();
+        enterPlayerInfo(0);
+        enterPlayerInfo(1);
 
-                // Process pass counts
-                if (currentPlayer.getPassed()) {
-                    pass++;
-                } else {
-                    pass = 0;
-                }
-                
-                turnToken = 1 - turnToken; // flips the token
-            }
-            advanceRound();
-        }
-    }
-
-    public void startCombat() {
-        this.menu = new CombatMenu(this);
-    }
-
-    private void setupDecks() {
-        this.players[0].setDeck(createDeck("demacia"));
-    }
-
-    private Deck createDeck(String deckName) {
-        Deck newDeck = new Deck();
-        switch (deckName) {
-            case "demacia":
-                newDeck.addCard(new Poro());
-                newDeck.addCard(new Poro());
-                newDeck.addCard(new Poro());
-                newDeck.addCard(new Poro());
-                newDeck.addCard(new Poro());
-                break;
-
-            default:
-                System.out.println("Deck not found");
-                break;
-        }
-        return newDeck;
     }
 
     private void enterPlayerInfo(int playerIndex) {
@@ -143,24 +90,108 @@ public class Game {
 
     }
 
-    private void chooseAttacker() {
-
-        Random r = new Random();
-        this.attacker = r.nextInt(2);
-        System.out.println("Player " + players[attacker].getNickname() + " starts attacking.");
-        
+    private void setupDecks() {
+        players[0].setDeck(createDeck("demacia"));
+        players[1].setDeck(createDeck("demacia"));
     }
 
-    private void setupPlayers() {
+    public void runMulligan(int playerIndex) {
+        System.out.println("Player " + (playerIndex + 1) + " Mulligan");
+        players[playerIndex].printHand();
+        System.out.print("Which card do you want to swap? (enter 4 for none): ");
+        boolean[] swapList = new boolean[4];
+        int input = players[playerIndex].getInputInt(5);
+        while (input != 4) {
+            swapList[input] = !swapList[input];
+            System.out.print("Do you want to change another one? Press 4 if you're done: ");
+            input = players[playerIndex].getInputInt(5);
+        }
+        for (int i = 0; i < 4; i++) {
+            if (swapList[i]) {
+                players[playerIndex].swapCard(i);
+            }
+        }
+    }
 
-        enterPlayerInfo(0);
-        enterPlayerInfo(1);
+    public void incrementPassedPlayers() {
+        passedPlayers++;
+    }
+    // Main Loop
+    public void startGame() {
 
+        while(!gameEnd) {
+            startRound();
+            int turnToken = attacker;
+            while(passedPlayers < 2 && gamePhase == GamePhase.MAIN && !gameEnd) {
+                int pass = passedPlayers;
+                currentPlayer = players[turnToken];
+                print();
+                currentPlayer.readInput();
+                
+                // Process pass counts
+                if (pass == passedPlayers) {
+                    passedPlayers = 0;
+                }
+                
+                turnToken = 1 - turnToken; // flips the token
+            }
+            if (!gameEnd) {
+                // Start combat phase or end turn
+                if (gamePhase == GamePhase.COMBAT) {
+                    passedPlayers = 0;
+                    // Confirming unit works the same way as passing, so we're reusing the passedPlayers attribute
+                    while (passedPlayers < 1) {
+                        print();
+                        players[attacker].readInput();
+                    }
+                    while (passedPlayers < 2) {
+                        print();
+                        players[1 - attacker].readInput();
+                    }
+                }
+
+                advanceRound();
+                Utils.pressEnterKeyToContinue();
+                
+            }
+        }
+    }
+
+    public void endGame() {
+        gameEnd = true;
+    }
+
+    public void playFromHand(int cardIndex) {
+        currentPlayer.playFromHand(cardIndex);
+    }
+
+    public void startCombat() {
+        gamePhase = GamePhase.COMBAT;
+        players[0].startCombat();
+        players[1].startCombat();
+    }
+
+    private Deck createDeck(String deckName) {
+        Deck newDeck = new Deck();
+        switch (deckName) {
+            case "demacia":
+                newDeck.addCard(new Poro());
+                newDeck.addCard(new Poro());
+                newDeck.addCard(new Poro());
+                newDeck.addCard(new Poro());
+                newDeck.addCard(new Poro());
+                break;
+
+            default:
+                System.out.println("Deck not found");
+                break;
+        }
+        return newDeck;
     }
 
     private void startRound() {
-        players[0].startRound();
-        players[1].startRound();
+        players[0].startRound(attacker == 0);
+        players[1].startRound(attacker == 1);
     }
 
     private void advanceRound() {
@@ -170,20 +201,14 @@ public class Game {
         System.out.println("Player " + players[attacker].getNickname() + " is attacking now.\n");
     }
 
-    private void printBoard() {
+    private void print() {
+        Utils.clearScreen();
         board.print();
         currentPlayer.printHand();
-        menu.printMenu();
+        currentPlayer.printMenu();
     }
 
-    private void readInput() {
-        int commandInt = currentPlayer.getInputInt(menu.getCommandListSize());
-        Command command = menu.getCommand(commandInt);
-        command.execute(currentPlayer);
-    }
-
-
-    public CardDatabase getDb() {
-        return db;
+    int getAttacker() {
+        return attacker;
     }
 }

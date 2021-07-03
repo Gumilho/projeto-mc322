@@ -2,6 +2,7 @@ package com.unicamp.mc322.duocomopeda.game.menu.command;
 
 import com.unicamp.mc322.duocomopeda.game.player.Player;
 
+import com.unicamp.mc322.duocomopeda.game.Game;
 public class PassCommand extends Command {
 
     public PassCommand() {
@@ -12,13 +13,12 @@ public class PassCommand extends Command {
     @Override
     public void getInput(Player player){
         System.out.println("Player " + player.getNickname() + " passed turn");
-        player.pass();
     }
-
+    
     @Override
     public void execute(Player player) {
-        // TODO Auto-generated method stub
-        
+        Game game = Game.getInstance();
+        game.incrementPassedPlayers();
     }
 
 }

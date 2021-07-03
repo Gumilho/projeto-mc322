@@ -9,17 +9,16 @@ public class PlaceUnitCommand extends Command {
         super("Place Unit");
     }
 
-
     @Override
     public void getInput(Player player){
         System.out.println("Select your unit: ");
-        args[0] = player.getInputInt(6);
+        arg = player.getInputInt(6);
     }
 
     @Override
     public void execute(Player player) {
         Board board = Board.getInstance();
-        board.moveUnitToBattlefield(args[0]);
+        board.moveUnitToBattlefield(arg);
     }
 
 }

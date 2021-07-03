@@ -5,7 +5,7 @@ import com.unicamp.mc322.duocomopeda.game.player.Player;
 public abstract class Command {
 
     private String name;
-    int[] args;
+    int arg;
 
     public Command(String name) {
         this.name = name;
@@ -13,14 +13,6 @@ public abstract class Command {
 
     public String getName() {
         return this.name;
-    }
-
-    public int[] getArgs() {
-        return args;
-    }
-
-    protected void setArgs(int[] args) {
-        this.args = args;
     }
 
     public abstract void getInput(Player player);
