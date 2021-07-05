@@ -16,5 +16,4 @@ public class ConfirmUnitsCommand extends Command {
         game.incrementPassedPlayers();
     }
 
-
 }

@@ -14,7 +14,8 @@ public class Duelist extends Minion {
             3, 
             2, 
             EnumSet.noneOf(Trait.class),
-            owner
+            owner,
+            "Effect: When this card kills an enemy, add a \"Poro\" from your deck to your hand"
         );
     }
 

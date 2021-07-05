@@ -11,7 +11,8 @@ public class RadiantStrike extends Spell {
         super(
             "Radiant Strike", 
             1,
-            owner
+            owner,
+            "Effect: Give +1/+1 to an ally"
         );
     }
 

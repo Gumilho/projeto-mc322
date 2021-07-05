@@ -11,7 +11,9 @@ public abstract class Champion extends Minion {
 
     private Mission mission;
 
-    public Champion(String name, int cost, int power, int health, EnumSet<Trait> traits, Player owner, int goal) {
+    public Champion(String name, int cost, int power, int health, 
+            EnumSet<Trait> traits, Player owner, int goal, 
+            String description) {
         super(name, cost, power, health, traits, owner);
         this.mission = new Mission(goal);
     }

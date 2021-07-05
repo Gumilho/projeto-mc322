@@ -11,7 +11,8 @@ public class RedoubledValor extends Spell {
         super(
             "Redoubled Valor", 
             6,
-            owner
+            owner,
+            "Effect: Choose an ally; Heal it completely; Double its stats"
         );
     }
 

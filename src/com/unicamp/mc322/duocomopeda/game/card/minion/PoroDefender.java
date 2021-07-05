@@ -16,7 +16,8 @@ public class PoroDefender extends Minion {
             1, 
             2, 
             EnumSet.noneOf(Trait.class),
-            owner
+            owner,
+            "Effect: When this unit dies, draw one card"
         );
     }
 

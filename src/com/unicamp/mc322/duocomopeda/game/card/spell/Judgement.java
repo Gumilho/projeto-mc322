@@ -10,7 +10,8 @@ public class Judgement extends Spell {
         super(
             "Judgement", 
             8,
-            owner
+            owner,
+            "Effect: Choose and ally to strike all enemy units"
         );
     }
 

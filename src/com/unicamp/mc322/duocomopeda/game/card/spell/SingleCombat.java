@@ -11,7 +11,8 @@ public class SingleCombat extends Spell {
         super(
             "Single Combat", 
             2,
-            owner
+            owner,
+            "Choose an ally and an oppponent for a instant combat"
         );
     }
 

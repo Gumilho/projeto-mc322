@@ -16,7 +16,8 @@ public class Garen extends Champion {
             5, 
             EnumSet.of(Trait.ELUSIVE), 
             owner,
-            4
+            4,
+            "Effect: Heals himself at the end of the round. Level Up: After striking twice. Evolution: Gain \"Elusive\"; +1 power; +1 health."
         );
     }
 

@@ -10,7 +10,7 @@ public class Board {
 
     public static int MAX_BENCH_SIZE = 6;
     public static int NAME_MAX_SIZE = 8;
-    public static int BOARD_WIDTH = (7 + NAME_MAX_SIZE) * MAX_BENCH_SIZE + 1;
+    public static int BOARD_WIDTH = (11 + NAME_MAX_SIZE) * MAX_BENCH_SIZE + 1;
 
     private static Board board;    
     private Minion[] bench;
@@ -81,8 +81,12 @@ public class Board {
         for (int i = 0; i < MAX_BENCH_SIZE; i++) {
             Minion minion = bench[i + MAX_BENCH_SIZE * playerIndex];
             String minionName = "        ";
+            String minionPower = " ";
+            String minionHealth = " ";
             if (minion != null) {
                 minionName = minion.getName();
+                minionPower = "" + minion.getPower();
+                minionHealth = "" + minion.getHealth();
                 if (minionName.length() > NAME_MAX_SIZE) {
                     minionName = minionName.substring(0, NAME_MAX_SIZE - 3) + "...";
                 } else {
@@ -92,7 +96,7 @@ public class Board {
                     }
                 }
             }
-            System.out.print("| (" + i + ") " + minionName + " ");
+            System.out.print("| (" + i + ") " + minionName + " " + minionPower + "/" + minionHealth + " ");
         }
         System.out.println("|");
     }
@@ -100,8 +104,12 @@ public class Board {
         for (int i = 0; i < MAX_BENCH_SIZE; i++) {
             Minion minion = battlefield[i + MAX_BENCH_SIZE * playerIndex];
             String minionName = "        ";
+            String minionPower = " ";
+            String minionHealth = " ";
             if (minion != null) {
                 minionName = minion.getName();
+                minionPower = "" + minion.getPower();
+                minionHealth = "" + minion.getHealth();
                 if (minionName.length() > NAME_MAX_SIZE) {
                     minionName = minionName.substring(0, NAME_MAX_SIZE - 3) + "...";
                 } else {
@@ -111,7 +119,7 @@ public class Board {
                     }
                 }
             }
-            System.out.print("|     " + minionName + " ");
+            System.out.print("|     " + minionName + " " + minionPower + "/" + minionHealth + " ");
         }
         System.out.println("|");
 
@@ -200,9 +208,20 @@ public class Board {
     }
 
     public void returnUnitsToBench() {
-        for (int i = 0; i < MAX_BENCH_SIZE * 2; i++) {
-            bench[i] = battlefield[i];
-            battlefield[i] = null;
+        for (int playerIndex = 0; playerIndex < 2; playerIndex++){
+            for (int i = MAX_BENCH_SIZE * playerIndex; i < MAX_BENCH_SIZE * (1 + playerIndex); i++) {
+                int j = i;
+                while (j < MAX_BENCH_SIZE * (1 + playerIndex) && bench[j] != null) {
+                    j++;
+                }
+                if (j >= MAX_BENCH_SIZE * (1 + playerIndex)) {
+                    System.out.println("Bench is full");
+
+                } else {
+                    bench[j] = battlefield[i];
+                }
+                battlefield[i] = null;
+            }
         }
     }
 

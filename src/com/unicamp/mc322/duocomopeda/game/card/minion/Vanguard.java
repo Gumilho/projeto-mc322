@@ -15,7 +15,8 @@ public class Vanguard extends Minion {
             5, 
             5, 
             EnumSet.noneOf(Trait.class),
-            owner
+            owner,
+            "Effect: When this card is played, give +1/+1 to all allies"
         );
     }
 

@@ -13,7 +13,8 @@ public class Poro extends Minion {
             2, 
             1, 
             EnumSet.noneOf(Trait.class),
-            owner
+            owner,
+            ""
         );
     }
 

@@ -1,15 +1,13 @@
 package com.unicamp.mc322.duocomopeda.game.card.minion;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.EnumSet;
 
 import com.unicamp.mc322.duocomopeda.game.Board;
 import com.unicamp.mc322.duocomopeda.game.card.Card;
-import com.unicamp.mc322.duocomopeda.game.card.minion.Trait;
 import com.unicamp.mc322.duocomopeda.game.event.handler.MinionEventHandler;
 import com.unicamp.mc322.duocomopeda.game.stats.Health;
 import com.unicamp.mc322.duocomopeda.game.stats.Killable;
+import com.unicamp.mc322.duocomopeda.game.stats.Mana;
 import com.unicamp.mc322.duocomopeda.game.player.Player;
 
 public abstract class Minion extends Card implements Killable, MinionEventHandler {
@@ -20,8 +18,9 @@ public abstract class Minion extends Card implements Killable, MinionEventHandle
     private boolean isDead = false;
 
     public Minion(String name, int cost, int power, 
-            int health, EnumSet<Trait> traits, Player owner) {
-        super(name, cost, owner);
+            int health, EnumSet<Trait> traits, Player owner, 
+            String description) {
+        super(name, cost, owner, description);
         this.power = power;
         this.health = new Health(health, this);
         this.traits = traits;
@@ -34,6 +33,15 @@ public abstract class Minion extends Card implements Killable, MinionEventHandle
 
     public int getHealth() {
         return health.getCurrentHealth();
+    }
+
+    @Override
+    public void displayDetails() {
+        System.out.println(String.format(
+            "Card name: %s | Mana Cost: %d\nPower: %d | Health: %d\nDescription: %s", 
+            getName(), getCost(),
+            getPower(), getHealth(),
+            getDescription()));
     }
 
     // Stat changing methods
@@ -64,21 +72,18 @@ public abstract class Minion extends Card implements Killable, MinionEventHandle
 
     // "Action" methods
     @Override
-    public void play(Player owner) {
+    public void play(Player owner, Mana mana) {
+        mana.spend(this.getCost());
         this.onPlay(owner, this);
         Board board = Board.getInstance();
         board.placeUnit(this, owner.getIndex());
     }
 
     public void attack(Minion enemy) {
-        // TODO: account for elusive
         if (traits.contains(Trait.DOUBLE_ATTACK)) {
             this.strike(enemy);
-            if (!enemy.isDead) {
-                this.strike(enemy);
-                enemy.defend(this, this.power);
-            }
-        } else {
+        }
+        if (!enemy.isDead) {
             this.strike(enemy);
             enemy.defend(this, this.power);
         }
@@ -103,6 +108,10 @@ public abstract class Minion extends Card implements Killable, MinionEventHandle
         // TODO: account for elusive
         this.onDefense(this.getOwner(), attacker, this, attackerDamage);
         attacker.takeDamage(this.power);
+        if (attacker.isDead) {
+            this.onKill(this.getOwner(), this, attacker);
+            // TODO: account for fury
+        }
     }
 
     // Maybe it's public

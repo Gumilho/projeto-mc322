@@ -15,7 +15,8 @@ public class Tiana extends Minion {
             7, 
             7, 
             EnumSet.noneOf(Trait.class),
-            owner
+            owner,
+            "Effect: When this card is played, choose one ally unit to attack the opponent's nexus"
         );
     }
 
