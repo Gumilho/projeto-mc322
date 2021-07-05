@@ -57,6 +57,10 @@ public abstract class Minion extends Card implements Killable, MinionEventHandle
         this.health.doubleStats();
     }
 
+    protected void addTrait(Trait trait) {
+        traits.add(trait);
+    }
+
     // "Action" methods
     @Override
     public void play(Player owner) {
