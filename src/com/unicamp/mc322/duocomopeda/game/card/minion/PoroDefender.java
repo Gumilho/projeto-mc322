@@ -1,25 +1,27 @@
 
 package com.unicamp.mc322.duocomopeda.game.card.minion;
 
-import com.unicamp.mc322.duocomopeda.game.card.effect.Effect;
-import com.unicamp.mc322.duocomopeda.game.card.effect.EffectTrigger;
-import com.unicamp.mc322.duocomopeda.game.card.effect.untargeted.draw.DrawRandomCard;
 import com.unicamp.mc322.duocomopeda.game.card.traits.Trait;
+import com.unicamp.mc322.duocomopeda.game.player.Player;
+import com.unicamp.mc322.duocomopeda.game.card.effect.EffectManager;
 
 
 public class PoroDefender extends Minion {
     
-    public PoroDefender() {
+    public PoroDefender(Player owner) {
         super(
-            "DE007", 
             "Poro Defender", 
             1, 
             1, 
             2, 
             new Trait[]{}, 
-            new Effect[]{
-                new DrawRandomCard(false, EffectTrigger.ON_DEATH)
-            }
+            owner
         );
     }
+
+    @Override
+    public void onDeath(Player owner, Minion killed) {
+        EffectManager.drawCard(owner, 1);
+    }
+
 }

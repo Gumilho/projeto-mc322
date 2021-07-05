@@ -1,15 +1,16 @@
 package com.unicamp.mc322.duocomopeda.game.card.minion.champion;
 
 import com.unicamp.mc322.duocomopeda.game.card.traits.Trait;
-import com.unicamp.mc322.duocomopeda.game.card.effect.Effect;
+import com.unicamp.mc322.duocomopeda.game.player.Player;
 import com.unicamp.mc322.duocomopeda.game.card.minion.Minion;
 import com.unicamp.mc322.duocomopeda.game.card.minion.champion.mission.Mission;
+import com.unicamp.mc322.duocomopeda.game.card.effect.EffectManager;
 
 public class Champion extends Minion {
     private Mission mission;
 
-    public Champion(String id, String name, int cost, int power, int health, Trait[] traits, Effect[] effects, Mission mission) {
-        super(id, name, cost, power, health, traits, effects);
+    public Champion(String name, int cost, int power, int health, Trait[] traits, Player owner, Mission mission) {
+        super(name, cost, power, health, traits, owner);
         this.mission = mission;
     }
 
@@ -19,6 +20,11 @@ public class Champion extends Minion {
 
     public void update() {
         // TODO implement here
+    }
+
+    @Override
+    public void onRoundEnd(Player owner) {
+        EffectManager.healCompletely(this);
     }
 
 }

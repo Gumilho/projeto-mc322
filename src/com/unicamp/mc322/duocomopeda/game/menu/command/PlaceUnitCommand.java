@@ -2,6 +2,7 @@ package com.unicamp.mc322.duocomopeda.game.menu.command;
 
 import com.unicamp.mc322.duocomopeda.game.Board;
 import com.unicamp.mc322.duocomopeda.game.player.Player;
+import com.unicamp.mc322.duocomopeda.game.card.minion.Minion;
 
 public class PlaceUnitCommand extends Command {
 
@@ -10,15 +11,11 @@ public class PlaceUnitCommand extends Command {
     }
 
     @Override
-    public void getInput(Player player){
-        System.out.println("Select your unit: ");
-        arg = player.getInputInt(6);
+    public void execute(Player player){
+        Board board = Board.getInstance();
+        Minion minion = player.chooseUnit();
+        board.moveUnitToBattlefield(minion, player.getIndex());
     }
 
-    @Override
-    public void execute() {
-        Board board = Board.getInstance();
-        board.moveUnitToBattlefield(arg);
-    }
 
 }

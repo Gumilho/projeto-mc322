@@ -10,6 +10,8 @@ import com.unicamp.mc322.duocomopeda.game.stats.Mana;
 import com.unicamp.mc322.duocomopeda.game.menu.CombatMenu;
 import com.unicamp.mc322.duocomopeda.game.menu.MainMenu;
 import com.unicamp.mc322.duocomopeda.game.menu.Menu;
+import com.unicamp.mc322.duocomopeda.game.card.minion.Minion;
+import com.unicamp.mc322.duocomopeda.game.Board;
 
 public abstract class Player implements Killable {
 
@@ -24,16 +26,34 @@ public abstract class Player implements Killable {
     private Health health;
     private Menu menu;
     private boolean passed;
+    private int index;
     
-    public Player(String nickname) {
+    public Player(String nickname, int index) {
+        this.index = index;
         this.nickname = nickname;
         this.health = new Health(INITIAL_HEALTH, this);
-        this.deck = new Deck();
+        this.deck = new Deck(this);
         this.hand = new ArrayList<Card>();
         this.mana = new Mana();
     }
 
     public abstract int getInputInt(int maxInt);
+
+    public void takeDamage(int amount) {
+        this.health.takeDamage(amount);
+    }
+    public Minion chooseUnit() {
+        Board board = Board.getInstance();
+        System.out.println("Select your unit");
+        int minionIndex = this.getInputInt(Board.MAX_BENCH_SIZE);
+        return board.getBenchCard(this.index, minionIndex);
+    }
+    public Minion chooseEnemyUnit() {
+        Board board = Board.getInstance();
+        System.out.println("Select the enemy unit");
+        int minionIndex = this.getInputInt(Board.MAX_BENCH_SIZE);
+        return board.getBenchCard(1 - this.index, minionIndex);
+    }
 
     public void pullInitialHand() {
         this.hand.addAll(deck.draw(INITIAL_HAND_COUNT));
@@ -41,8 +61,7 @@ public abstract class Player implements Killable {
     public void readInput() {
         int commandInt = getInputInt(menu.getCommandListSize());
         Command command = menu.getCommand(commandInt);
-        command.getInput(this);
-        command.execute();
+        command.execute(this);
     }
 
     public void startCombat() {
@@ -55,10 +74,6 @@ public abstract class Player implements Killable {
 
     public void printMenu() {
         menu.print();
-    }
-
-    public void setDeck(Deck deck) {
-        this.deck = deck;
     }
 
     public void swapCard(int index) {
@@ -74,7 +89,7 @@ public abstract class Player implements Killable {
     public void playFromHand(int cardIndex) {
         Card card = hand.remove(cardIndex);
         this.mana.spend(card.getCost());
-        card.play();
+        card.play(this);
     }
 
     public void draw(int quantity) {
@@ -89,12 +104,21 @@ public abstract class Player implements Killable {
         this.deck.draw(1);
     }
 
+    public void getFromDeck(String cardName) {
+        Card card = deck.removeByName(cardName);
+        hand.add(card);
+    }
+
     public void pass() {
         passed = true;
     }
 
     public boolean getPassed() {
         return passed;
+    }
+    
+    public int getIndex() {
+        return index;
     }
 
     public String getNickname() {
@@ -141,7 +165,14 @@ public abstract class Player implements Killable {
         }
         System.out.println("#");
 
-
     }
 
+    public void createDeck(String name) {
+        deck.create(name);
+    }
+
+    @Override
+    public String toString() {
+        return index + " - " + nickname;
+    }
 }

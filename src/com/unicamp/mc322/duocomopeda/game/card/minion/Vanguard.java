@@ -1,23 +1,28 @@
 package com.unicamp.mc322.duocomopeda.game.card.minion;
 
 import com.unicamp.mc322.duocomopeda.game.card.traits.Trait;
-import com.unicamp.mc322.duocomopeda.game.card.effect.Effect;
-import com.unicamp.mc322.duocomopeda.game.card.effect.EffectTrigger;
-import com.unicamp.mc322.duocomopeda.game.card.effect.untargeted.BuffAllAllies;
+import com.unicamp.mc322.duocomopeda.game.card.effect.EffectManager;
+import com.unicamp.mc322.duocomopeda.game.player.Player;
+import com.unicamp.mc322.duocomopeda.game.card.Card;
 
 public class Vanguard extends Minion {
     
-    public Vanguard() {
+    public Vanguard(Player owner) {
         super(
-            "DE003", 
             "Vanguard", 
             5, 
             5, 
             5, 
             new Trait[]{}, 
-            new Effect[]{
-                new BuffAllAllies(false, EffectTrigger.ON_PLAY)
-            }
+            owner
         );
     }
+
+    @Override
+    public void onPlay(Player owner, Card playedCard) {
+        EffectManager.buffAllAllies(owner, 1, 1);
+    }
+
+
+    
 }

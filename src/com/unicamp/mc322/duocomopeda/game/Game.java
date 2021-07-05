@@ -45,27 +45,27 @@ public class Game {
         this.setupDecks();
         players[0].pullInitialHand();
         players[1].pullInitialHand();
-        runMulligan(0);
-        runMulligan(1);
+        runMulligan(players[0]);
+        runMulligan(players[1]);
     }
 
-    public void setup(String nickname1, String nickname2) {
+    public void setup(String nickname1, String deckName1, String nickname2, String deckName2) {
         this.players = new Player[2];
-        players[0] = new PlayerHuman(nickname1, keyboard);
-        players[1] = new PlayerHuman(nickname2, keyboard);
+        players[0] = new PlayerHuman(nickname1, keyboard, 0);
+        players[1] = new PlayerHuman(nickname2, keyboard, 1);
         this.chooseAttacker();
-        this.setupDecks();
+        this.setupDecks(deckName1, deckName2);
         players[0].pullInitialHand();
         players[1].pullInitialHand();
-        runMulligan(0);
-        runMulligan(1);
+        runMulligan(players[0]);
+        runMulligan(players[1]);
     }
 
     private void chooseAttacker() {
 
         Random r = new Random();
         this.attacker = r.nextInt(2);
-        System.out.println("Player " + players[attacker].getNickname() + " starts attacking.");
+        System.out.println("Player " + players[attacker] + " starts attacking.");
         
     }
 
@@ -87,32 +87,37 @@ public class Game {
             name = keyboard.nextLine();
         }
         if (type.compareTo("H") == 0) {
-            players[playerIndex] = new PlayerHuman(name, keyboard);
+            players[playerIndex] = new PlayerHuman(name, keyboard, playerIndex);
         } else if (type.compareTo("A") == 0) {
-            players[playerIndex] = new PlayerAI(name);
+            players[playerIndex] = new PlayerAI(name, playerIndex);
         }
 
     }
 
     private void setupDecks() {
-        players[0].setDeck(createDeck("demacia"));
-        players[1].setDeck(createDeck("demacia"));
+        players[0].createDeck("demacia");
+        players[1].createDeck("demacia");
     }
 
-    private void runMulligan(int playerIndex) {
-        System.out.println("Player " + (playerIndex + 1) + " Mulligan");
-        players[playerIndex].printHand();
+    private void setupDecks(String deckName1, String deckName2) {
+        players[0].createDeck(deckName1);
+        players[1].createDeck(deckName2);
+    }
+
+    private void runMulligan(Player player) {
+        System.out.println("\nPlayer " + player + " Mulligan");
+        player.printHand();
         System.out.print("Which card do you want to swap? (enter 4 for none): ");
         boolean[] swapList = new boolean[4];
-        int input = players[playerIndex].getInputInt(5);
+        int input = player.getInputInt(5);
         while (input != 4) {
             swapList[input] = !swapList[input];
             System.out.print("Do you want to change another one? Press 4 if you're done: ");
-            input = players[playerIndex].getInputInt(5);
+            input = player.getInputInt(5);
         }
         for (int i = 0; i < 4; i++) {
             if (swapList[i]) {
-                players[playerIndex].swapCard(i);
+                player.swapCard(i);
             }
         }
     }
@@ -129,7 +134,7 @@ public class Game {
             while(passedPlayers < 2 && gamePhase == GamePhase.MAIN && !gameEnd) {
                 int pass = passedPlayers;
                 currentPlayer = players[turnToken];
-                print();
+                print(turnToken);
                 currentPlayer.readInput();
                 
                 // Process pass counts
@@ -142,16 +147,19 @@ public class Game {
             if (!gameEnd) {
                 // Start combat phase or end turn
                 if (gamePhase == GamePhase.COMBAT) {
+                    turnToken = 1 - turnToken; // flips the token back to the attacker
                     passedPlayers = 0;
                     // Confirming unit works the same way as passing, so we're reusing the passedPlayers attribute
                     while (passedPlayers < 1) {
-                        print();
-                        players[attacker].readInput();
+                        print(turnToken);
+                        players[turnToken].readInput();
                     }
+                    turnToken = 1 - turnToken; // flips the token to the defender
                     while (passedPlayers < 2) {
-                        print();
-                        players[1 - attacker].readInput();
+                        print(turnToken);
+                        players[turnToken].readInput();
                     }
+                    board.resolveBattle();
                 }
 
                 advanceRound();
@@ -175,23 +183,6 @@ public class Game {
         players[1].startCombat();
     }
 
-    private Deck createDeck(String deckName) {
-        Deck newDeck = new Deck();
-        switch (deckName) {
-            case "demacia":
-                newDeck.addCard(new Poro());
-                newDeck.addCard(new Poro());
-                newDeck.addCard(new Poro());
-                newDeck.addCard(new Poro());
-                newDeck.addCard(new Poro());
-                break;
-
-            default:
-                System.out.println("Deck not found");
-                break;
-        }
-        return newDeck;
-    }
 
     private void startRound() {
         players[0].startRound(attacker == 0);
@@ -200,19 +191,31 @@ public class Game {
 
     private void advanceRound() {
         attacker = 1 - attacker;
+        board.returnUnitsToBench();
         System.out.print("\n\n");
         System.out.println("ROUND " + String.format("%d", roundCounter + 1));
         System.out.println("Player " + players[attacker].getNickname() + " is attacking now.\n");
     }
 
-    private void print() {
+    private void print(int turnToken) {
         Utils.clearScreen();
-        board.print();
-        currentPlayer.printHand();
+        if (turnToken == 0) {
+            System.out.print("\n\n\n");
+            board.print();
+            currentPlayer.printHand();
+        } else if (turnToken == 1) {
+            currentPlayer.printHand();
+            board.print();
+            System.out.print("\n\n\n");
+        }
         currentPlayer.printMenu();
     }
 
-    int getAttacker() {
-        return attacker;
+    Player getAttacker() {
+        return players[attacker];
+    }
+
+    Player getDefender() {
+        return players[1 - attacker];
     }
 }

@@ -29,4 +29,16 @@ public class Health {
         }
     }
 
+    public void healCompletely() {
+        currentHealth = maxHealth;
+    }
+
+    public void increase(int amount) {
+        currentHealth += amount;
+    }
+
+    public void doubleStats() {
+        currentHealth *= 2;
+        maxHealth *= 2;
+    }
 }

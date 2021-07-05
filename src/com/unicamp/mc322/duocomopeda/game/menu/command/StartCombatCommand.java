@@ -10,15 +10,12 @@ public class StartCombatCommand extends Command {
     }
 
     @Override
-    public void getInput(Player player) {
+    public void execute(Player player) {
         
-        System.out.println("Player " + player.getNickname() + " started combat");
-    }
-
-    @Override
-    public void execute() {
+        System.out.println("Player " + player + " started combat");
         Game game = Game.getInstance();
         game.startCombat();
     }
+
 
 }

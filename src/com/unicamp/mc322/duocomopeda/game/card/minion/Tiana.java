@@ -1,23 +1,25 @@
 package com.unicamp.mc322.duocomopeda.game.card.minion;
 
-import com.unicamp.mc322.duocomopeda.game.card.effect.Effect;
-import com.unicamp.mc322.duocomopeda.game.card.effect.EffectTrigger;
-import com.unicamp.mc322.duocomopeda.game.card.effect.targeted.instant.AttackNexus;
 import com.unicamp.mc322.duocomopeda.game.card.traits.Trait;
-
+import com.unicamp.mc322.duocomopeda.game.player.Player;
+import com.unicamp.mc322.duocomopeda.game.card.effect.EffectManager;
+import com.unicamp.mc322.duocomopeda.game.card.Card;
 public class Tiana extends Minion {
     
-    public Tiana() {
+    public Tiana(Player owner) {
         super(
-            "DE002", 
             "Tiana", 
             8, 
             7, 
             7, 
             new Trait[]{}, 
-            new Effect[]{
-                new AttackNexus(false, EffectTrigger.ON_PLAY)
-            }
+            owner
         );
     }
+
+    @Override
+    public void onPlay(Player owner, Card playedCard) {
+        EffectManager.attackNexus(owner);
+    }
+
 }

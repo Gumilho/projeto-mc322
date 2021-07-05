@@ -1,21 +1,22 @@
 package com.unicamp.mc322.duocomopeda.game.card.spell;
 
-import com.unicamp.mc322.duocomopeda.game.card.effect.Effect;
-import com.unicamp.mc322.duocomopeda.game.card.effect.EffectTrigger;
-import com.unicamp.mc322.duocomopeda.game.card.effect.targeted.instant.HealCompletely;
-import com.unicamp.mc322.duocomopeda.game.card.effect.targeted.permanent.DoubleStats;
+import com.unicamp.mc322.duocomopeda.game.player.Player;
+import com.unicamp.mc322.duocomopeda.game.card.effect.EffectManager;
+import com.unicamp.mc322.duocomopeda.game.card.Card;
+
 
 public class RedoubledValor extends Spell {
     
-    public RedoubledValor() {
+    public RedoubledValor(Player owner) {
         super(
-            "DE009", 
             "Redoubled Valor", 
             6,
-            new Effect[]{
-                new HealCompletely(false, EffectTrigger.ON_PLAY),
-                new DoubleStats(false, EffectTrigger.ON_PLAY)
-            }
+            owner
         );
+    }
+
+    public void onPlay(Player owner, Card playedCard) {
+        EffectManager.healCompletely(owner);
+        EffectManager.doubleStats(owner);
     }
 }

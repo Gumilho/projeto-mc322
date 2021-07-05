@@ -1,19 +1,20 @@
 package com.unicamp.mc322.duocomopeda.game.card.spell;
 
-import com.unicamp.mc322.duocomopeda.game.card.effect.Effect;
-import com.unicamp.mc322.duocomopeda.game.card.effect.EffectTrigger;
-import com.unicamp.mc322.duocomopeda.game.card.effect.targeted.instant.HitAllDefenders;
+import com.unicamp.mc322.duocomopeda.game.player.Player;
+import com.unicamp.mc322.duocomopeda.game.card.effect.EffectManager;
+import com.unicamp.mc322.duocomopeda.game.card.Card;
 
 public class Judgement extends Spell {
     
-    public Judgement() {
+    public Judgement(Player owner) {
         super(
-            "DE008", 
             "Judgement", 
             8,
-            new Effect[]{
-                new HitAllDefenders(false, EffectTrigger.ON_PLAY)
-            }
+            owner
         );
+    }
+
+    public void onPlay(Player owner, Card playedCard) {
+        EffectManager.hitAllDefenders(owner);
     }
 }

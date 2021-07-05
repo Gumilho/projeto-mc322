@@ -1,19 +1,19 @@
 package com.unicamp.mc322.duocomopeda.game.card.minion;
 
-import com.unicamp.mc322.duocomopeda.game.card.effect.Effect;
 import com.unicamp.mc322.duocomopeda.game.card.traits.Trait;
+import com.unicamp.mc322.duocomopeda.game.player.Player;
 
 public class Poro extends Minion {
 
-    public Poro() {
+    public Poro(Player owner) {
         super(
-            "DE006", 
             "Poro", 
             1, 
             2, 
             1, 
             new Trait[]{}, 
-            new Effect[]{}
+            owner
         );
     }
+
 }

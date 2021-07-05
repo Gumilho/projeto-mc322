@@ -15,8 +15,7 @@ public abstract class Command {
         return this.name;
     }
 
-    public abstract void getInput(Player player);
+    public abstract void execute(Player player);
 
-    public abstract void execute();
 
 }

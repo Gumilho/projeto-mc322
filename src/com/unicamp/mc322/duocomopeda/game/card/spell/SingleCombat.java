@@ -1,19 +1,22 @@
 package com.unicamp.mc322.duocomopeda.game.card.spell;
 
-import com.unicamp.mc322.duocomopeda.game.card.effect.Effect;
-import com.unicamp.mc322.duocomopeda.game.card.effect.EffectTrigger;
-import com.unicamp.mc322.duocomopeda.game.card.effect.targeted.instant.Duel;
+import com.unicamp.mc322.duocomopeda.game.player.Player;
+import com.unicamp.mc322.duocomopeda.game.card.effect.EffectManager;
+import com.unicamp.mc322.duocomopeda.game.card.Card;
+
 
 public class SingleCombat extends Spell {
     
-    public SingleCombat() {
+    public SingleCombat(Player owner) {
         super(
-            "DE011", 
             "Single Combat", 
             2,
-            new Effect[]{
-                new Duel(false, EffectTrigger.ON_PLAY)
-            }
+            owner
         );
     }
+
+    public void onPlay(Player owner, Card playedCard) {
+        EffectManager.duel(owner);
+    }
+
 }

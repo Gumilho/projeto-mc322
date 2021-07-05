@@ -10,14 +10,11 @@ public class ConfirmUnitsCommand extends Command {
     }
 
     @Override
-    public void getInput(Player player){
-        System.out.println("Player " + player.getNickname() + " passed turn");
-    }
-
-    @Override
-    public void execute() {
+    public void execute(Player player){
+        System.out.println("Player " + player + " confirmed Units");
         Game game = Game.getInstance();
         game.incrementPassedPlayers();
     }
+
 
 }
