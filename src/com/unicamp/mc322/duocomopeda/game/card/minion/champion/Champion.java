@@ -2,11 +2,12 @@ package com.unicamp.mc322.duocomopeda.game.card.minion.champion;
 
 import com.unicamp.mc322.duocomopeda.game.card.traits.Trait;
 import com.unicamp.mc322.duocomopeda.game.player.Player;
+import com.unicamp.mc322.duocomopeda.game.EffectManager;
 import com.unicamp.mc322.duocomopeda.game.card.minion.Minion;
 import com.unicamp.mc322.duocomopeda.game.card.minion.champion.mission.Mission;
-import com.unicamp.mc322.duocomopeda.game.card.effect.EffectManager;
 
 public class Champion extends Minion {
+
     private Mission mission;
 
     public Champion(String name, int cost, int power, int health, Trait[] traits, Player owner, Mission mission) {

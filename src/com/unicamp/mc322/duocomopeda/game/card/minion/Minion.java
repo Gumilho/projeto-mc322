@@ -26,6 +26,15 @@ public abstract class Minion extends Card implements Killable, MinionEventHandle
         this.traits.addAll(Arrays.asList(traits));
     }
 
+    // Stat getters
+    public int getPower() {
+        return power;
+    }
+
+    public int getHealth() {
+        return health.getCurrentHealth();
+    }
+
     // Stat changing methods
     public void die() {
         this.onDeath(this.getOwner(), this);
@@ -65,6 +74,9 @@ public abstract class Minion extends Card implements Killable, MinionEventHandle
 
         // TODO: account for double attack
         // fazer um overload no attack pra receber um int que multiplica
+    }
+    public void attack(Player player) {
+        player.takeDamage(this.power);
     }
 
     public void strike(Minion enemy) {
@@ -110,10 +122,6 @@ public abstract class Minion extends Card implements Killable, MinionEventHandle
     }
     public void onRoundEnd(Player owner) {
 
-    }
-
-    public void attack(Player player) {
-        player.takeDamage(this.power);
     }
 
 }

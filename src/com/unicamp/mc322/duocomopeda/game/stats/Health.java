@@ -41,4 +41,8 @@ public class Health {
         currentHealth *= 2;
         maxHealth *= 2;
     }
+
+    public int getCurrentHealth() {
+        return currentHealth;
+    }
 }

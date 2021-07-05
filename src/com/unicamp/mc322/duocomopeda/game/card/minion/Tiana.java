@@ -2,7 +2,7 @@ package com.unicamp.mc322.duocomopeda.game.card.minion;
 
 import com.unicamp.mc322.duocomopeda.game.card.traits.Trait;
 import com.unicamp.mc322.duocomopeda.game.player.Player;
-import com.unicamp.mc322.duocomopeda.game.card.effect.EffectManager;
+import com.unicamp.mc322.duocomopeda.game.EffectManager;
 import com.unicamp.mc322.duocomopeda.game.card.Card;
 public class Tiana extends Minion {
     

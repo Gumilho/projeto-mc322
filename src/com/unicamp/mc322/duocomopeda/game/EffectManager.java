@@ -1,8 +1,7 @@
-package com.unicamp.mc322.duocomopeda.game.card.effect;
+package com.unicamp.mc322.duocomopeda.game;
 
 import java.util.ArrayList;
 
-import com.unicamp.mc322.duocomopeda.game.Board;
 import com.unicamp.mc322.duocomopeda.game.player.Player;
 import com.unicamp.mc322.duocomopeda.game.card.minion.Minion;
 

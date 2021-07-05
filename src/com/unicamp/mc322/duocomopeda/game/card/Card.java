@@ -3,8 +3,6 @@ package com.unicamp.mc322.duocomopeda.game.card;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import com.unicamp.mc322.duocomopeda.game.card.effect.Effect;
-import com.unicamp.mc322.duocomopeda.game.card.effect.EffectEventFirer;
 import com.unicamp.mc322.duocomopeda.game.player.Player;
 
 public abstract class Card {
@@ -12,7 +10,6 @@ public abstract class Card {
     private String name;
     private int cost;
     private Player owner;
-    protected ArrayList<Effect> effects;
 
     // se inscrever em eventos
     // e tb publicar eventos
