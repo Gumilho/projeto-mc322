@@ -1,6 +1,7 @@
 package com.unicamp.mc322.duocomopeda.game.card.minion;
 
-import com.unicamp.mc322.duocomopeda.game.card.traits.Trait;
+import java.util.EnumSet;
+
 import com.unicamp.mc322.duocomopeda.game.player.Player;
 
 public class Poro extends Minion {
@@ -11,7 +12,7 @@ public class Poro extends Minion {
             1, 
             2, 
             1, 
-            new Trait[]{}, 
+            EnumSet.noneOf(Trait.class),
             owner
         );
     }

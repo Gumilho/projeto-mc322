@@ -1,6 +1,7 @@
 package com.unicamp.mc322.duocomopeda.game.card.minion;
 
-import com.unicamp.mc322.duocomopeda.game.card.traits.Trait;
+import java.util.EnumSet;
+
 import com.unicamp.mc322.duocomopeda.game.player.Player;
 import com.unicamp.mc322.duocomopeda.game.EffectManager;
 import com.unicamp.mc322.duocomopeda.game.card.Card;
@@ -13,7 +14,7 @@ public class Vanguard extends Minion {
             5, 
             5, 
             5, 
-            new Trait[]{}, 
+            EnumSet.noneOf(Trait.class),
             owner
         );
     }

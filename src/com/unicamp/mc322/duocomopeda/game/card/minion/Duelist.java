@@ -1,7 +1,8 @@
 package com.unicamp.mc322.duocomopeda.game.card.minion;
 
+import java.util.EnumSet;
+
 import com.unicamp.mc322.duocomopeda.game.EffectManager;
-import com.unicamp.mc322.duocomopeda.game.card.traits.Trait;
 import com.unicamp.mc322.duocomopeda.game.player.Player;
 
 public class Duelist extends Minion {
@@ -12,7 +13,7 @@ public class Duelist extends Minion {
             3, 
             3, 
             2, 
-            new Trait[]{},
+            EnumSet.noneOf(Trait.class),
             owner
         );
     }

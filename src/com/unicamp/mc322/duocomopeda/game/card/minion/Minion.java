@@ -2,10 +2,11 @@ package com.unicamp.mc322.duocomopeda.game.card.minion;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EnumSet;
 
 import com.unicamp.mc322.duocomopeda.game.Board;
 import com.unicamp.mc322.duocomopeda.game.card.Card;
-import com.unicamp.mc322.duocomopeda.game.card.traits.Trait;
+import com.unicamp.mc322.duocomopeda.game.card.minion.Trait;
 import com.unicamp.mc322.duocomopeda.game.event.handler.MinionEventHandler;
 import com.unicamp.mc322.duocomopeda.game.stats.Health;
 import com.unicamp.mc322.duocomopeda.game.stats.Killable;
@@ -15,15 +16,15 @@ public abstract class Minion extends Card implements Killable, MinionEventHandle
 
     private Health health;
     private int power;
-    private ArrayList<Trait> traits = new ArrayList<Trait>();
+    private EnumSet<Trait> traits;
     private boolean isDead = false;
 
     public Minion(String name, int cost, int power, 
-            int health, Trait[] traits, Player owner) {
+            int health, EnumSet<Trait> traits, Player owner) {
         super(name, cost, owner);
         this.power = power;
         this.health = new Health(health, this);
-        this.traits.addAll(Arrays.asList(traits));
+        this.traits = traits;
     }
 
     // Stat getters
@@ -71,12 +72,17 @@ public abstract class Minion extends Card implements Killable, MinionEventHandle
 
     public void attack(Minion enemy) {
         // TODO: account for elusive
-        this.strike(enemy);
-        if (!enemy.isDead) {
+        if (traits.contains(Trait.DOUBLE_ATTACK)) {
+            this.strike(enemy);
+            if (!enemy.isDead) {
+                this.strike(enemy);
+                enemy.defend(this, this.power);
+            }
+        } else {
+            this.strike(enemy);
             enemy.defend(this, this.power);
         }
 
-        // TODO: account for double attack
         // fazer um overload no attack pra receber um int que multiplica
     }
     public void attack(Player player) {

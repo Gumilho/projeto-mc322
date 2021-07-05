@@ -1,7 +1,8 @@
 package com.unicamp.mc322.duocomopeda.game.card.minion.champion;
 
-import com.unicamp.mc322.duocomopeda.game.card.traits.Elusive;
-import com.unicamp.mc322.duocomopeda.game.card.traits.Trait;
+import java.util.EnumSet;
+
+import com.unicamp.mc322.duocomopeda.game.card.minion.Trait;
 import com.unicamp.mc322.duocomopeda.game.player.Player;
 import com.unicamp.mc322.duocomopeda.game.card.minion.Minion;
 
@@ -13,7 +14,7 @@ public class Garen extends Champion {
             5, 
             5, 
             5, 
-            new Trait[]{}, 
+            EnumSet.of(Trait.ELUSIVE), 
             owner,
             4
         );
@@ -21,13 +22,12 @@ public class Garen extends Champion {
 
     @Override
     public void onHit(Player owner, Minion attacker, Minion defender, int damage) {
-        this.incrementMission(1);
-        
+        this.incrementMission(1);        
     }
 
     @Override
     void upgrade() {
         this.buff(1, 1);
-        this.addTrait(new Elusive());
+        this.addTrait(Trait.ELUSIVE);
     }
 }
