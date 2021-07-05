@@ -51,21 +51,18 @@ public class Game {
 
     public void setup(String nickname1, String deckName1, String nickname2, String deckName2) {
         this.players = new Player[2];
-        players[0] = new PlayerHuman(nickname1, keyboard, 0);
-        players[1] = new PlayerHuman(nickname2, keyboard, 1);
+        players[0] = new PlayerHuman(nickname1, keyboard, 0, attacker);
+        players[1] = new PlayerHuman(nickname2, keyboard, 1, attacker);
         this.chooseAttacker();
         this.setupDecks(deckName1, deckName2);
         players[0].pullInitialHand();
         players[1].pullInitialHand();
-        runMulligan(players[0]);
-        runMulligan(players[1]);
     }
 
     private void chooseAttacker() {
 
         Random r = new Random();
         this.attacker = r.nextInt(2);
-        System.out.println("Player " + players[attacker] + " starts attacking.");
         
     }
 
@@ -87,10 +84,11 @@ public class Game {
             name = keyboard.nextLine();
         }
         if (type.compareTo("H") == 0) {
-            players[playerIndex] = new PlayerHuman(name, keyboard, playerIndex);
+            players[playerIndex] = new PlayerHuman(name, keyboard, playerIndex, attacker);
         } else if (type.compareTo("A") == 0) {
-            players[playerIndex] = new PlayerAI(name, playerIndex);
+            players[playerIndex] = new PlayerAI(name, playerIndex, attacker);
         }
+        System.out.println("Player " + players[attacker] + " starts attacking.");
 
     }
 
@@ -191,14 +189,17 @@ public class Game {
 
     private void advanceRound() {
         attacker = 1 - attacker;
+        players[0].advanceRound();
+        players[1].advanceRound();
         board.returnUnitsToBench();
         System.out.print("\n\n");
         System.out.println("ROUND " + String.format("%d", roundCounter + 1));
-        System.out.println("Player " + players[attacker].getNickname() + " is attacking now.\n");
+        System.out.println("Player " + players[attacker] + " is attacking now.\n");
     }
 
     private void print(int turnToken) {
         Utils.clearScreen();
+        players[1].printInfo();
         if (turnToken == 0) {
             System.out.print("\n\n\n");
             board.print();
@@ -208,6 +209,8 @@ public class Game {
             board.print();
             System.out.print("\n\n\n");
         }
+        players[0].printInfo();
+
         currentPlayer.printMenu();
     }
 

@@ -27,17 +27,28 @@ public abstract class Player implements Killable {
     private Menu menu;
     private boolean passed;
     private int index;
+    private boolean isAttacker;
     
-    public Player(String nickname, int index) {
+    public Player(String nickname, int index, boolean isAttacker) {
         this.index = index;
         this.nickname = nickname;
         this.health = new Health(INITIAL_HEALTH, this);
         this.deck = new Deck(this);
         this.hand = new ArrayList<Card>();
         this.mana = new Mana();
+        this.isAttacker = false;
     }
 
     public abstract int getInputInt(int maxInt);
+
+    public void toggleAttacker() {
+        isAttacker = !isAttacker;
+    }
+
+    public void advanceRound() {
+        isAttacker = !isAttacker;
+        mana.update();
+    }
 
     public void takeDamage(int amount) {
         this.health.takeDamage(amount);
@@ -174,5 +185,14 @@ public abstract class Player implements Killable {
     @Override
     public String toString() {
         return index + " - " + nickname;
+    }
+
+    public void printInfo() {
+        System.out.print(String.format("Player %d - %s %s\nHealth: %d/%d | Mana: %d/%d | SpellMana: %d/%d\n", 
+            index, nickname, (isAttacker) ? "ATTACKER" : "",
+            health.getCurrentHealth(), health.getMaxHealth(), 
+            mana.getCurrentMana(), mana.getMaxMana(),
+            mana.getCurrentSpellMana(), mana.getMaxSpellMana())
+        );
     }
 }

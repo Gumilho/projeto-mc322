@@ -6,8 +6,8 @@ public class PlayerHuman extends Player {
 
     private Scanner keyboard;
 
-    public PlayerHuman(String nickname, Scanner keyboard, int index) {
-        super(nickname, index);
+    public PlayerHuman(String nickname, Scanner keyboard, int index, int attacker) {
+        super(nickname, index, index == attacker);
         this.keyboard = keyboard;
     }
 

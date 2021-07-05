@@ -14,7 +14,7 @@ public class Mana {
     public Mana() {
         currentMana = 1;
         spellMana = 0;
-        currentMax = 0;
+        currentMax = 1;
     }
 
     public int getCurrentMana() {
@@ -33,6 +33,17 @@ public class Mana {
             // TODO: tratamento de erro
         }
         currentMana -= quantity;
+    }
+
+    public void spend(int quantity, boolean isSpell) {
+        if (isSpell) {
+            if (currentMana - quantity >= 0) {
+                // TODO: tratamento de erro
+            }
+            currentMana -= quantity;
+        } else {
+            spend(quantity);
+        }
     }
 
     public void update() {
@@ -56,6 +67,18 @@ public class Mana {
 
     private void getNewMaxMana() {
 
+    }
+
+    public int getMaxMana() {
+        return currentMax;
+    }
+
+    public int getCurrentSpellMana() {
+        return spellMana;
+    }
+
+    public int getMaxSpellMana() {
+        return MAX_SPELL;
     }
 
 }
