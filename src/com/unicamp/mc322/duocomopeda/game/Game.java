@@ -129,11 +129,18 @@ public class Game {
         while(!gameEnd) {
             startRound();
             int turnToken = attacker;
+            passedPlayers = 0;
             while(passedPlayers < 2 && gamePhase == GamePhase.MAIN && !gameEnd) {
                 int pass = passedPlayers;
                 currentPlayer = players[turnToken];
                 print(turnToken);
-                currentPlayer.readInput();
+                try {
+                    currentPlayer.readInput();
+                } catch (IllegalArgumentException e) {
+                    // Loop Again, do not swap turnToken
+                    System.out.println(e.getMessage());
+                    continue;
+                }
                 
                 // Process pass counts
                 if (pass == passedPlayers) {
@@ -159,7 +166,8 @@ public class Game {
                     }
                     board.resolveBattle();
                 }
-
+                
+                print(turnToken);
                 advanceRound();
                 Utils.pressEnterKeyToContinue();
                 
@@ -175,6 +183,10 @@ public class Game {
         currentPlayer.playFromHand(cardIndex);
     }
 
+    public void displayDetails(int cardIndex) {
+        currentPlayer.displayDetails(cardIndex);
+    }
+
     public void startCombat() {
         gamePhase = GamePhase.COMBAT;
         players[0].startCombat();
@@ -188,13 +200,13 @@ public class Game {
     }
 
     private void advanceRound() {
-        attacker = 1 - attacker;
+        this.attacker = 1 - this.attacker;
         players[0].advanceRound();
         players[1].advanceRound();
         board.returnUnitsToBench();
         System.out.print("\n\n");
         System.out.println("ROUND " + String.format("%d", roundCounter + 1));
-        System.out.println("Player " + players[attacker] + " is attacking now.\n");
+        System.out.println("Player " + players[this.attacker] + " is attacking now.\n");
     }
 
     private void print(int turnToken) {
@@ -221,4 +233,5 @@ public class Game {
     Player getDefender() {
         return players[1 - attacker];
     }
+
 }

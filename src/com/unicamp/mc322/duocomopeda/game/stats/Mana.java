@@ -29,16 +29,16 @@ public class Mana {
     }
 
     public void spend(int quantity) {
-        if (currentMana - quantity >= 0) {
-            // TODO: tratamento de erro
+        if (currentMana - quantity < 0) {
+            throw new IllegalArgumentException("Out of mana");
         }
         currentMana -= quantity;
     }
 
     public void spend(int quantity, boolean isSpell) {
         if (isSpell) {
-            if (currentMana - quantity >= 0) {
-                // TODO: tratamento de erro
+            if (currentMana + spellMana - quantity < 0) {
+                throw new IllegalArgumentException("Out of mana");
             }
             currentMana -= quantity;
         } else {
@@ -66,7 +66,7 @@ public class Mana {
     }
 
     private void getNewMaxMana() {
-
+        currentMax++;
     }
 
     public int getMaxMana() {
