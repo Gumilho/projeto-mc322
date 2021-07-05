@@ -13,6 +13,7 @@ public class MainMenu extends Menu{
             this.commandList.add(new StartCombatCommand());
         }
         this.commandList.add(new PassCommand());
+        this.commandList.add(new EndGameCommand());
     }
     
 }

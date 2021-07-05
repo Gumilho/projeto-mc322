@@ -8,6 +8,7 @@ public class CombatMenu extends Menu{
         this.name = "Combat Phase";
         this.commandList.add(new PlaceUnitCommand());
         this.commandList.add(new ConfirmUnitsCommand());
+        this.commandList.add(new EndGameCommand());
     }
     
 }
