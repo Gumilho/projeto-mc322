@@ -8,7 +8,7 @@ public class Utils {
     }
 
     public static void pressEnterKeyToContinue() { 
-        System.out.println("Press Enter key to continue...");
+        System.out.print("Press Enter key to continue...");
         try {
             System.in.read();
         } catch(Exception e) {}  

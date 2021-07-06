@@ -1,8 +1,5 @@
 package com.unicamp.mc322.duocomopeda.game.card;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import com.unicamp.mc322.duocomopeda.game.player.Player;
 import com.unicamp.mc322.duocomopeda.game.stats.Mana;
 

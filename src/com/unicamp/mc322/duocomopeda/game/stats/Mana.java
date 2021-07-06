@@ -67,6 +67,9 @@ public class Mana {
 
     private void getNewMaxMana() {
         currentMax++;
+        if (currentMax > MAX) {
+            currentMax = MAX;
+        }
     }
 
     public int getMaxMana() {

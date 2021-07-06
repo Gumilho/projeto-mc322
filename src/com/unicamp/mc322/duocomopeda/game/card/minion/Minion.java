@@ -35,6 +35,10 @@ public abstract class Minion extends Card implements Killable, MinionEventHandle
         return health.getCurrentHealth();
     }
 
+    public boolean isElusive() {
+        return traits.contains(Trait.ELUSIVE);
+    }
+
     @Override
     public void displayDetails() {
         System.out.println(String.format(
@@ -99,18 +103,15 @@ public abstract class Minion extends Card implements Killable, MinionEventHandle
         this.onHit(this.getOwner(), this, enemy, this.power);
         if (enemy.isDead) {
             this.onKill(this.getOwner(), this, enemy);
-            // TODO: account for fury
         }
 
     }
 
     private void defend(Minion attacker, int attackerDamage) {
-        // TODO: account for elusive
         this.onDefense(this.getOwner(), attacker, this, attackerDamage);
         attacker.takeDamage(this.power);
         if (attacker.isDead) {
             this.onKill(this.getOwner(), this, attacker);
-            // TODO: account for fury
         }
     }
 

@@ -20,8 +20,4 @@ public class Mission {
             owner.upgrade();
         }
     }
-
-    // TODO: find a way to activate
-    // TODO: find a way to track champion damage
-
 }

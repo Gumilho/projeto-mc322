@@ -5,7 +5,6 @@ import java.util.Scanner;
 
 import com.unicamp.mc322.duocomopeda.game.player.*;
 import com.unicamp.mc322.duocomopeda.utils.Utils;
-import com.unicamp.mc322.duocomopeda.game.card.minion.Poro;
 
 public class Game {
 
@@ -17,6 +16,7 @@ public class Game {
     private Player currentPlayer;
     private GamePhase gamePhase;
     
+    private int turnToken;
     private int passedPlayers;
     private int roundCounter;
     private int attacker;
@@ -40,8 +40,8 @@ public class Game {
     }
 
     public void setup() {
-        this.setupPlayers();
         this.chooseAttacker();
+        this.setupPlayers();
         this.setupDecks();
         players[0].pullInitialHand();
         players[1].pullInitialHand();
@@ -50,10 +50,10 @@ public class Game {
     }
 
     public void setup(String nickname1, String deckName1, String nickname2, String deckName2) {
+        this.chooseAttacker();
         this.players = new Player[2];
         players[0] = new PlayerHuman(nickname1, keyboard, 0, attacker);
         players[1] = new PlayerHuman(nickname2, keyboard, 1, attacker);
-        this.chooseAttacker();
         this.setupDecks(deckName1, deckName2);
         players[0].pullInitialHand();
         players[1].pullInitialHand();
@@ -123,13 +123,15 @@ public class Game {
     public void incrementPassedPlayers() {
         passedPlayers++;
     }
+
+    private void flipTurn() {
+        turnToken = 1 - turnToken; // flips the token
+    }
     // Main Loop
     public void startGame() {
 
         while(!gameEnd) {
             startRound();
-            int turnToken = attacker;
-            passedPlayers = 0;
             while(passedPlayers < 2 && gamePhase == GamePhase.MAIN && !gameEnd) {
                 int pass = passedPlayers;
                 currentPlayer = players[turnToken];
@@ -137,7 +139,9 @@ public class Game {
                 try {
                     currentPlayer.readInput();
                 } catch (IllegalArgumentException e) {
-                    // Loop Again, do not swap turnToken
+                    System.out.println(e.getMessage());
+                    continue;
+                } catch (IndexOutOfBoundsException e) {
                     System.out.println(e.getMessage());
                     continue;
                 }
@@ -147,22 +151,30 @@ public class Game {
                     passedPlayers = 0;
                 }
                 
-                turnToken = 1 - turnToken; // flips the token
+                flipTurn();
             }
             if (!gameEnd) {
                 // Start combat phase or end turn
                 if (gamePhase == GamePhase.COMBAT) {
-                    turnToken = 1 - turnToken; // flips the token back to the attacker
                     passedPlayers = 0;
                     // Confirming unit works the same way as passing, so we're reusing the passedPlayers attribute
                     while (passedPlayers < 1) {
                         print(turnToken);
-                        players[turnToken].readInput();
+                        try {
+                            players[turnToken].readInput();
+                        } catch (IllegalArgumentException e) {
+                            System.out.println(e.getMessage()); 
+                        }
                     }
-                    turnToken = 1 - turnToken; // flips the token to the defender
+                    flipTurn();
+                    currentPlayer = players[turnToken];
                     while (passedPlayers < 2) {
-                        print(turnToken);
-                        players[turnToken].readInput();
+                        try {
+                            print(turnToken);
+                            players[turnToken].readInput();
+                        } catch (IllegalArgumentException e) {
+                            System.out.println(e.getMessage()); 
+                        }
                     }
                     board.resolveBattle();
                 }
@@ -177,6 +189,7 @@ public class Game {
 
     public void endGame() {
         gameEnd = true;
+        keyboard.close();
     }
 
     public void playFromHand(int cardIndex) {
@@ -184,10 +197,15 @@ public class Game {
     }
 
     public void displayDetails(int cardIndex) {
+        this.flipTurn();
         currentPlayer.displayDetails(cardIndex);
     }
 
     public void startCombat() {
+        if (board.isEmpty(attacker)){
+            throw new IllegalArgumentException("No available units for attack");
+        }
+        this.flipTurn();
         gamePhase = GamePhase.COMBAT;
         players[0].startCombat();
         players[1].startCombat();
@@ -195,8 +213,11 @@ public class Game {
 
 
     private void startRound() {
-        players[0].startRound(attacker == 0);
-        players[1].startRound(attacker == 1);
+        gamePhase = GamePhase.MAIN;
+        players[0].startRound();
+        players[1].startRound();
+        turnToken = attacker;
+        passedPlayers = 0;
     }
 
     private void advanceRound() {
@@ -204,8 +225,9 @@ public class Game {
         players[0].advanceRound();
         players[1].advanceRound();
         board.returnUnitsToBench();
+        roundCounter++;
         System.out.print("\n\n");
-        System.out.println("ROUND " + String.format("%d", roundCounter + 1));
+        System.out.println("ROUND " + String.format("%d", roundCounter));
         System.out.println("Player " + players[this.attacker] + " is attacking now.\n");
     }
 
@@ -232,6 +254,10 @@ public class Game {
 
     Player getDefender() {
         return players[1 - attacker];
+    }
+
+    public void declareWinner(int index) {
+        System.out.println("Player " + players[1 - index] + " won the game! Congratulations!");
     }
 
 }
