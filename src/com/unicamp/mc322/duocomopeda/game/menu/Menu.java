@@ -3,16 +3,22 @@ package com.unicamp.mc322.duocomopeda.game.menu;
 import java.util.ArrayList;
 
 import com.unicamp.mc322.duocomopeda.game.menu.command.Command;
+import com.unicamp.mc322.duocomopeda.game.player.Player;
 
 public abstract class Menu {
-    protected String name;
-    protected ArrayList<Command> commandList;
+    private String name;
+    private ArrayList<Command> commandList;
+    private Player owner;
 
-    public Menu() {
+    public Menu(String name, ArrayList<Command> commandList, Player owner) {
         
-        this.name = "abstract-menu";
+        this.name = name;
+        this.commandList = commandList;
+        this.owner = owner;
+    }
 
-        this.commandList = new ArrayList<Command>();
+    public Player getOwner() {
+        return owner;
     }
 
     public int getCommandListSize() {

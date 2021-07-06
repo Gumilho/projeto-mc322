@@ -5,17 +5,22 @@ import com.unicamp.mc322.duocomopeda.game.player.Player;
 public abstract class Command {
 
     private String name;
-    int arg;
+    private Player owner;
 
-    public Command(String name) {
+    public Command(String name, Player owner) {
         this.name = name;
+        this.owner = owner;
+    }
+
+    public Player getOwner() {
+        return owner;
     }
 
     public String getName() {
         return this.name;
     }
 
-    public abstract void execute(Player player);
+    public abstract void execute();
 
 
 }

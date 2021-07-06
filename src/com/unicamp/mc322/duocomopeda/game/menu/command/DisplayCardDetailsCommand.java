@@ -1,19 +1,22 @@
 package com.unicamp.mc322.duocomopeda.game.menu.command;
 
 import com.unicamp.mc322.duocomopeda.game.player.Player;
+import com.unicamp.mc322.duocomopeda.utils.Utils;
 import com.unicamp.mc322.duocomopeda.game.Game;
 
 public class DisplayCardDetailsCommand extends Command {
     
-    public DisplayCardDetailsCommand() {
-        super("Display Card Details");
+    public DisplayCardDetailsCommand(Player owner) {
+        super("Display Card Details", owner);
     }
 
     @Override
-    public void execute(Player player){
+    public void execute() {
         System.out.print("Enter the index of the card you want to see: ");
-        arg = player.getInputInt(player.getHandSize());
+        Player player = this.getOwner();
+        int arg = player.getInputInt(player.getHandSize());
         Game game = Game.getInstance();
         game.displayDetails(arg);
+        Utils.pressEnterKeyToContinue();
     }
 }

@@ -5,14 +5,13 @@ import com.unicamp.mc322.duocomopeda.game.player.Player;
 
 public class StartCombatCommand extends Command {
 
-    public StartCombatCommand() {
-        super("Start Combat");
+    public StartCombatCommand(Player owner) {
+        super("Start Combat", owner);
     }
 
     @Override
-    public void execute(Player player) {
-        
-        System.out.println("Player " + player + " started combat");
+    public void execute() {
+        System.out.println("Player " + getOwner() + " started combat");
         Game game = Game.getInstance();
         game.startCombat();
     }

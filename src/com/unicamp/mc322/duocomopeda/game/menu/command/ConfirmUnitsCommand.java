@@ -5,13 +5,13 @@ import com.unicamp.mc322.duocomopeda.game.player.Player;
 
 public class ConfirmUnitsCommand extends Command {
 
-    public ConfirmUnitsCommand() {
-        super("Confirm Units");
+    public ConfirmUnitsCommand(Player owner) {
+        super("Confirm Units", owner);
     }
 
     @Override
-    public void execute(Player player){
-        System.out.println("Player " + player + " confirmed Units");
+    public void execute() {
+        System.out.println("Player " + getOwner() + " confirmed Units");
         Game game = Game.getInstance();
         game.incrementPassedPlayers();
     }

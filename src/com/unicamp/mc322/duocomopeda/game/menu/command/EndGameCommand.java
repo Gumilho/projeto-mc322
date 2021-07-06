@@ -5,13 +5,13 @@ import com.unicamp.mc322.duocomopeda.game.player.Player;
 
 public class EndGameCommand extends Command {
 
-    public EndGameCommand() {
-        super("End Game");
+    public EndGameCommand(Player owner) {
+        super("End Game", owner);
     }
 
     @Override
-    public void execute(Player player){
-        System.out.println("Player " + player + " ended game");
+    public void execute(){
+        System.out.println("Player " + getOwner() + " ended game");
         Game game = Game.getInstance();
         game.endGame();
     }
