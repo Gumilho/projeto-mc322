@@ -5,6 +5,7 @@ import java.util.EnumSet;
 import com.unicamp.mc322.duocomopeda.game.card.minion.Trait;
 import com.unicamp.mc322.duocomopeda.game.player.Player;
 import com.unicamp.mc322.duocomopeda.game.card.minion.Minion;
+import com.unicamp.mc322.duocomopeda.game.EffectManager;
 
 public class Garen extends Champion {
 
@@ -30,5 +31,10 @@ public class Garen extends Champion {
     void upgrade() {
         this.buff(1, 1);
         this.addTrait(Trait.ELUSIVE);
+    }
+    
+    @Override
+    public void onRoundEnd(Player owner) {
+        EffectManager.healCompletely(this);
     }
 }
