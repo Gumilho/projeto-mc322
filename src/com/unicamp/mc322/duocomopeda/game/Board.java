@@ -1,6 +1,5 @@
 package com.unicamp.mc322.duocomopeda.game;
 
-import java.util.Arrays;
 import java.util.ArrayList;
 
 import com.unicamp.mc322.duocomopeda.game.card.minion.Minion;
@@ -16,6 +15,13 @@ public class Board {
     private Minion[] bench;
     private Minion[] battlefield;
     
+    public static Board getInstance() {
+        if (board == null) {
+            board = new Board();
+        }
+        return board;
+    }
+
     private Board() {
         this.bench = new Minion[MAX_BENCH_SIZE * 2];
         this.battlefield = new Minion[12];
@@ -30,7 +36,7 @@ public class Board {
             int defenderIndex = i + MAX_BENCH_SIZE * (defender.getIndex());
             if (battlefield[attackerIndex] == null) {
                 if (battlefield[defenderIndex] != null) {
-                    System.out.println("Something went wrong");
+                    throw new IllegalArgumentException("An unexpected error occured");
                 }
             } else {
                 if (battlefield[defenderIndex] == null) {
@@ -40,6 +46,16 @@ public class Board {
                 }
             }
         }
+    }
+
+    public boolean isEmpty(int attacker) {
+        boolean isEmpty = true;
+        for (int i = 0 + MAX_BENCH_SIZE * attacker; i < MAX_BENCH_SIZE + MAX_BENCH_SIZE * attacker; i++) {
+            if (bench[i] != null) {
+                isEmpty = false;
+            }
+        }
+        return isEmpty;
     }
 
     public ArrayList<Minion> getBench(int playerIndex) {
@@ -53,27 +69,47 @@ public class Board {
     }
 
     public Minion getBenchCard(int playerIndex, int cardIndex) {
-        //TODO: catch no minion exception
-        return bench[cardIndex + MAX_BENCH_SIZE * playerIndex];
+        Minion minion = bench[cardIndex + MAX_BENCH_SIZE * playerIndex];
+        if (minion == null) {
+            throw new IllegalArgumentException("No minion in this slot");
+        }
+        return minion;
     }
 
-    public void moveUnitToBattlefield(Minion minion, int playerIndex) {
-        for (int i = 0 + MAX_BENCH_SIZE * playerIndex; i < MAX_BENCH_SIZE + MAX_BENCH_SIZE * playerIndex; i++) {
+    private void removeFromBench(Minion minion) {
+        for (int i = 0; i < MAX_BENCH_SIZE * 2; i++) {
             if (bench[i] == minion) {
                 bench[i] = null;
             }
         }
-        int i = 0 + MAX_BENCH_SIZE * playerIndex;
-        //TODO: catch IndexOutOfBoundsException
-        while (battlefield[i] != null) i++;
-        battlefield[i] = minion;
+        throw new IllegalArgumentException("Did not find minion");
+    }
+    
+    public void moveAttackerUnitToBattlefield(Minion minion, int playerIndex, int battlefieldPosition) {
+        if (battlefield[playerIndex * 6 + battlefieldPosition] != null) {
+            throw new IllegalArgumentException("This position is not empty");
+        } else {
+            removeFromBench(minion);
+            battlefield[playerIndex * 6 + battlefieldPosition] = minion;
+        }
     }
 
-    public static Board getInstance() {
-        if (board == null) {
-            board = new Board();
+    public void moveDefenderUnitToBattlefield(Minion minion, int playerIndex, int battlefieldPosition) {
+        
+        Minion enemy = battlefield[(1 - playerIndex) * 6 + battlefieldPosition];
+        if (enemy == null) {
+            throw new IllegalArgumentException("No attacker in this position");
+        } else if (enemy.isElusive()) {
+            if (!minion.isElusive()) {
+                throw new IllegalArgumentException("Can't block elusive units");
+            }
         }
-        return board;
+        if (battlefield[playerIndex * 6 + battlefieldPosition] != null) {
+            throw new IllegalArgumentException("This position is not empty");
+        } else {
+            removeFromBench(minion);
+            battlefield[playerIndex * 6 + battlefieldPosition] = minion;
+        }
     }
 
     private void printBench(int playerIndex) {
@@ -202,9 +238,7 @@ public class Board {
                 return i;
             }
         }
-        //TODO: turn into exception
-        System.out.println("the board is full");
-        return -1;
+        throw new IllegalArgumentException("the board is full");
     }
 
     public void returnUnitsToBench() {
