@@ -2,6 +2,7 @@ package com.unicamp.mc322.duocomopeda.main;
 
 import com.unicamp.mc322.duocomopeda.game.Game;
 import com.unicamp.mc322.duocomopeda.utils.Utils;
+
 public class Tester {
 
     public static void main(String[] args) {

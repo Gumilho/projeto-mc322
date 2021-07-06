@@ -15,13 +15,14 @@ public class Game {
     private Scanner keyboard;
     private Player currentPlayer;
     private GamePhase gamePhase;
-    
+    private TextualGraphicsEngine graphicsEngine;
+
     private int turnToken;
     private int passedPlayers;
     private int roundCounter;
     private int attacker;
     private boolean gameEnd;
-    
+
     public static Game getInstance() {
         if (game == null) {
             game = new Game();
@@ -37,6 +38,7 @@ public class Game {
         this.keyboard = new Scanner(System.in);
         this.players = new Player[2];
         this.gamePhase = GamePhase.MAIN;
+        this.graphicsEngine = new TextualGraphicsEngine();
     }
 
     public void setup() {
@@ -63,7 +65,7 @@ public class Game {
 
         Random r = new Random();
         this.attacker = r.nextInt(2);
-        
+
     }
 
     private void setupPlayers() {
@@ -127,12 +129,13 @@ public class Game {
     private void flipTurn() {
         turnToken = 1 - turnToken; // flips the token
     }
+
     // Main Loop
     public void startGame() {
 
-        while(!gameEnd) {
+        while (!gameEnd) {
             startRound();
-            while(passedPlayers < 2 && gamePhase == GamePhase.MAIN && !gameEnd) {
+            while (passedPlayers < 2 && gamePhase == GamePhase.MAIN && !gameEnd) {
                 int pass = passedPlayers;
                 currentPlayer = players[turnToken];
                 print(turnToken);
@@ -145,25 +148,26 @@ public class Game {
                     System.out.println(e.getMessage());
                     continue;
                 }
-                
+
                 // Process pass counts
                 if (pass == passedPlayers) {
                     passedPlayers = 0;
                 }
-                
+
                 flipTurn();
             }
             if (!gameEnd) {
                 // Start combat phase or end turn
                 if (gamePhase == GamePhase.COMBAT) {
                     passedPlayers = 0;
-                    // Confirming unit works the same way as passing, so we're reusing the passedPlayers attribute
+                    // Confirming unit works the same way as passing, so we're reusing the
+                    // passedPlayers attribute
                     while (passedPlayers < 1) {
                         print(turnToken);
                         try {
                             players[turnToken].readInput();
                         } catch (IllegalArgumentException e) {
-                            System.out.println(e.getMessage()); 
+                            System.out.println(e.getMessage());
                         }
                     }
                     flipTurn();
@@ -173,16 +177,16 @@ public class Game {
                             print(turnToken);
                             players[turnToken].readInput();
                         } catch (IllegalArgumentException e) {
-                            System.out.println(e.getMessage()); 
+                            System.out.println(e.getMessage());
                         }
                     }
                     board.resolveBattle();
                 }
-                
+
                 print(turnToken);
                 advanceRound();
                 Utils.pressEnterKeyToContinue();
-                
+
             }
         }
     }
@@ -202,7 +206,7 @@ public class Game {
     }
 
     public void startCombat() {
-        if (board.isEmpty(attacker)){
+        if (board.isEmpty(attacker)) {
             throw new IllegalArgumentException("No available units for attack");
         }
         this.flipTurn();
@@ -210,7 +214,6 @@ public class Game {
         players[0].startCombat();
         players[1].startCombat();
     }
-
 
     private void startRound() {
         gamePhase = GamePhase.MAIN;
@@ -236,11 +239,11 @@ public class Game {
         players[1].printInfo();
         if (turnToken == 0) {
             System.out.print("\n\n\n");
-            board.print();
+            graphicsEngine.printBoard();
             currentPlayer.printHand();
         } else if (turnToken == 1) {
             currentPlayer.printHand();
-            board.print();
+            graphicsEngine.printBoard();
             System.out.print("\n\n\n");
         }
         players[0].printInfo();
