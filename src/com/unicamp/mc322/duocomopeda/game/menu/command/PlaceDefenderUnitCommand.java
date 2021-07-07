@@ -6,8 +6,8 @@ import com.unicamp.mc322.duocomopeda.game.card.minion.Minion;
 
 public class PlaceDefenderUnitCommand extends Command {
 
-    public PlaceDefenderUnitCommand(Player owner) {
-        super("Place Defender Unit", owner);
+    public PlaceDefenderUnitCommand(Player owner, int index) {
+        super("Place Defender Unit", owner, index);
     }
 
     @Override

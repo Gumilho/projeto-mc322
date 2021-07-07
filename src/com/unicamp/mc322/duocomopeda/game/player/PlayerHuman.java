@@ -1,5 +1,6 @@
 package com.unicamp.mc322.duocomopeda.game.player;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class PlayerHuman extends Player {
@@ -12,12 +13,10 @@ public class PlayerHuman extends Player {
     }
 
     @Override
-    public int getInputInt(int maxInt) {
+    public int getInputInt(ArrayList<Integer> labels) {
         int inputInt = keyboard.nextInt();
-        
-        while (inputInt < 0 && inputInt >= maxInt) {
-            System.out.print("\nInvalid Command! Please enter again: ");
-            inputInt = keyboard.nextInt();
+        if (!labels.contains(inputInt)) {
+            throw new IllegalArgumentException("No such label");
         }
         return inputInt;
     }

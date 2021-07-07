@@ -5,8 +5,8 @@ import com.unicamp.mc322.duocomopeda.game.player.Player;
 
 public class ConfirmUnitsCommand extends Command {
 
-    public ConfirmUnitsCommand(Player owner) {
-        super("Confirm Units", owner);
+    public ConfirmUnitsCommand(Player owner, int index) {
+        super("Confirm Units", owner, index);
     }
 
     @Override

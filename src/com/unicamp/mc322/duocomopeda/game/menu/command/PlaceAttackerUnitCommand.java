@@ -6,8 +6,8 @@ import com.unicamp.mc322.duocomopeda.game.card.minion.Minion;
 
 public class PlaceAttackerUnitCommand extends Command {
 
-    public PlaceAttackerUnitCommand(Player owner) {
-        super("Place Attacker Unit", owner);
+    public PlaceAttackerUnitCommand(Player owner, int index) {
+        super("Place Attacker Unit", owner, index);
     }
 
     @Override

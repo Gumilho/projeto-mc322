@@ -39,7 +39,15 @@ public abstract class Player implements Killable {
     }
 
     // maybe change this to an int list, so we can work with non ordered numbers
-    public abstract int getInputInt(int maxInt);
+    public abstract int getInputInt(ArrayList<Integer> labels);
+
+    public int getInputInt(int maxInt) {
+        ArrayList<Integer> choices = new ArrayList<Integer>();
+        for (int i = 0; i < maxInt; i++) {
+            choices.add(i);
+        }
+        return getInputInt(choices);
+    }
 
     public void advanceRound() {
         isAttacker = !isAttacker;
@@ -75,7 +83,7 @@ public abstract class Player implements Killable {
     }
 
     public void readInput() {
-        int commandInt = getInputInt(menu.getCommandListSize());
+        int commandInt = getInputInt(menu.getLabels());
         Command command = menu.getCommand(commandInt);
         command.execute();
     }

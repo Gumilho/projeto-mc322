@@ -5,9 +5,9 @@ import com.unicamp.mc322.duocomopeda.utils.Utils;
 import com.unicamp.mc322.duocomopeda.game.Game;
 
 public class DisplayCardDetailsCommand extends Command {
-    
-    public DisplayCardDetailsCommand(Player owner) {
-        super("Display Card Details", owner);
+
+    public DisplayCardDetailsCommand(Player owner, int index) {
+        super("Display Card Details", owner, index);
     }
 
     @Override

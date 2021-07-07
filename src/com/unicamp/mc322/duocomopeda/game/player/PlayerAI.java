@@ -1,5 +1,6 @@
 package com.unicamp.mc322.duocomopeda.game.player;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class PlayerAI extends Player {
@@ -9,10 +10,10 @@ public class PlayerAI extends Player {
     }
 
     @Override
-    public int getInputInt(int maxInt) {
+    public int getInputInt(ArrayList<Integer> labels) {
         Random r = new Random();
-        int inputInt = r.nextInt(maxInt);
-        System.out.println(inputInt);
-        return inputInt;
+        int inputInt = r.nextInt(labels.size());
+        System.out.println(labels.get(inputInt));
+        return labels.get(inputInt);
     }
 }

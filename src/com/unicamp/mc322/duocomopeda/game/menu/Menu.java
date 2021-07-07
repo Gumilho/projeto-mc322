@@ -6,19 +6,29 @@ import com.unicamp.mc322.duocomopeda.game.menu.command.Command;
 import com.unicamp.mc322.duocomopeda.game.player.Player;
 
 public abstract class Menu {
+
     private String name;
     private ArrayList<Command> commandList;
     private Player owner;
+    private ArrayList<Integer> labels;
 
     public Menu(String name, ArrayList<Command> commandList, Player owner) {
 
         this.name = name;
         this.commandList = commandList;
         this.owner = owner;
+        this.labels = new ArrayList<Integer>();
+        for (Command command : commandList) {
+            this.labels.add(command.getLabel());
+        }
     }
 
     public Player getOwner() {
         return owner;
+    }
+
+    public ArrayList<Integer> getLabels() {
+        return labels;
     }
 
     public int getCommandListSize() {
@@ -32,7 +42,12 @@ public abstract class Menu {
     }
 
     public Command getCommand(int commandInt) {
-        return commandList.get(commandInt);
+        for (Command command : commandList) {
+            if (command.getLabel() == commandInt) {
+                return command;
+            }
+        }
+        throw new IllegalArgumentException("No such command!");
     }
 
     private void printHeader() {
@@ -55,10 +70,10 @@ public abstract class Menu {
     }
 
     private void printOptions() {
-        for (int i = 0; i < commandList.size(); i++) {
-            System.out.print(i);
+        for (Command command : commandList) {
+            System.out.print(command.getLabel());
             System.out.print(" - ");
-            System.out.println(commandList.get(i).getName());
+            System.out.println(command.getName());
         }
     }
 }

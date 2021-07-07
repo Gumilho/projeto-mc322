@@ -6,10 +6,12 @@ public abstract class Command {
 
     private String name;
     private Player owner;
+    private int label;
 
-    public Command(String name, Player owner) {
+    public Command(String name, Player owner, int label) {
         this.name = name;
         this.owner = owner;
+        this.label = label;
     }
 
     public Player getOwner() {
@@ -20,7 +22,10 @@ public abstract class Command {
         return this.name;
     }
 
-    public abstract void execute();
+    public int getLabel() {
+        return label;
+    }
 
+    public abstract void execute();
 
 }
