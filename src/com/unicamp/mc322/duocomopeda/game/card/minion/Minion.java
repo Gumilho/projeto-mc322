@@ -8,31 +8,29 @@ import com.unicamp.mc322.duocomopeda.game.event.handler.MinionEventHandler;
 import com.unicamp.mc322.duocomopeda.game.stats.Health;
 import com.unicamp.mc322.duocomopeda.game.stats.Killable;
 import com.unicamp.mc322.duocomopeda.game.stats.Mana;
+import com.unicamp.mc322.duocomopeda.game.stats.MinionStats;
 import com.unicamp.mc322.duocomopeda.game.player.Player;
 
 public abstract class Minion extends Card implements Killable, MinionEventHandler {
 
-    private Health health;
-    private int power;
+    private MinionStats stats;
     private EnumSet<Trait> traits;
     private boolean isDead = false;
 
-    public Minion(String name, int cost, int power, 
-            int health, EnumSet<Trait> traits, Player owner, 
+    public Minion(String name, int cost, int power, int health, EnumSet<Trait> traits, Player owner,
             String description) {
         super(name, cost, owner, description);
-        this.power = power;
-        this.health = new Health(health, this);
+        this.stats = new MinionStats(power, health, this);
         this.traits = traits;
     }
 
     // Stat getters
     public int getPower() {
-        return power;
+        return stats.getPower();
     }
 
     public int getHealth() {
-        return health.getCurrentHealth();
+        return stats.getHealth();
     }
 
     public boolean isElusive() {
@@ -41,33 +39,32 @@ public abstract class Minion extends Card implements Killable, MinionEventHandle
 
     @Override
     public void displayDetails() {
-        System.out.println(String.format(
-            "Card name: %s | Mana Cost: %d\nPower: %d | Health: %d\nDescription: %s", 
-            getName(), getCost(),
-            getPower(), getHealth(),
-            getDescription()));
+        System.out.println(String.format("Card name: %s | Mana Cost: %d\nPower: %d | Health: %d\nDescription: %s",
+                getName(), getCost(), getPower(), getHealth(), getDescription()));
     }
 
     // Stat changing methods
     public void die() {
-        this.onDeath(this.getOwner(), this);
+        this.onDeath(this);
         isDead = true;
         Board board = Board.getInstance();
         board.remove(this);
     }
 
     public void buff(int power, int health) {
-        this.power += power;
-        this.health.increase(health);
+        this.stats.buff(power, health);
     }
 
     public void healCompletely() {
-        this.health.healCompletely();
+        this.stats.healCompletely();
     }
 
     public void doubleStats() {
-        this.power *= 2;
-        this.health.doubleStats();
+        this.stats.doubleStats();
+    }
+
+    public void buffOneRound(int power, int health) {
+        this.stats.buffOneRound(power, health);
     }
 
     protected void addTrait(Trait trait) {
@@ -76,11 +73,11 @@ public abstract class Minion extends Card implements Killable, MinionEventHandle
 
     // "Action" methods
     @Override
-    public void play(Player owner, Mana mana) {
+    public void play(Mana mana) {
         mana.spend(this.getCost());
-        this.onPlay(owner, this);
+        this.onPlay(this);
         Board board = Board.getInstance();
-        board.placeUnit(this, owner.getIndex());
+        board.placeUnit(this, getOwner().getIndex());
     }
 
     public void attack(Minion enemy) {
@@ -89,59 +86,65 @@ public abstract class Minion extends Card implements Killable, MinionEventHandle
         }
         if (!enemy.isDead) {
             this.strike(enemy);
-            enemy.defend(this, this.power);
+            enemy.defend(this, this.stats.getPower());
         }
 
-        // fazer um overload no attack pra receber um int que multiplica
     }
+
     public void attack(Player player) {
-        player.takeDamage(this.power);
+        player.takeDamage(this.stats.getPower());
     }
 
     public void strike(Minion enemy) {
-        enemy.takeDamage(this.power);
-        this.onHit(this.getOwner(), this, enemy, this.power);
+        enemy.takeDamage(this.stats.getPower());
+        this.onHit(this, enemy, this.stats.getPower());
         if (enemy.isDead) {
-            this.onKill(this.getOwner(), this, enemy);
+            this.onKill(this, enemy);
         }
 
     }
 
     private void defend(Minion attacker, int attackerDamage) {
-        this.onDefense(this.getOwner(), attacker, this, attackerDamage);
-        attacker.takeDamage(this.power);
+        this.onDefense(attacker, this, attackerDamage);
+        attacker.takeDamage(this.stats.getPower());
         if (attacker.isDead) {
-            this.onKill(this.getOwner(), this, attacker);
+            this.onKill(this, attacker);
         }
     }
 
     // Maybe it's public
     private void takeDamage(int amount) {
-        this.onTakeDamage(this.getOwner(), this, amount);
-        health.takeDamage(amount);
+        this.onTakeDamage(this, amount);
+        this.stats.takeDamage(amount);
     }
 
     // default option for event is to do nothing
-    public void onPlay(Player owner, Card playedCard) {
+    public void onPlay(Card playedCard) {
 
     }
-    public void onKill(Player owner, Minion killer, Minion killed) {
-        
-    }
-    public void onDeath(Player owner, Minion killed) {
+
+    public void onKill(Minion killer, Minion killed) {
 
     }
-    public void onHit(Player owner, Minion attacker, Minion defender, int damage) {
+
+    public void onDeath(Minion killed) {
 
     }
-    public void onTakeDamage(Player owner, Minion target, int damage) {
+
+    public void onHit(Minion attacker, Minion defender, int damage) {
 
     }
-    public void onDefense(Player owner, Minion attacker, Minion defender, int damage) {
+
+    public void onTakeDamage(Minion target, int damage) {
 
     }
-    public void onRoundEnd(Player owner) {
 
+    public void onDefense(Minion attacker, Minion defender, int damage) {
+
+    }
+
+    public void onRoundEnd() {
+        this.stats.resetTmpStats();
     }
 
 }

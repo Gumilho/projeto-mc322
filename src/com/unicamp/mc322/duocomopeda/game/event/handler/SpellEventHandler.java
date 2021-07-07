@@ -4,7 +4,7 @@ import com.unicamp.mc322.duocomopeda.game.player.Player;
 import com.unicamp.mc322.duocomopeda.game.card.Card;
 
 public interface SpellEventHandler {
-    
-    public void onPlay(Player owner, Card playedCard);
+
+    public void onPlay(Card playedCard);
 
 }

@@ -111,7 +111,7 @@ public abstract class Player implements Killable {
 
     public void playFromHand(int cardIndex) {
         Card card = hand.get(cardIndex);
-        card.play(this, mana);
+        card.play(mana);
         hand.remove(card);
     }
 

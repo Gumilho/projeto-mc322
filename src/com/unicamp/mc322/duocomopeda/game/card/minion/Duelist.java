@@ -6,22 +6,15 @@ import com.unicamp.mc322.duocomopeda.game.EffectManager;
 import com.unicamp.mc322.duocomopeda.game.player.Player;
 
 public class Duelist extends Minion {
-    
+
     public Duelist(Player owner) {
-        super(
-            "Duelist", 
-            3, 
-            3, 
-            2, 
-            EnumSet.noneOf(Trait.class),
-            owner,
-            "Effect: When this card kills an enemy, add a \"Poro\" from your deck to your hand"
-        );
+        super("Duelist", 3, 3, 2, EnumSet.noneOf(Trait.class), owner,
+                "Effect: When this card kills an enemy, add a \"Poro\" from your deck to your hand");
     }
 
     @Override
-    public void onKill(Player owner, Minion killer, Minion killed) {
-        EffectManager.drawSpecificCard(owner, "Poro");
+    public void onKill(Minion killer, Minion killed) {
+        EffectManager.drawSpecificCard(getOwner(), "Poro");
     }
 
 }

@@ -6,12 +6,18 @@ import com.unicamp.mc322.duocomopeda.game.player.*;
 
 public interface MinionEventHandler {
 
-    public void onPlay(Player owner, Card playedCard);
-    public void onKill(Player owner, Minion killer, Minion killed);
-    public void onDeath(Player owner, Minion killed);
-    public void onHit(Player owner, Minion attacker, Minion defender, int damage);
-    public void onTakeDamage(Player owner, Minion target, int damage);
-    public void onDefense(Player owner, Minion attacker, Minion defender, int damage);
-    public void onRoundEnd(Player owner);
+    public void onPlay(Card playedCard);
+
+    public void onKill(Minion killer, Minion killed);
+
+    public void onDeath(Minion killed);
+
+    public void onHit(Minion attacker, Minion defender, int damage);
+
+    public void onTakeDamage(Minion target, int damage);
+
+    public void onDefense(Minion attacker, Minion defender, int damage);
+
+    public void onRoundEnd();
 
 }

@@ -4,6 +4,7 @@ public class Health {
 
     private Killable owner;
 
+    private int tmpHealth;
     private int maxHealth;
     private int currentHealth;
 
@@ -11,6 +12,7 @@ public class Health {
         this.maxHealth = maxHealth;
         this.currentHealth = maxHealth;
         this.owner = owner;
+        this.tmpHealth = 0;
     }
 
     // avisar no projeto que existe um owner só pq minion morre diferente de player
@@ -45,8 +47,16 @@ public class Health {
     public int getCurrentHealth() {
         return currentHealth;
     }
-    
+
     public int getMaxHealth() {
         return maxHealth;
+    }
+
+    public void addTmpHealth(int health) {
+        this.tmpHealth += health;
+    }
+
+    public void resetTmpHealth() {
+        this.tmpHealth = 0;
     }
 }

@@ -33,7 +33,7 @@ public abstract class Card {
         return owner;
     }
 
-    public abstract void play(Player owner, Mana mana);
+    public abstract void play(Mana mana);
 
     public abstract void displayDetails();
 

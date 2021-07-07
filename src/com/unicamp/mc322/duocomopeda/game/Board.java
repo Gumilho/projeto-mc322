@@ -163,4 +163,13 @@ public class Board {
         }
     }
 
+    public void resetUnits() {
+        for (int i = 0; i < MAX_BENCH_SIZE * 2; i++) {
+            if (bench[i] != null) {
+                bench[i].onRoundEnd();
+                return;
+            }
+        }
+    }
+
 }
