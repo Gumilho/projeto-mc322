@@ -48,9 +48,10 @@ public class Board {
         }
     }
 
-    public boolean isEmpty(int attacker) {
+    public boolean isEmpty(Player attacker) {
         boolean isEmpty = true;
-        for (int i = 0 + MAX_BENCH_SIZE * attacker; i < MAX_BENCH_SIZE + MAX_BENCH_SIZE * attacker; i++) {
+        for (int i = 0 + MAX_BENCH_SIZE * attacker.getIndex(); i < MAX_BENCH_SIZE
+                + MAX_BENCH_SIZE * attacker.getIndex(); i++) {
             if (bench[i] != null) {
                 isEmpty = false;
             }
@@ -58,9 +59,10 @@ public class Board {
         return isEmpty;
     }
 
-    public ArrayList<Minion> getBenchArraylist(int playerIndex) {
+    public ArrayList<Minion> getBenchArraylist(Player player) {
         ArrayList<Minion> output = new ArrayList<Minion>();
-        for (int i = 0 + MAX_BENCH_SIZE * playerIndex; i < MAX_BENCH_SIZE + MAX_BENCH_SIZE * playerIndex; i++) {
+        for (int i = 0 + MAX_BENCH_SIZE * player.getIndex(); i < MAX_BENCH_SIZE
+                + MAX_BENCH_SIZE * player.getIndex(); i++) {
             if (bench[i] != null) {
                 output.add(bench[i]);
             }
@@ -68,7 +70,7 @@ public class Board {
         return output;
     }
 
-    public Minion[] getBench(int playerIndex) {
+    public Minion[] getBench() {
         return this.bench;
     }
 
@@ -76,8 +78,8 @@ public class Board {
         return battlefield;
     }
 
-    public Minion getBenchCard(int playerIndex, int cardIndex) {
-        Minion minion = bench[cardIndex + MAX_BENCH_SIZE * playerIndex];
+    public Minion getBenchCard(Player player, int cardIndex) {
+        Minion minion = bench[cardIndex + MAX_BENCH_SIZE * player.getIndex()];
         if (minion == null) {
             throw new IllegalArgumentException("No minion in this slot");
         }
@@ -93,18 +95,18 @@ public class Board {
         throw new IllegalArgumentException("Did not find minion");
     }
 
-    public void moveAttackerUnitToBattlefield(Minion minion, int playerIndex, int battlefieldPosition) {
-        if (battlefield[playerIndex * 6 + battlefieldPosition] != null) {
+    public void moveAttackerUnitToBattlefield(Minion minion, Player player, int battlefieldPosition) {
+        if (battlefield[player.getIndex() * 6 + battlefieldPosition] != null) {
             throw new IllegalArgumentException("This position is not empty");
         } else {
             removeFromBench(minion);
-            battlefield[playerIndex * 6 + battlefieldPosition] = minion;
+            battlefield[player.getIndex() * 6 + battlefieldPosition] = minion;
         }
     }
 
-    public void moveDefenderUnitToBattlefield(Minion minion, int playerIndex, int battlefieldPosition) {
+    public void moveDefenderUnitToBattlefield(Minion minion, Player player, int battlefieldPosition) {
 
-        Minion enemy = battlefield[(1 - playerIndex) * 6 + battlefieldPosition];
+        Minion enemy = battlefield[(1 - player.getIndex()) * 6 + battlefieldPosition];
         if (enemy == null) {
             throw new IllegalArgumentException("No attacker in this position");
         } else if (enemy.isElusive()) {
@@ -112,16 +114,17 @@ public class Board {
                 throw new IllegalArgumentException("Can't block elusive units");
             }
         }
-        if (battlefield[playerIndex * 6 + battlefieldPosition] != null) {
+        if (battlefield[player.getIndex() * 6 + battlefieldPosition] != null) {
             throw new IllegalArgumentException("This position is not empty");
         } else {
             removeFromBench(minion);
-            battlefield[playerIndex * 6 + battlefieldPosition] = minion;
+            battlefield[player.getIndex() * 6 + battlefieldPosition] = minion;
         }
     }
 
-    public int placeUnit(Minion minion, int playerIndex) {
-        for (int i = 0 + MAX_BENCH_SIZE * playerIndex; i < MAX_BENCH_SIZE + MAX_BENCH_SIZE * playerIndex; i++) {
+    public int placeUnit(Minion minion, Player player) {
+        for (int i = 0 + MAX_BENCH_SIZE * player.getIndex(); i < MAX_BENCH_SIZE
+                + MAX_BENCH_SIZE * player.getIndex(); i++) {
             if (bench[i] == null) {
                 bench[i] = minion;
                 return i;
