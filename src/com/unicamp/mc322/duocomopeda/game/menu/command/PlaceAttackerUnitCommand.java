@@ -5,7 +5,7 @@ import com.unicamp.mc322.duocomopeda.game.player.Player;
 import com.unicamp.mc322.duocomopeda.game.card.minion.Minion;
 
 public class PlaceAttackerUnitCommand extends Command {
-    
+
     public PlaceAttackerUnitCommand(Player owner) {
         super("Place Attacker Unit", owner);
     }
@@ -17,6 +17,6 @@ public class PlaceAttackerUnitCommand extends Command {
         Minion minion = player.chooseUnit();
         System.out.print("Select the position: ");
         int battlefieldPosition = player.getInputInt(Board.MAX_BENCH_SIZE);
-        board.moveAttackerUnitToBattlefield(minion, player.getIndex(), battlefieldPosition);
+        board.moveAttackerUnitToBattlefield(minion, player, battlefieldPosition);
     }
 }

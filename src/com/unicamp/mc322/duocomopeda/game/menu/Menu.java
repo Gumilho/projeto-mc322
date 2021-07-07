@@ -11,7 +11,7 @@ public abstract class Menu {
     private Player owner;
 
     public Menu(String name, ArrayList<Command> commandList, Player owner) {
-        
+
         this.name = name;
         this.commandList = commandList;
         this.owner = owner;
@@ -24,6 +24,7 @@ public abstract class Menu {
     public int getCommandListSize() {
         return commandList.size();
     }
+
     public void print() {
         printHeader();
         printOptions();
@@ -50,14 +51,14 @@ public abstract class Menu {
             System.out.print("#");
         }
         System.out.println();
-        
+
     }
 
     private void printOptions() {
         for (int i = 0; i < commandList.size(); i++) {
             System.out.print(i);
             System.out.print(" - ");
-            System.out.println(commandList.get(i).getName());            
+            System.out.println(commandList.get(i).getName());
         }
     }
 }

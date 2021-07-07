@@ -59,14 +59,15 @@ public abstract class Player implements Killable {
         Board board = Board.getInstance();
         System.out.print("Select your unit: ");
         int minionIndex = this.getInputInt(Board.MAX_BENCH_SIZE);
-        return board.getBenchCard(this.index, minionIndex);
+        return board.getBenchCard(this, minionIndex);
     }
 
     public Minion chooseEnemyUnit() {
         Board board = Board.getInstance();
+        Game game = Game.getInstance();
         System.out.print("Select the enemy unit: ");
         int minionIndex = this.getInputInt(Board.MAX_BENCH_SIZE);
-        return board.getBenchCard(1 - this.index, minionIndex);
+        return board.getBenchCard(game.getOpponent(this), minionIndex);
     }
 
     public void pullInitialHand() {
@@ -145,6 +146,10 @@ public abstract class Player implements Killable {
         passed = true;
     }
 
+    public Mana getMana() {
+        return mana;
+    }
+
     public boolean getPassed() {
         return passed;
     }
@@ -157,50 +162,36 @@ public abstract class Player implements Killable {
         return nickname;
     }
 
-    public void printMenu() {
-        menu.print();
+    public boolean getIsAttacker() {
+        return isAttacker;
     }
 
-    public void printHand() {
+    public int getCurrentHealth() {
+        return health.getCurrentHealth();
+    }
 
-        int BOARD_WIDTH = (12 + NAME_MAX_SIZE) * hand.size() + 1;
-        // Top border
-        System.out.print("#");
-        for (int i = 0; i < BOARD_WIDTH - 2; i++) {
-            System.out.print("=");
-        }
-        System.out.println("#");
+    public int getMaxHealth() {
+        return health.getCurrentHealth();
+    }
 
-        // Count width
-        for (int i = 0; i < hand.size(); i++) {
-            Card card = hand.get(i);
-            String cardName = "        ";
-            String cardCost = "  ";
-            String playable = "   ";
-            if (card != null) {
-                cardName = card.getName();
-                cardCost = ((card.getCost() < 10) ? "0" : "") + card.getCost();
-                playable = (card.playable(this.mana) ? " * " : "   ");
-                if (cardName.length() > NAME_MAX_SIZE) {
-                    cardName = cardName.substring(0, 5) + "...";
-                } else {
-                    int numberOfWhiteSpaces = NAME_MAX_SIZE - cardName.length();
-                    for (int j = 0; j < numberOfWhiteSpaces; j++) {
-                        cardName += " ";
-                    }
-                }
-            }
-            System.out.print("| (" + i + ")" + playable + cardName + " " + cardCost + " ");
-        }
-        System.out.println("|");
+    public int getCurrentMana() {
+        return mana.getCurrentMana();
+    }
 
-        // Top border
-        System.out.print("#");
-        for (int i = 0; i < BOARD_WIDTH - 2; i++) {
-            System.out.print("=");
-        }
-        System.out.println("#");
+    public int getMaxMana() {
+        return mana.getMaxMana();
+    }
 
+    public int getCurrentSpellMana() {
+        return mana.getCurrentSpellMana();
+    }
+
+    public int getMaxSpellMana() {
+        return mana.getMaxSpellMana();
+    }
+
+    public void printMenu() {
+        menu.print();
     }
 
     @Override
@@ -208,13 +199,11 @@ public abstract class Player implements Killable {
         return index + " - " + nickname;
     }
 
-    public void printInfo() {
-        System.out.print(String.format("Player %d - %s %s\nHealth: %d/%d | Mana: %d/%d | SpellMana: %d/%d\n", index,
-                nickname, (isAttacker) ? "ATTACKER" : "", health.getCurrentHealth(), health.getMaxHealth(),
-                mana.getCurrentMana(), mana.getMaxMana(), mana.getCurrentSpellMana(), mana.getMaxSpellMana()));
-    }
-
     public int getHandSize() {
         return hand.size();
+    }
+
+    public Card getHandCard(int i) {
+        return hand.get(i);
     }
 }

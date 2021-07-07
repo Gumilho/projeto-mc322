@@ -101,25 +101,25 @@ public class Game {
 
     private void setupPlayers() {
 
-        enterPlayerInfo(0);
-        enterPlayerInfo(1);
+        enterPlayerInfo(players[0]);
+        enterPlayerInfo(players[1]);
 
     }
 
-    private void enterPlayerInfo(int playerIndex) {
+    private void enterPlayerInfo(Player player) {
         String type, name;
-        System.out.print("Enter Player " + playerIndex + " type [(H)uman/(A)I]: ");
+        System.out.print("Enter Player " + player.getIndex() + " type [(H)uman/(A)I]: ");
         type = keyboard.nextLine();
-        System.out.print("Enter Player " + playerIndex + " nickname: ");
+        System.out.print("Enter Player " + player.getIndex() + " nickname: ");
         name = keyboard.nextLine();
         while (name.length() > 40) {
             System.out.print("The nickname has to be at most 40 characters, please enter again: ");
             name = keyboard.nextLine();
         }
         if (type.compareTo("H") == 0) {
-            players[playerIndex] = new PlayerHuman(name, keyboard, playerIndex, attacker);
+            players[player.getIndex()] = new PlayerHuman(name, keyboard, player.getIndex(), attacker);
         } else if (type.compareTo("A") == 0) {
-            players[playerIndex] = new PlayerAI(name, playerIndex, attacker);
+            players[player.getIndex()] = new PlayerAI(name, player.getIndex(), attacker);
         }
         System.out.println("Player " + players[attacker] + " starts attacking.");
 
@@ -137,7 +137,7 @@ public class Game {
 
     private void runMulligan(Player player) {
         System.out.println("\nPlayer " + player + " Mulligan");
-        player.printHand();
+        graphicsEngine.printHand(player);
         System.out.print("Which card do you want to swap? (enter 4 for none): ");
         boolean[] swapList = new boolean[4];
         int input = player.getInputInt(5);
@@ -236,7 +236,7 @@ public class Game {
     }
 
     public void startCombat() {
-        if (board.isEmpty(attacker)) {
+        if (board.isEmpty(players[attacker])) {
             throw new IllegalArgumentException("No available units for attack");
         }
         this.flipTurn();
@@ -268,20 +268,7 @@ public class Game {
 
     // TODO: delegate functionality to TextualGraphicsEngine
     private void printGameState() {
-        Utils.clearScreen();
-        players[1].printInfo();
-        if (turnToken == 0) {
-            System.out.print("\n\n\n");
-            graphicsEngine.printBoard();
-            currentPlayer.printHand();
-        } else if (turnToken == 1) {
-            currentPlayer.printHand();
-            graphicsEngine.printBoard();
-            System.out.print("\n\n\n");
-        }
-        players[0].printInfo();
-
-        currentPlayer.printMenu();
+        graphicsEngine.printGameState(players, turnToken);
     }
 
     Player getAttacker() {

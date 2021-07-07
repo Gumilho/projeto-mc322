@@ -88,7 +88,7 @@ public abstract class Minion extends Card implements Killable, MinionEventHandle
         mana.spend(this.getCost());
         this.onPlay(this);
         Board board = Board.getInstance();
-        board.placeUnit(this, getOwner().getIndex());
+        board.placeUnit(this, getOwner());
     }
 
     public void attack(Minion enemy) {

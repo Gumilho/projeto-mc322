@@ -11,14 +11,13 @@ public class PlaceDefenderUnitCommand extends Command {
     }
 
     @Override
-    public void execute(){
+    public void execute() {
         Player player = getOwner();
         Board board = Board.getInstance();
         Minion minion = player.chooseUnit();
         System.out.print("Select the position: ");
         int battlefieldPosition = player.getInputInt(Board.MAX_BENCH_SIZE);
-        board.moveDefenderUnitToBattlefield(minion, player.getIndex(), battlefieldPosition);
+        board.moveDefenderUnitToBattlefield(minion, player, battlefieldPosition);
     }
-
 
 }
