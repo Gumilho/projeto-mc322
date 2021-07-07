@@ -258,6 +258,7 @@ public class Game {
         players[0].advanceRound();
         players[1].advanceRound();
         board.returnUnitsToBench();
+        board.resetUnits();
         roundCounter++;
         System.out.print("\n\n");
         System.out.println("ROUND " + String.format("%d", roundCounter));
@@ -293,6 +294,10 @@ public class Game {
 
     public void declareWinner(int index) {
         System.out.println("Player " + players[1 - index] + " won the game! Congratulations!");
+    }
+
+    public Player getOpponent(Player player) {
+        return players[1 - player.getIndex()];
     }
 
 }

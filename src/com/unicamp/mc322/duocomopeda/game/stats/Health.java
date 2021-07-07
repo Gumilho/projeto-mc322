@@ -17,6 +17,8 @@ public class Health {
 
     // avisar no projeto que existe um owner só pq minion morre diferente de player
     public void takeDamage(int amount) {
+        amount -= tmpHealth;
+        resetTmpHealth();
         currentHealth -= amount;
         if (currentHealth <= 0) {
             currentHealth = 0;
@@ -45,7 +47,7 @@ public class Health {
     }
 
     public int getCurrentHealth() {
-        return currentHealth;
+        return currentHealth + tmpHealth;
     }
 
     public int getMaxHealth() {

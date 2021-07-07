@@ -7,7 +7,6 @@ public class MinionStats {
     private int power;
     private int tmpPower;
     private Health health;
-    private Minion owner;
 
     public MinionStats(int power, int health, Minion owner) {
         this.power = power;
@@ -15,7 +14,7 @@ public class MinionStats {
     }
 
     public int getPower() {
-        return power;
+        return power + tmpPower;
     }
 
     public int getHealth() {
