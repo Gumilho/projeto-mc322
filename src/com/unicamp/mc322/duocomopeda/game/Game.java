@@ -137,7 +137,7 @@ public class Game {
 
     private void runMulligan(Player player) {
         System.out.println("\nPlayer " + player + " Mulligan");
-        graphicsEngine.printHand(player);
+        graphicsEngine.printPlayerHand(player);
         System.out.print("Which card do you want to swap? (enter 4 for none): ");
         boolean[] swapList = new boolean[4];
         int input = player.getInputInt(5);
@@ -266,7 +266,6 @@ public class Game {
         Utils.pressEnterKeyToContinue();
     }
 
-    // TODO: delegate functionality to TextualGraphicsEngine
     private void printGameState() {
         graphicsEngine.printGameState(players, turnToken);
     }

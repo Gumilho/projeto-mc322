@@ -35,7 +35,7 @@ public class EffectManager {
 
     public static void buffAllAllies(Player player, int power, int health) {
         Board board = Board.getInstance();
-        ArrayList<Minion> minions = board.getBenchArraylist(player.getIndex());
+        ArrayList<Minion> minions = board.getBenchArraylist(player);
         for (Minion minion : minions) {
             minion.buff(power, health);
         }
@@ -43,8 +43,9 @@ public class EffectManager {
 
     public static void hitAllDefenders(Player player) {
         Board board = Board.getInstance();
+        Game game = Game.getInstance();
         Minion minion = player.chooseUnit();
-        ArrayList<Minion> defenders = board.getBenchArraylist(1 - player.getIndex());
+        ArrayList<Minion> defenders = board.getBenchArraylist(game.getOpponent(player));
         for (Minion defender : defenders) {
             minion.strike(defender);
         }
