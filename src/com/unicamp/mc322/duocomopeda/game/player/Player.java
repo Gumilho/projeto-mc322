@@ -163,7 +163,7 @@ public abstract class Player implements Killable {
 
     public void printHand() {
 
-        int BOARD_WIDTH = (10 + NAME_MAX_SIZE) * hand.size() + 1;
+        int BOARD_WIDTH = (12 + NAME_MAX_SIZE) * hand.size() + 1;
         // Top border
         System.out.print("#");
         for (int i = 0; i < BOARD_WIDTH - 2; i++) {
@@ -176,9 +176,11 @@ public abstract class Player implements Killable {
             Card card = hand.get(i);
             String cardName = "        ";
             String cardCost = "  ";
+            String playable = "   ";
             if (card != null) {
                 cardName = card.getName();
                 cardCost = ((card.getCost() < 10) ? "0" : "") + card.getCost();
+                playable = (card.playable(this.mana) ? " * " : "   ");
                 if (cardName.length() > NAME_MAX_SIZE) {
                     cardName = cardName.substring(0, 5) + "...";
                 } else {
@@ -188,7 +190,7 @@ public abstract class Player implements Killable {
                     }
                 }
             }
-            System.out.print("| (" + i + ") " + cardName + " " + cardCost + " ");
+            System.out.print("| (" + i + ")" + playable + cardName + " " + cardCost + " ");
         }
         System.out.println("|");
 

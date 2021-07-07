@@ -37,4 +37,6 @@ public abstract class Card {
 
     public abstract void displayDetails();
 
+    public abstract boolean playable(Mana mana);
+
 }

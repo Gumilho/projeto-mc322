@@ -22,6 +22,11 @@ public abstract class Spell extends Card implements SpellEventHandler {
     }
 
     @Override
+    public boolean playable(Mana mana) {
+        return getCost() <= mana.getCurrentMana(true);
+    }
+
+    @Override
     public void displayDetails() {
         System.out.println(String.format("Card name: %s | Mana Cost: %d\nDescription: %s", getName(), getCost(),
                 getDescription()));

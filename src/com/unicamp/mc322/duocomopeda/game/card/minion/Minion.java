@@ -5,7 +5,6 @@ import java.util.EnumSet;
 import com.unicamp.mc322.duocomopeda.game.Board;
 import com.unicamp.mc322.duocomopeda.game.card.Card;
 import com.unicamp.mc322.duocomopeda.game.event.handler.MinionEventHandler;
-import com.unicamp.mc322.duocomopeda.game.stats.Health;
 import com.unicamp.mc322.duocomopeda.game.stats.Killable;
 import com.unicamp.mc322.duocomopeda.game.stats.Mana;
 import com.unicamp.mc322.duocomopeda.game.stats.MinionStats;
@@ -15,13 +14,16 @@ public abstract class Minion extends Card implements Killable, MinionEventHandle
 
     private MinionStats stats;
     private EnumSet<Trait> traits;
-    private boolean isDead = false;
+    private boolean isDead;
+    private boolean barrierActive;
 
     public Minion(String name, int cost, int power, int health, EnumSet<Trait> traits, Player owner,
             String description) {
         super(name, cost, owner, description);
         this.stats = new MinionStats(power, health, this);
         this.traits = traits;
+        this.isDead = false;
+        this.barrierActive = false;
     }
 
     // Stat getters
@@ -35,6 +37,11 @@ public abstract class Minion extends Card implements Killable, MinionEventHandle
 
     public boolean isElusive() {
         return traits.contains(Trait.ELUSIVE);
+    }
+
+    @Override
+    public boolean playable(Mana mana) {
+        return getCost() <= mana.getCurrentMana();
     }
 
     @Override
@@ -65,6 +72,10 @@ public abstract class Minion extends Card implements Killable, MinionEventHandle
 
     public void buffOneRound(int power, int health) {
         this.stats.buffOneRound(power, health);
+    }
+
+    public void addBarrier() {
+        this.barrierActive = true;
     }
 
     protected void addTrait(Trait trait) {
@@ -114,8 +125,11 @@ public abstract class Minion extends Card implements Killable, MinionEventHandle
 
     // Maybe it's public
     private void takeDamage(int amount) {
-        this.onTakeDamage(this, amount);
-        this.stats.takeDamage(amount);
+        if (!barrierActive) {
+            this.onTakeDamage(this, amount);
+            this.stats.takeDamage(amount);
+        }
+        barrierActive = false;
     }
 
     // default option for event is to do nothing
