@@ -2,7 +2,6 @@ package com.unicamp.mc322.duocomopeda.game.event.handler;
 
 import com.unicamp.mc322.duocomopeda.game.card.Card;
 import com.unicamp.mc322.duocomopeda.game.card.minion.Minion;
-import com.unicamp.mc322.duocomopeda.game.player.*;
 
 public interface MinionEventHandler {
 

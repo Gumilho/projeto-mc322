@@ -8,7 +8,7 @@ public class Tester {
     public static void main(String[] args) {
         Utils.clearScreen();
         Game game = Game.getInstance();
-        game.setup("joao", "demacia", "maria", "demacia");
+        game.setupTestScenario("joao", "demacia", "maria", "demacia");
         game.startGame();
     }
 

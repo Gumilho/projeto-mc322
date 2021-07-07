@@ -10,21 +10,13 @@ import com.unicamp.mc322.duocomopeda.game.EffectManager;
 public class Garen extends Champion {
 
     public Garen(Player owner) {
-        super(
-            "Garen", 
-            5, 
-            5, 
-            5, 
-            EnumSet.of(Trait.ELUSIVE), 
-            owner,
-            4,
-            "Effect: Heals himself at the end of the round. Level Up: After striking twice. Evolution: Gain \"Elusive\"; +1 power; +1 health."
-        );
+        super("Garen", 5, 5, 5, EnumSet.of(Trait.ELUSIVE), owner, 4,
+                "Effect: Heals himself at the end of the round. Level Up: After striking twice. Evolution: Gain \"Elusive\"; +1 power; +1 health.");
     }
 
     @Override
-    public void onHit(Player owner, Minion attacker, Minion defender, int damage) {
-        this.incrementMission(1);        
+    public void onHit(Minion attacker, Minion defender, int damage) {
+        this.incrementMission(1);
     }
 
     @Override
@@ -32,9 +24,9 @@ public class Garen extends Champion {
         this.buff(1, 1);
         this.addTrait(Trait.ELUSIVE);
     }
-    
+
     @Override
-    public void onRoundEnd(Player owner) {
+    public void onRoundEnd() {
         EffectManager.healCompletely(this);
     }
 }
