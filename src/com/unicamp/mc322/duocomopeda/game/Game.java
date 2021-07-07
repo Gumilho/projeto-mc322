@@ -41,17 +41,40 @@ public class Game {
         this.graphicsEngine = new TextualGraphicsEngine();
     }
 
+    // Main Loop
+    public void startGame() {
+
+        this.runGameLoop();
+    }
+
+    private void runGameLoop() {
+        while (!gameEnd) {
+            startRound();
+            // manages turn states
+            while (shouldStayInMainPhase()) {
+                processMainPhaseState();
+            }
+
+            // break game loop if game ended during turn state
+            if (gameEnd) {
+                continue;
+            }
+
+            processCombatPhase();
+            printGameState();
+            advanceRound();
+
+        }
+    }
+
     public void setup() {
         this.chooseAttacker();
         this.setupPlayers();
         this.setupDecks();
-        players[0].pullInitialHand();
-        players[1].pullInitialHand();
-        runMulligan(players[0]);
-        runMulligan(players[1]);
+        this.setupPlayersHands();
     }
 
-    public void setup(String nickname1, String deckName1, String nickname2, String deckName2) {
+    public void setupTestScenario(String nickname1, String deckName1, String nickname2, String deckName2) {
         this.chooseAttacker();
         this.players = new Player[2];
         players[0] = new PlayerHuman(nickname1, keyboard, 0, attacker);
@@ -59,6 +82,14 @@ public class Game {
         this.setupDecks(deckName1, deckName2);
         players[0].pullInitialHand();
         players[1].pullInitialHand();
+    }
+
+    private void setupPlayersHands() {
+
+        players[0].pullInitialHand();
+        players[1].pullInitialHand();
+        runMulligan(players[0]);
+        runMulligan(players[1]);
     }
 
     private void chooseAttacker() {
@@ -130,64 +161,63 @@ public class Game {
         turnToken = 1 - turnToken; // flips the token
     }
 
-    // Main Loop
-    public void startGame() {
+    private void processCombatPhase() {
+        // Start combat phase or end turn
+        if (gamePhase == GamePhase.COMBAT) {
+            passedPlayers = 0;
+            // Confirming unit works the same way as passing, so we're reusing the
+            // passedPlayers attribute
+            processPlayerCombatSetup(1);
+            flipTurn();
+            currentPlayer = players[turnToken];
+            processPlayerCombatSetup(2);
+            board.resolveBattle();
+        }
+    }
 
-        while (!gameEnd) {
-            startRound();
-            while (passedPlayers < 2 && gamePhase == GamePhase.MAIN && !gameEnd) {
-                int pass = passedPlayers;
-                currentPlayer = players[turnToken];
-                print(turnToken);
-                try {
-                    currentPlayer.readInput();
-                } catch (IllegalArgumentException e) {
-                    System.out.println(e.getMessage());
-                    continue;
-                } catch (IndexOutOfBoundsException e) {
-                    System.out.println(e.getMessage());
-                    continue;
-                }
-
-                // Process pass counts
-                if (pass == passedPlayers) {
-                    passedPlayers = 0;
-                }
-
-                flipTurn();
+    private void processPlayerCombatSetup(int player) {
+        while (passedPlayers < player) {
+            printGameState();
+            try {
+                players[turnToken].readInput();
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
             }
-            if (!gameEnd) {
-                // Start combat phase or end turn
-                if (gamePhase == GamePhase.COMBAT) {
-                    passedPlayers = 0;
-                    // Confirming unit works the same way as passing, so we're reusing the
-                    // passedPlayers attribute
-                    while (passedPlayers < 1) {
-                        print(turnToken);
-                        try {
-                            players[turnToken].readInput();
-                        } catch (IllegalArgumentException e) {
-                            System.out.println(e.getMessage());
-                        }
-                    }
-                    flipTurn();
-                    currentPlayer = players[turnToken];
-                    while (passedPlayers < 2) {
-                        try {
-                            print(turnToken);
-                            players[turnToken].readInput();
-                        } catch (IllegalArgumentException e) {
-                            System.out.println(e.getMessage());
-                        }
-                    }
-                    board.resolveBattle();
-                }
+        }
+    }
 
-                print(turnToken);
-                advanceRound();
-                Utils.pressEnterKeyToContinue();
+    private boolean shouldStayInMainPhase() {
+        return roundIsActive() && gamePhase == GamePhase.MAIN && !gameEnd;
+    }
 
-            }
+    private void processMainPhaseState() {
+        currentPlayer = players[turnToken];
+        printGameState();
+        processPlayerInput();
+    }
+
+    private void processPlayerInput() {
+        try {
+            int pass = passedPlayers;
+            currentPlayer.readInput();
+            resetPassCounter(pass);
+            flipTurn();
+
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private boolean roundIsActive() {
+        return passedPlayers < 2;
+    }
+
+    private void resetPassCounter(int pass) {
+        // Process pass counts
+        if (pass == passedPlayers) {
+            passedPlayers = 0;
         }
     }
 
@@ -232,9 +262,11 @@ public class Game {
         System.out.print("\n\n");
         System.out.println("ROUND " + String.format("%d", roundCounter));
         System.out.println("Player " + players[this.attacker] + " is attacking now.\n");
+        Utils.pressEnterKeyToContinue();
     }
 
-    private void print(int turnToken) {
+    // TODO: delegate functionality to TextualGraphicsEngine
+    private void printGameState() {
         Utils.clearScreen();
         players[1].printInfo();
         if (turnToken == 0) {

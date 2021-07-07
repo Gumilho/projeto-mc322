@@ -27,7 +27,7 @@ public abstract class Player implements Killable {
     private boolean passed;
     private int index;
     private boolean isAttacker;
-    
+
     public Player(String nickname, int index, boolean isAttacker) {
         this.index = index;
         this.nickname = nickname;
@@ -38,6 +38,7 @@ public abstract class Player implements Killable {
         this.isAttacker = isAttacker;
     }
 
+    // maybe change this to an int list, so we can work with non ordered numbers
     public abstract int getInputInt(int maxInt);
 
     public void advanceRound() {
@@ -147,7 +148,7 @@ public abstract class Player implements Killable {
     public boolean getPassed() {
         return passed;
     }
-    
+
     public int getIndex() {
         return index;
     }
@@ -206,12 +207,9 @@ public abstract class Player implements Killable {
     }
 
     public void printInfo() {
-        System.out.print(String.format("Player %d - %s %s\nHealth: %d/%d | Mana: %d/%d | SpellMana: %d/%d\n", 
-            index, nickname, (isAttacker) ? "ATTACKER" : "",
-            health.getCurrentHealth(), health.getMaxHealth(), 
-            mana.getCurrentMana(), mana.getMaxMana(),
-            mana.getCurrentSpellMana(), mana.getMaxSpellMana())
-        );
+        System.out.print(String.format("Player %d - %s %s\nHealth: %d/%d | Mana: %d/%d | SpellMana: %d/%d\n", index,
+                nickname, (isAttacker) ? "ATTACKER" : "", health.getCurrentHealth(), health.getMaxHealth(),
+                mana.getCurrentMana(), mana.getMaxMana(), mana.getCurrentSpellMana(), mana.getMaxSpellMana()));
     }
 
     public int getHandSize() {
