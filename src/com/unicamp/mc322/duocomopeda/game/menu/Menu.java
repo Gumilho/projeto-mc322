@@ -27,6 +27,10 @@ public abstract class Menu {
         return owner;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public ArrayList<Integer> getLabels() {
         return labels;
     }
@@ -35,10 +39,8 @@ public abstract class Menu {
         return commandList.size();
     }
 
-    public void print() {
-        printHeader();
-        printOptions();
-        System.out.print("Choose one of the options (type the associated number and press enter): ");
+    public ArrayList<Command> getCommandList() {
+        return commandList;
     }
 
     public Command getCommand(int commandInt) {
@@ -50,30 +52,4 @@ public abstract class Menu {
         throw new IllegalArgumentException("No such command!");
     }
 
-    private void printHeader() {
-        int nameSize = name.length();
-        System.out.println();
-        for (int i = 0; i < nameSize + 4; i++) {
-            System.out.print("#");
-        }
-        System.out.println();
-
-        System.out.print("# ");
-        System.out.print(name);
-        System.out.println(" #");
-
-        for (int i = 0; i < nameSize + 4; i++) {
-            System.out.print("#");
-        }
-        System.out.println();
-
-    }
-
-    private void printOptions() {
-        for (Command command : commandList) {
-            System.out.print(command.getLabel());
-            System.out.print(" - ");
-            System.out.println(command.getName());
-        }
-    }
 }

@@ -49,6 +49,10 @@ public abstract class Player implements Killable {
         return getInputInt(choices);
     }
 
+    public Menu getMenu() {
+        return menu;
+    }
+
     public void advanceRound() {
         isAttacker = !isAttacker;
         mana.update();
@@ -196,10 +200,6 @@ public abstract class Player implements Killable {
 
     public int getMaxSpellMana() {
         return mana.getMaxSpellMana();
-    }
-
-    public void printMenu() {
-        menu.print();
     }
 
     @Override

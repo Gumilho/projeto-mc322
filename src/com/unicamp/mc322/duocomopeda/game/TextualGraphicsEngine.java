@@ -2,6 +2,8 @@ package com.unicamp.mc322.duocomopeda.game;
 
 import com.unicamp.mc322.duocomopeda.game.card.Card;
 import com.unicamp.mc322.duocomopeda.game.card.minion.Minion;
+import com.unicamp.mc322.duocomopeda.game.menu.Menu;
+import com.unicamp.mc322.duocomopeda.game.menu.command.Command;
 import com.unicamp.mc322.duocomopeda.game.player.Player;
 import com.unicamp.mc322.duocomopeda.utils.Utils;
 
@@ -185,7 +187,11 @@ public class TextualGraphicsEngine {
     }
 
     public void printPlayerMenu(Player player) {
-        player.printMenu();
+        Menu menu = player.getMenu();
+        printMenuHeader(menu);
+        printMenuOptions(menu);
+        System.out.print("Choose one of the options (type the associated number and press enter): ");
+
     }
 
     public void printGameState(Player[] players, int turnToken) {
@@ -202,5 +208,32 @@ public class TextualGraphicsEngine {
         }
         printPlayerInfo(players[0]);
         printPlayerMenu(players[turnToken]);
+    }
+
+    private void printMenuHeader(Menu menu) {
+        String name = menu.getName();
+        System.out.println();
+        for (int i = 0; i < name.length() + 4; i++) {
+            System.out.print("#");
+        }
+        System.out.println();
+
+        System.out.print("# ");
+        System.out.print(name);
+        System.out.println(" #");
+
+        for (int i = 0; i < name.length() + 4; i++) {
+            System.out.print("#");
+        }
+        System.out.println();
+
+    }
+
+    private void printMenuOptions(Menu menu) {
+        for (Command command : menu.getCommandList()) {
+            System.out.print(command.getLabel());
+            System.out.print(" - ");
+            System.out.println(command.getName());
+        }
     }
 }
