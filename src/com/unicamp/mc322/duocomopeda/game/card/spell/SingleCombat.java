@@ -11,7 +11,7 @@ public class SingleCombat extends Spell {
     }
 
     public void onPlay(Card playedCard) {
-        EffectManager.duel(owner);
+        EffectManager.duel(getOwner());
     }
 
 }
