@@ -17,7 +17,15 @@ public class EffectManager {
 
     public static void attackNexus(Player player) {
         Minion ally = player.chooseUnit();
-        ally.attack(player);
+        Game game = Game.getInstance();
+        Player otherPlayer = game.getOpponent(player);
+        ally.attack(otherPlayer);
+    }
+
+    public static void attackNexus(Player player, int damage) {
+        Game game = Game.getInstance();
+        Player otherPlayer = game.getOpponent(player);
+        otherPlayer.takeDamage(damage);
     }
 
     public static void buffSingleAlly(Player player, int power, int health) {
