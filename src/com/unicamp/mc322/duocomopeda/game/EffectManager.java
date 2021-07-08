@@ -72,7 +72,12 @@ public class EffectManager {
     }
 
     public static void zeroPower(Player player) {
-        Minion minion = player.chooseUnit();
-        minion.zeroPower();
+        Minion enemy = player.chooseEnemyUnit();
+        enemy.zeroPower();
+    }
+
+    public static void addBarrier(Player player) {
+        Minion ally = player.chooseAllyUnit();
+        ally.addBarrier();
     }
 }

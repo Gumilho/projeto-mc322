@@ -10,7 +10,7 @@ import com.unicamp.mc322.duocomopeda.game.EffectManager;
 public class Garen extends Champion {
 
     public Garen(Player owner) {
-        super("Garen", 5, 5, 5, EnumSet.of(Trait.ELUSIVE), owner, 4,
+        super("Garen", 5, 5, 5, EnumSet.noneOf(Trait.class), owner, 4,
                 "Effect: Heals himself at the end of the round. Level Up: After striking twice. Evolution: Gain \"Elusive\"; +1 power; +1 health.");
     }
 
