@@ -76,6 +76,24 @@ public abstract class Player implements Killable {
 
     public Minion chooseUnit() {
         Board board = Board.getInstance();
+        Game game = Game.getInstance();
+        System.out.print("Whose board do you want to choose from (1 for player 1 / 2 for player 2): ");
+        int playerIndex = this.getInputInt(3);
+        if (playerIndex == 0) {
+            throw new IllegalArgumentException("No such player!");
+        }
+        System.out.print("Select your unit: ");
+        int minionIndex = this.getInputInt(Board.MAX_BENCH_SIZE);
+        if (playerIndex == index) {
+            return board.getBenchCard(this, minionIndex);
+        } else {
+            return board.getBenchCard(game.getOpponent(this), minionIndex);
+        }
+
+    }
+
+    public Minion chooseAllyUnit() {
+        Board board = Board.getInstance();
         System.out.print("Select your unit: ");
         int minionIndex = this.getInputInt(Board.MAX_BENCH_SIZE);
         return board.getBenchCard(this, minionIndex);

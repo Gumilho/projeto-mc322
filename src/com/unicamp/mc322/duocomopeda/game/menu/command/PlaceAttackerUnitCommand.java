@@ -14,7 +14,7 @@ public class PlaceAttackerUnitCommand extends Command {
     public void execute() {
         Player player = getOwner();
         Board board = Board.getInstance();
-        Minion minion = player.chooseUnit();
+        Minion minion = player.chooseAllyUnit();
         System.out.print("Select the position: ");
         int battlefieldPosition = player.getInputInt(Board.MAX_BENCH_SIZE);
         board.moveAttackerUnitToBattlefield(minion, player, battlefieldPosition);

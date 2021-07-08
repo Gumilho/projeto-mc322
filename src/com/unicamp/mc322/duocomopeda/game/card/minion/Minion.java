@@ -132,6 +132,10 @@ public abstract class Minion extends Card implements Killable, MinionEventHandle
         barrierActive = false;
     }
 
+    public void zeroPower() {
+        this.stats.zeroPower();
+    }
+
     // default option for event is to do nothing
     public void onPlay(Card playedCard) {
 

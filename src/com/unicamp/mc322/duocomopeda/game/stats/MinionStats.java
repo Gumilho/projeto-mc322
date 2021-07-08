@@ -14,6 +14,9 @@ public class MinionStats {
     }
 
     public int getPower() {
+        if (power + tmpPower < 0) {
+            return 0;
+        }
         return power + tmpPower;
     }
 
@@ -47,6 +50,10 @@ public class MinionStats {
 
     public void takeDamage(int amount) {
         this.health.takeDamage(amount);
+    }
+
+    public void zeroPower() {
+        this.tmpPower = -power;
     }
 
 }

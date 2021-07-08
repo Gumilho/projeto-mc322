@@ -16,7 +16,7 @@ public class EffectManager {
     }
 
     public static void attackNexus(Player player) {
-        Minion ally = player.chooseUnit();
+        Minion ally = player.chooseAllyUnit();
         Game game = Game.getInstance();
         Player otherPlayer = game.getOpponent(player);
         ally.attack(otherPlayer);
@@ -29,7 +29,7 @@ public class EffectManager {
     }
 
     public static void buffSingleAlly(Player player, int power, int health) {
-        Minion ally = player.chooseUnit();
+        Minion ally = player.chooseAllyUnit();
         ally.buff(power, health);
     }
 
@@ -44,7 +44,7 @@ public class EffectManager {
     public static void hitAllDefenders(Player player) {
         Board board = Board.getInstance();
         Game game = Game.getInstance();
-        Minion minion = player.chooseUnit();
+        Minion minion = player.chooseAllyUnit();
         ArrayList<Minion> defenders = board.getBenchArraylist(game.getOpponent(player));
         for (Minion defender : defenders) {
             minion.strike(defender);
@@ -52,7 +52,7 @@ public class EffectManager {
     }
 
     public static void duel(Player player) {
-        Minion ally = player.chooseUnit();
+        Minion ally = player.chooseAllyUnit();
         Minion enemy = player.chooseEnemyUnit();
         ally.attack(enemy);
     }
@@ -62,12 +62,17 @@ public class EffectManager {
     }
 
     public static void healCompletely(Player player) {
-        Minion ally = player.chooseUnit();
+        Minion ally = player.chooseAllyUnit();
         ally.healCompletely();
     }
 
     public static void doubleStats(Player player) {
-        Minion ally = player.chooseUnit();
+        Minion ally = player.chooseAllyUnit();
         ally.doubleStats();
+    }
+
+    public static void zeroPower(Player player) {
+        Minion minion = player.chooseUnit();
+        minion.zeroPower();
     }
 }
