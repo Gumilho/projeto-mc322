@@ -5,8 +5,8 @@ import java.util.Random;
 
 public class PlayerAI extends Player {
 
-    public PlayerAI(String nickname, int index, int attacker) {
-        super(nickname, index, index == attacker);
+    public PlayerAI(String nickname, int index, int attacker, String deckName) {
+        super(nickname, index, index == attacker, deckName);
     }
 
     @Override

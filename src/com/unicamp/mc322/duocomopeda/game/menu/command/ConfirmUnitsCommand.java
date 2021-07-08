@@ -13,7 +13,7 @@ public class ConfirmUnitsCommand extends Command {
     public void execute() {
         System.out.println("Player " + getOwner() + " confirmed Units");
         Game game = Game.getInstance();
-        game.incrementPassedPlayers();
+        game.confirmUnit();
     }
 
 }

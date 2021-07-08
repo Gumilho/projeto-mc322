@@ -29,10 +29,11 @@ public abstract class Player implements Killable {
     private int index;
     private boolean isAttacker;
 
-    public Player(String nickname, int index, boolean isAttacker) {
+    public Player(String nickname, int index, boolean isAttacker, String deckName) {
         this.index = index;
         this.nickname = nickname;
         this.health = new Health(INITIAL_HEALTH, this);
+        this.deck = createDeck(deckName);
         this.hand = new ArrayList<Card>();
         this.mana = new Mana();
         this.isAttacker = isAttacker;
@@ -58,16 +59,23 @@ public abstract class Player implements Killable {
         mana.update();
     }
 
-    public void createDeck(String name) {
+    private Deck createDeck(String name) {
+        Deck newDeck;
         switch (name) {
             case "demacia":
-                deck = new DemaciaDeck(this);
+                newDeck = new DemaciaDeck(this);
+                break;
             case "poro":
-                deck = new PoroDeck(this);
+                newDeck = new PoroDeck(this);
+                break;
             case "poro-defender":
-                deck = new PoroDefenderDeck(this);
+                newDeck = new PoroDefenderDeck(this);
+                break;
+            default:
+                throw new IllegalArgumentException("No such deck, restart the game");
         }
-        deck.shuffle();
+        newDeck.shuffle();
+        return newDeck;
     }
 
     public void takeDamage(int amount) {

@@ -8,13 +8,15 @@ import com.unicamp.mc322.duocomopeda.utils.Utils;
 
 public class Game {
 
+    public static final int NUMBER_OF_PLAYERS = 2;
+
     private static Game game;
 
     private Player[] players;
     private Board board;
     private Scanner keyboard;
-    private Player currentPlayer;
     private GamePhase gamePhase;
+    private boolean confirmed;
     private TextualGraphicsEngine graphicsEngine;
 
     private int turnToken;
@@ -34,6 +36,7 @@ public class Game {
         this.gameEnd = false;
         this.passedPlayers = 0;
         this.roundCounter = 1;
+        this.confirmed = false;
         this.board = Board.getInstance();
         this.keyboard = new Scanner(System.in);
         this.players = new Player[2];
@@ -70,69 +73,55 @@ public class Game {
     public void setup() {
         this.chooseAttacker();
         this.setupPlayers();
-        this.setupDecks();
-        this.setupPlayersHands();
     }
 
     public void setupTestScenario(String nickname1, String deckName1, String nickname2, String deckName2) {
         this.chooseAttacker();
         this.players = new Player[2];
-        players[0] = new PlayerHuman(nickname1, keyboard, 0, attacker);
-        players[1] = new PlayerHuman(nickname2, keyboard, 1, attacker);
-        this.setupDecks(deckName1, deckName2);
-        players[0].pullInitialHand();
-        players[1].pullInitialHand();
-    }
-
-    private void setupPlayersHands() {
-
-        players[0].pullInitialHand();
-        players[1].pullInitialHand();
-        runMulligan(players[0]);
-        runMulligan(players[1]);
+        players[0] = new PlayerHuman(nickname1, keyboard, 0, attacker, "demacia");
+        players[1] = new PlayerHuman(nickname2, keyboard, 1, attacker, "demacia");
+        pullInitialHand(players[0]);
+        pullInitialHand(players[1]);
     }
 
     private void chooseAttacker() {
-
         Random r = new Random();
         this.attacker = r.nextInt(2);
-
     }
 
     private void setupPlayers() {
 
-        enterPlayerInfo(players[0]);
-        enterPlayerInfo(players[1]);
+        for (int i = 0; i < NUMBER_OF_PLAYERS; i++) {
 
-    }
-
-    private void enterPlayerInfo(Player player) {
-        String type, name;
-        System.out.print("Enter Player " + player.getIndex() + " type [(H)uman/(A)I]: ");
-        type = keyboard.nextLine();
-        System.out.print("Enter Player " + player.getIndex() + " nickname: ");
-        name = keyboard.nextLine();
-        while (name.length() > 40) {
-            System.out.print("The nickname has to be at most 40 characters, please enter again: ");
-            name = keyboard.nextLine();
-        }
-        if (type.compareTo("H") == 0) {
-            players[player.getIndex()] = new PlayerHuman(name, keyboard, player.getIndex(), attacker);
-        } else if (type.compareTo("A") == 0) {
-            players[player.getIndex()] = new PlayerAI(name, player.getIndex(), attacker);
+            enterPlayerInfo(players[i]);
+            pullInitialHand(players[i]);
+            runMulligan(players[i]);
         }
         System.out.println("Player " + players[attacker] + " starts attacking.");
 
     }
 
-    private void setupDecks() {
-        players[0].createDeck("demacia");
-        players[1].createDeck("demacia");
+    private void enterPlayerInfo(Player player) {
+        String type, name, deckName;
+        System.out.print("Enter Player " + player.getIndex() + " type [(H)uman/(A)I]: ");
+        type = keyboard.nextLine();
+        System.out.print("Enter Player " + player.getIndex() + " nickname: ");
+        name = keyboard.nextLine();
+        System.out.print("Enter Player " + player.getIndex() + " deck name (demacia/poro/poro-defender): ");
+        deckName = keyboard.nextLine();
+        while (name.length() > 40) {
+            System.out.print("The nickname has to be at most 40 characters, please enter again: ");
+            name = keyboard.nextLine();
+        }
+        if (type.compareTo("H") == 0) {
+            players[player.getIndex()] = new PlayerHuman(name, keyboard, player.getIndex(), attacker, deckName);
+        } else if (type.compareTo("A") == 0) {
+            players[player.getIndex()] = new PlayerAI(name, player.getIndex(), attacker, deckName);
+        }
     }
 
-    private void setupDecks(String deckName1, String deckName2) {
-        players[0].createDeck(deckName1);
-        players[1].createDeck(deckName2);
+    private void pullInitialHand(Player player) {
+        player.draw(4);
     }
 
     private void runMulligan(Player player) {
@@ -157,6 +146,10 @@ public class Game {
         passedPlayers++;
     }
 
+    public void confirmUnit() {
+        confirmed = true;
+    }
+
     private void flipTurn() {
         turnToken = 1 - turnToken; // flips the token
     }
@@ -164,19 +157,18 @@ public class Game {
     private void processCombatPhase() {
         // Start combat phase or end turn
         if (gamePhase == GamePhase.COMBAT) {
-            passedPlayers = 0;
-            // Confirming unit works the same way as passing, so we're reusing the
-            // passedPlayers attribute
-            processPlayerCombatSetup(1);
+            confirmed = false;
+            processPlayerCombatSetup();
+            confirmed = false;
             flipTurn();
-            currentPlayer = players[turnToken];
-            processPlayerCombatSetup(2);
+            processPlayerCombatSetup();
             board.resolveBattle();
+            confirmed = false;
         }
     }
 
-    private void processPlayerCombatSetup(int player) {
-        while (passedPlayers < player) {
+    private void processPlayerCombatSetup() {
+        while (!confirmed) {
             printGameState();
             try {
                 players[turnToken].readInput();
@@ -191,7 +183,6 @@ public class Game {
     }
 
     private void processMainPhaseState() {
-        currentPlayer = players[turnToken];
         printGameState();
         processPlayerInput();
     }
@@ -199,7 +190,7 @@ public class Game {
     private void processPlayerInput() {
         try {
             int pass = passedPlayers;
-            currentPlayer.readInput();
+            players[turnToken].readInput();
             resetPassCounter(pass);
             flipTurn();
 
@@ -227,12 +218,12 @@ public class Game {
     }
 
     public void playFromHand(int cardIndex) {
-        currentPlayer.playFromHand(cardIndex);
+        players[turnToken].playFromHand(cardIndex);
     }
 
     public void displayDetails(int cardIndex) {
         this.flipTurn();
-        currentPlayer.displayDetails(cardIndex);
+        players[turnToken].displayDetails(cardIndex);
     }
 
     public void startCombat() {
@@ -278,12 +269,12 @@ public class Game {
         return players[1 - attacker];
     }
 
-    public void declareWinner(int index) {
-        System.out.println("Player " + players[1 - index] + " won the game! Congratulations!");
-    }
-
     public Player getOpponent(Player player) {
         return players[1 - player.getIndex()];
+    }
+
+    public void declareWinner(int index) {
+        System.out.println("Player " + players[1 - index] + " won the game! Congratulations!");
     }
 
 }
