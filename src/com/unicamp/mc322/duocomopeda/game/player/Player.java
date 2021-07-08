@@ -11,6 +11,7 @@ import com.unicamp.mc322.duocomopeda.game.menu.*;
 import com.unicamp.mc322.duocomopeda.game.card.minion.Minion;
 import com.unicamp.mc322.duocomopeda.game.Board;
 import com.unicamp.mc322.duocomopeda.game.Game;
+import com.unicamp.mc322.duocomopeda.game.player.deck.*;
 
 public abstract class Player implements Killable {
 
@@ -32,7 +33,6 @@ public abstract class Player implements Killable {
         this.index = index;
         this.nickname = nickname;
         this.health = new Health(INITIAL_HEALTH, this);
-        this.deck = new Deck(this);
         this.hand = new ArrayList<Card>();
         this.mana = new Mana();
         this.isAttacker = isAttacker;
@@ -59,7 +59,14 @@ public abstract class Player implements Killable {
     }
 
     public void createDeck(String name) {
-        deck.create(name);
+        switch (name) {
+            case "demacia":
+                deck = new DemaciaDeck(this);
+            case "poro":
+                deck = new PoroDeck(this);
+            case "poro-defender":
+                deck = new PoroDefenderDeck(this);
+        }
         deck.shuffle();
     }
 
