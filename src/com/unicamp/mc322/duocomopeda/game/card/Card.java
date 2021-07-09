@@ -33,7 +33,9 @@ public abstract class Card {
         return owner;
     }
 
-    public abstract void play(Mana mana);
+    public abstract void play();
+
+    public abstract void play(int cost);
 
     public abstract void displayDetails();
 

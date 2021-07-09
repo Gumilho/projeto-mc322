@@ -12,13 +12,17 @@ public abstract class Spell extends Card implements SpellEventHandler {
     }
 
     @Override
-    public void play(Mana mana) {
-        try {
-            mana.spend(this.getCost(), true);
-            this.onPlay(this);
-        } catch (IllegalArgumentException e) {
-            System.out.println(e);
-        }
+    public void play() {
+        Player player = getOwner();
+        player.useSpellMana(this.getCost());
+        this.onPlay(this);
+    }
+
+    @Override
+    public void play(int cost) {
+        Player player = getOwner();
+        player.useSpellMana(cost);
+        this.onPlay(this);
     }
 
     @Override

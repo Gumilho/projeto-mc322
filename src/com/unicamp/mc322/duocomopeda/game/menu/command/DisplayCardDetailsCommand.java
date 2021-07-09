@@ -3,6 +3,7 @@ package com.unicamp.mc322.duocomopeda.game.menu.command;
 import com.unicamp.mc322.duocomopeda.game.player.Player;
 import com.unicamp.mc322.duocomopeda.utils.Utils;
 import com.unicamp.mc322.duocomopeda.game.Game;
+import com.unicamp.mc322.duocomopeda.game.card.Card;
 
 public class DisplayCardDetailsCommand extends Command {
 
@@ -12,11 +13,12 @@ public class DisplayCardDetailsCommand extends Command {
 
     @Override
     public void execute() {
+        Game game = Game.getInstance();
         System.out.print("Enter the index of the card you want to see: ");
         Player player = this.getOwner();
-        int arg = player.getInputInt(player.getHandSize());
-        Game game = Game.getInstance();
-        game.displayDetails(arg);
+        Card card = player.chooseHandCard();
+        game.flipTurn();
+        card.displayDetails();
         Utils.pressEnterKeyToContinue();
     }
 }

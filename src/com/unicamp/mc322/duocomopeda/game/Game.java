@@ -78,8 +78,8 @@ public class Game {
     public void setupTestScenario(String nickname1, String deckName1, String nickname2, String deckName2) {
         this.chooseAttacker();
         this.players = new Player[2];
-        players[0] = new PlayerHuman(nickname1, keyboard, 0, attacker, "demacia");
-        players[1] = new PlayerHuman(nickname2, keyboard, 1, attacker, "demacia");
+        players[0] = new PlayerHuman(nickname1, keyboard, 0, attacker, deckName1);
+        players[1] = new PlayerHuman(nickname2, keyboard, 1, attacker, deckName2);
         pullInitialHand(players[0]);
         pullInitialHand(players[1]);
     }
@@ -137,7 +137,7 @@ public class Game {
         }
         for (int i = 0; i < 4; i++) {
             if (swapList[i]) {
-                player.swapCard(i);
+                player.mulligan(i);
             }
         }
     }
@@ -150,7 +150,7 @@ public class Game {
         confirmed = true;
     }
 
-    private void flipTurn() {
+    public void flipTurn() {
         turnToken = 1 - turnToken; // flips the token
     }
 
@@ -215,15 +215,6 @@ public class Game {
     public void endGame() {
         gameEnd = true;
         keyboard.close();
-    }
-
-    public void playFromHand(int cardIndex) {
-        players[turnToken].playFromHand(cardIndex);
-    }
-
-    public void displayDetails(int cardIndex) {
-        this.flipTurn();
-        players[turnToken].displayDetails(cardIndex);
     }
 
     public void startCombat() {

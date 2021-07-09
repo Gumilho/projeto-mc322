@@ -7,6 +7,7 @@ import com.unicamp.mc322.duocomopeda.game.card.Card;
 import com.unicamp.mc322.duocomopeda.game.stats.Health;
 import com.unicamp.mc322.duocomopeda.game.stats.Killable;
 import com.unicamp.mc322.duocomopeda.game.stats.Mana;
+
 import com.unicamp.mc322.duocomopeda.game.menu.*;
 import com.unicamp.mc322.duocomopeda.game.card.minion.Minion;
 import com.unicamp.mc322.duocomopeda.game.Board;
@@ -41,6 +42,16 @@ public abstract class Player implements Killable {
 
     // maybe change this to an int list, so we can work with non ordered numbers
     public abstract int getInputInt(ArrayList<Integer> labels);
+
+    public void playCard() {
+        Card card = chooseHandCard();
+        playFromHand(card);
+    }
+
+    public Card chooseHandCard() {
+        int cardIndex = getInputInt(hand.size());
+        return hand.get(cardIndex);
+    }
 
     public int getInputInt(int maxInt) {
         ArrayList<Integer> choices = new ArrayList<Integer>();
@@ -92,7 +103,7 @@ public abstract class Player implements Killable {
         }
         System.out.print("Select your unit: ");
         int minionIndex = this.getInputInt(Board.MAX_BENCH_SIZE);
-        if (playerIndex == index) {
+        if (playerIndex - 1 == index) {
             return board.getBenchCard(this, minionIndex);
         } else {
             return board.getBenchCard(game.getOpponent(this), minionIndex);
@@ -142,7 +153,7 @@ public abstract class Player implements Killable {
         draw(1);
     }
 
-    public void swapCard(int index) {
+    public void mulligan(int index) {
         Card card = hand.remove(index);
         deck.addCard(card);
         deck.shuffle();
@@ -155,15 +166,17 @@ public abstract class Player implements Killable {
         game.endGame();
     }
 
-    public void playFromHand(int cardIndex) {
-        Card card = hand.get(cardIndex);
-        card.play(mana);
-        hand.remove(card);
+    public void useMana(int amount) {
+        mana.spend(amount);
     }
 
-    public void displayDetails(int cardIndex) {
-        Card card = hand.get(cardIndex);
-        card.displayDetails();
+    public void useSpellMana(int amount) {
+        mana.spendSpell(amount);
+    }
+
+    public void playFromHand(Card card) {
+        card.play();
+        hand.remove(card);
     }
 
     public void draw(int quantity) {
@@ -246,5 +259,18 @@ public abstract class Player implements Killable {
 
     public Card getHandCard(int i) {
         return hand.get(i);
+    }
+
+    public void swapCard(Card handCard, Minion benchCard) {
+        if (getCurrentMana() < handCard.getCost() - benchCard.getCost()) {
+            throw new IllegalArgumentException("Out of mana");
+        }
+        int cost = handCard.getCost() - benchCard.getCost();
+        if (cost < 0) {
+            cost = 0;
+        }
+        Board board = Board.getInstance();
+        board.remove(benchCard);
+        handCard.play(cost);
     }
 }

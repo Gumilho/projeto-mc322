@@ -35,15 +35,11 @@ public class Mana {
         currentMana -= quantity;
     }
 
-    public void spend(int quantity, boolean isSpell) {
-        if (isSpell) {
-            if (currentMana + spellMana - quantity < 0) {
-                throw new IllegalArgumentException("Out of mana");
-            }
-            currentMana -= quantity;
-        } else {
-            spend(quantity);
+    public void spendSpell(int quantity) {
+        if (currentMana + spellMana - quantity < 0) {
+            throw new IllegalArgumentException("Out of mana");
         }
+        currentMana -= quantity;
     }
 
     public void update() {

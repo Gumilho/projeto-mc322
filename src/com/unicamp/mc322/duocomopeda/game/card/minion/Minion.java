@@ -84,8 +84,18 @@ public abstract class Minion extends Card implements Killable, MinionEventHandle
 
     // "Action" methods
     @Override
-    public void play(Mana mana) {
-        mana.spend(this.getCost());
+    public void play() {
+        Player player = getOwner();
+        player.useMana(this.getCost());
+        this.onPlay(this);
+        Board board = Board.getInstance();
+        board.placeUnit(this, getOwner());
+    }
+
+    @Override
+    public void play(int cost) {
+        Player player = getOwner();
+        player.useMana(cost);
         this.onPlay(this);
         Board board = Board.getInstance();
         board.placeUnit(this, getOwner());

@@ -12,8 +12,9 @@ public class AttackerMainMenu extends Menu {
             {
                 add(new DisplayCardDetailsCommand(owner, 1));
                 add(new PlayCardCommand(owner, 2));
-                add(new StartCombatCommand(owner, 3));
-                add(new PassCommand(owner, 4));
+                add(new SwapCardCommand(owner, 3));
+                add(new StartCombatCommand(owner, 4));
+                add(new PassCommand(owner, 5));
                 add(new EndGameCommand(owner, 9));
             }
         }, owner);

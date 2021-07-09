@@ -1,8 +1,7 @@
 package com.unicamp.mc322.duocomopeda.game.menu.command;
 
 import com.unicamp.mc322.duocomopeda.game.player.Player;
-
-import com.unicamp.mc322.duocomopeda.game.Game;
+import com.unicamp.mc322.duocomopeda.game.card.Card;
 
 public class PlayCardCommand extends Command {
 
@@ -12,10 +11,9 @@ public class PlayCardCommand extends Command {
 
     @Override
     public void execute() {
-        Game game = Game.getInstance();
         Player player = getOwner();
         System.out.print("Enter the index of the card you want to play: ");
-        int cardIndex = player.getInputInt(10);
-        game.playFromHand(cardIndex);
+        Card card = player.chooseHandCard();
+        player.playFromHand(card);
     }
 }
