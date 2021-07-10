@@ -1,7 +1,7 @@
 package com.unicamp.mc322.duocomopeda.game.card.spell;
 
 import com.unicamp.mc322.duocomopeda.game.card.Card;
-import com.unicamp.mc322.duocomopeda.game.event.handler.SpellEventHandler;
+import com.unicamp.mc322.duocomopeda.game.card.event.SpellEventHandler;
 import com.unicamp.mc322.duocomopeda.game.player.Player;
 import com.unicamp.mc322.duocomopeda.game.stats.Mana;
 

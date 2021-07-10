@@ -1,4 +1,4 @@
-package com.unicamp.mc322.duocomopeda.game.event.handler;
+package com.unicamp.mc322.duocomopeda.game.card.event;
 
 import com.unicamp.mc322.duocomopeda.game.card.Card;
 import com.unicamp.mc322.duocomopeda.game.card.minion.Minion;

@@ -4,7 +4,7 @@ import java.util.EnumSet;
 
 import com.unicamp.mc322.duocomopeda.game.Board;
 import com.unicamp.mc322.duocomopeda.game.card.Card;
-import com.unicamp.mc322.duocomopeda.game.event.handler.MinionEventHandler;
+import com.unicamp.mc322.duocomopeda.game.card.event.MinionEventHandler;
 import com.unicamp.mc322.duocomopeda.game.stats.Killable;
 import com.unicamp.mc322.duocomopeda.game.stats.Mana;
 import com.unicamp.mc322.duocomopeda.game.stats.MinionStats;

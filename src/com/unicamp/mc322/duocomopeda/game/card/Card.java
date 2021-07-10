@@ -1,6 +1,5 @@
 package com.unicamp.mc322.duocomopeda.game.card;
 
-import com.unicamp.mc322.duocomopeda.game.TextualGraphicsEngine;
 import com.unicamp.mc322.duocomopeda.game.player.Player;
 import com.unicamp.mc322.duocomopeda.game.stats.Mana;
 
@@ -32,11 +31,6 @@ public abstract class Card {
 
     public Player getOwner() {
         return owner;
-    }
-
-    public void displayDetails() {
-        TextualGraphicsEngine tge = TextualGraphicsEngine.getInstance();
-        tge.printCardDetails(getDetails());
     }
 
     public abstract void play();
