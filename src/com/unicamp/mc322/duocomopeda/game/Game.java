@@ -4,7 +4,6 @@ import java.util.Random;
 import java.util.Scanner;
 
 import com.unicamp.mc322.duocomopeda.game.player.*;
-import com.unicamp.mc322.duocomopeda.utils.Utils;
 
 public class Game {
 
@@ -41,7 +40,7 @@ public class Game {
         this.keyboard = new Scanner(System.in);
         this.players = new Player[2];
         this.gamePhase = GamePhase.MAIN;
-        this.graphicsEngine = new TextualGraphicsEngine();
+        this.graphicsEngine = TextualGraphicsEngine.getInstance();
     }
 
     // Main Loop
@@ -242,10 +241,7 @@ public class Game {
         board.returnUnitsToBench();
         board.resetUnits();
         roundCounter++;
-        System.out.print("\n\n");
-        System.out.println("ROUND " + String.format("%d", roundCounter));
-        System.out.println("Player " + players[this.attacker] + " is attacking now.\n");
-        Utils.pressEnterKeyToContinue();
+        graphicsEngine.advanceRound(roundCounter, players[this.attacker]);
     }
 
     private void printGameState() {

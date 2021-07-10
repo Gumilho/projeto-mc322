@@ -31,9 +31,8 @@ public abstract class Spell extends Card implements SpellEventHandler {
     }
 
     @Override
-    public void displayDetails() {
-        System.out.println(String.format("Card name: %s | Mana Cost: %d\nDescription: %s", getName(), getCost(),
-                getDescription()));
+    public String getDetails() {
+        return String.format("Card name: %s | Mana Cost: %d\nDescription: %s", getName(), getCost(), getDescription());
     }
 
     public void onPlay(Card playedCard) {

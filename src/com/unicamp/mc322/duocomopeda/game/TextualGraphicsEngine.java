@@ -5,7 +5,6 @@ import com.unicamp.mc322.duocomopeda.game.card.minion.Minion;
 import com.unicamp.mc322.duocomopeda.game.menu.Menu;
 import com.unicamp.mc322.duocomopeda.game.menu.command.Command;
 import com.unicamp.mc322.duocomopeda.game.player.Player;
-import com.unicamp.mc322.duocomopeda.utils.Utils;
 
 public class TextualGraphicsEngine {
 
@@ -13,8 +12,22 @@ public class TextualGraphicsEngine {
     public static final int NAME_MAX_SIZE = 8;
     public static final int BOARD_WIDTH = (11 + NAME_MAX_SIZE) * MAX_BENCH_SIZE + 1;
 
-    public TextualGraphicsEngine() {
+    private static TextualGraphicsEngine textualGraphicsEngine;
 
+    private TextualGraphicsEngine() {
+
+    }
+
+    public static TextualGraphicsEngine getInstance() {
+        if (textualGraphicsEngine == null) {
+            textualGraphicsEngine = new TextualGraphicsEngine();
+        }
+        return textualGraphicsEngine;
+    }
+
+    public void printCardDetails(Card card) {
+        System.out.println(card.getDetails());
+        pressEnterKeyToContinue();
     }
 
     private void printBench(Player player) {
@@ -195,7 +208,7 @@ public class TextualGraphicsEngine {
     }
 
     public void printGameState(Player[] players, int turnToken) {
-        Utils.clearScreen();
+        clearScreen();
         printPlayerInfo(players[1]);
         if (turnToken == 0) {
             System.out.print("\n\n\n");
@@ -234,6 +247,26 @@ public class TextualGraphicsEngine {
             System.out.print(command.getLabel());
             System.out.print(" - ");
             System.out.println(command.getName());
+        }
+    }
+
+    public void advanceRound(int roundCounter, Player attacker) {
+        System.out.print("\n\n");
+        System.out.println("ROUND " + String.format("%d", roundCounter));
+        System.out.println("Player " + attacker + " is attacking now.\n");
+        pressEnterKeyToContinue();
+    }
+
+    public static void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+
+    public static void pressEnterKeyToContinue() {
+        System.out.print("Press Enter key to continue...");
+        try {
+            System.in.read();
+        } catch (Exception e) {
         }
     }
 }

@@ -45,9 +45,9 @@ public abstract class Minion extends Card implements Killable, MinionEventHandle
     }
 
     @Override
-    public void displayDetails() {
-        System.out.println(String.format("Card name: %s | Mana Cost: %d\nPower: %d | Health: %d\nDescription: %s",
-                getName(), getCost(), getPower(), getHealth(), getDescription()));
+    public String getDetails() {
+        return String.format("Card name: %s | Mana Cost: %d\nPower: %d | Health: %d\nDescription: %s", getName(),
+                getCost(), getPower(), getHealth(), getDescription());
     }
 
     // Stat changing methods
