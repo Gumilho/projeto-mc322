@@ -89,10 +89,10 @@ public class Game {
     }
 
     private void setupPlayers() {
-
+        this.players = new Player[2];
         for (int i = 0; i < NUMBER_OF_PLAYERS; i++) {
 
-            enterPlayerInfo(players[i]);
+            enterPlayerInfo(i);
             pullInitialHand(players[i]);
             runMulligan(players[i]);
         }
@@ -100,22 +100,22 @@ public class Game {
 
     }
 
-    private void enterPlayerInfo(Player player) {
+    private void enterPlayerInfo(int playerIndex) {
         String type, name, deckName;
-        System.out.print("Enter Player " + player.getIndex() + " type [(H)uman/(A)I]: ");
+        System.out.print("Enter Player " + playerIndex + " type [(H)uman/(A)I]: ");
         type = keyboard.nextLine();
-        System.out.print("Enter Player " + player.getIndex() + " nickname: ");
+        System.out.print("Enter Player " + playerIndex + " nickname: ");
         name = keyboard.nextLine();
-        System.out.print("Enter Player " + player.getIndex() + " deck name (demacia/poro/poro-defender): ");
+        System.out.print("Enter Player " + playerIndex + " deck name (demacia/poro/poro-defender): ");
         deckName = keyboard.nextLine();
         while (name.length() > 40) {
             System.out.print("The nickname has to be at most 40 characters, please enter again: ");
             name = keyboard.nextLine();
         }
         if (type.compareTo("H") == 0) {
-            players[player.getIndex()] = new PlayerHuman(name, keyboard, player.getIndex(), attacker, deckName);
+            players[playerIndex] = new PlayerHuman(name, keyboard, playerIndex, attacker, deckName);
         } else if (type.compareTo("A") == 0) {
-            players[player.getIndex()] = new PlayerAI(name, player.getIndex(), attacker, deckName);
+            players[playerIndex] = new PlayerAI(name, playerIndex, attacker, deckName);
         }
     }
 
@@ -134,6 +134,7 @@ public class Game {
             System.out.print("Do you want to change another one? Press 4 if you're done: ");
             input = player.getInputInt(5);
         }
+        keyboard.nextLine(); // Consume newline left-over
         for (int i = 0; i < 4; i++) {
             if (swapList[i]) {
                 player.mulligan(i);
@@ -198,6 +199,7 @@ public class Game {
         } catch (IndexOutOfBoundsException e) {
             System.out.println(e.getMessage());
         }
+        TextualGraphicsEngine.pressEnterKeyToContinue();
     }
 
     private boolean roundIsActive() {
